@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>True Corporation - Channel Commu</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600&family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
@@ -13,23 +13,50 @@
     
     .card { background: var(--card-bg); padding: 35px 25px; border-radius: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.08); width: 100%; max-width: 400px; box-sizing: border-box; border: 1px solid #EEE; }
     
-    /* 🌟 ปรับแต่ง Pop-up SweetAlert2 */
+    /* Pop-up Custom */
     .swal2-popup { border-radius: 30px !important; padding: 2rem !important; font-family: 'Sarabun', sans-serif !important; }
 
     h2 { font-family: 'Kanit', sans-serif; text-align: center; color: var(--text-main); margin: 0 0 8px 0; font-size: 24px; font-weight: 600;}
     .app-desc { font-size: 13px; color: var(--text-sub); text-align: center; margin-bottom: 25px; background: #FFF1F1; padding: 14px; border-radius: 16px; line-height: 1.6; border: 1px solid #FFE0E0; }
     
-    /* UX/UI เลือกช่องทางแบบคลีน */
+    /* 🆕 ปรับปรุง UX/UI เลือกช่องทาง (Gradient พื้นหลัง แดง-ฟ้า) */
     .channel-container { display: flex; flex-direction: column; gap: 14px; margin-top: 20px; }
     .channel-card-new {
-      padding: 20px; border: 1.5px solid #EAEAEA; border-radius: 20px; cursor: pointer;
-      transition: all 0.2s ease; background: #FFF; text-align: center;
+      padding: 22px;
+      /* 🌟 เปลี่ยนพื้นหลังเป็น Gradient แดง-ฟ้า */
+      background: linear-gradient(135deg, #FF0000 0%, #007AFF 100%);
+      border: none; /* เอาขอบเดิมออก */
+      border-radius: 20px; /* ความมนพอดีกรอบ */
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(255, 0, 0, 0.15); /* เพิ่มเงาให้นูนขึ้น */
     }
-    .channel-card-new:hover { border-color: var(--primary); background-color: #FFF9F9; transform: translateY(-2px); }
-    .channel-card-new:active { transform: scale(0.97); }
-    .channel-name-new { font-family: 'Kanit', sans-serif; font-size: 18px; font-weight: 600; color: var(--text-main); display: block; }
-    .channel-desc-new { font-size: 12px; color: #999; margin-top: 2px; }
+    .channel-card-new:hover {
+      transform: translateY(-3px); /* ยกตัวเมื่อ Hover */
+      box-shadow: 0 12px 25px rgba(255, 0, 0, 0.2);
+    }
+    .channel-card-new:active {
+      transform: scale(0.97);
+    }
+    .channel-name-new {
+      font-family: 'Kanit', sans-serif;
+      font-size: 19px;
+      font-weight: 600;
+      /* 🌟 ปรับสีตัวอักษรเป็นสีขาว */
+      color: #FFFFFF;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .channel-desc-new {
+      font-size: 12.5px;
+      /* 🌟 ปรับสีตัวอธิบายเป็นสีขาวแบบโปร่งแสงนิดหน่อย */
+      color: rgba(255, 255, 255, 0.9);
+      margin: 0;
+      line-height: 1.4;
+    }
 
+    /* PDPA Box */
     .consent-box { background: #FDFDFD; border-radius: 16px; padding: 15px; border: 1px solid #E0E0E0; margin-bottom: 20px; font-size: 13.5px; color: #444; }
     .consent-content { max-height: 150px; overflow-y: auto; padding-right: 10px; line-height: 1.7; margin-bottom: 12px; text-align: left; }
     .consent-content::-webkit-scrollbar { width: 3px; }
@@ -44,6 +71,7 @@
     
     .profile-pic { width: 90px; height: 90px; border-radius: 50%; border: 4px solid white; box-shadow: 0 8px 20px rgba(0,0,0,0.1); margin: 0 auto 15px auto; display: block; object-fit: cover; }
     
+    /* Success View Gradient */
     .success-card-gradient {
       background: linear-gradient(135deg, #FF0000 0%, #007AFF 100%);
       padding: 35px 20px; border-radius: 30px; color: white; text-align: center; margin: 15px 0;
@@ -55,16 +83,9 @@
       font-size: 24px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
-    /* 🌀 Spinner Fix */
+    /* Spinner */
     #loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); z-index: 9999; flex-direction: column; align-items: center; justify-content: center; }
-    .spinner { 
-      border: 5px solid #F3F3F3; 
-      border-top: 5px solid var(--primary); 
-      border-radius: 50%; 
-      width: 50px; height: 50px; 
-      animation: spin 1s linear infinite; 
-      margin-bottom: 15px; 
-    }
+    .spinner { border: 5px solid #F3F3F3; border-top: 5px solid var(--primary); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin-bottom: 15px; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
     .footer { text-align: center; font-size: 12px; color: var(--text-sub); margin-top: 25px; line-height: 1.6; }
@@ -94,15 +115,15 @@
         <div class="channel-container">
           <div class="channel-card-new" onclick="goToForm('Shop')">
             <span class="channel-name-new">Shop</span>
-            <p class="channel-desc-new">พนักงานประจำสาขาและจุดบริการ</p>
+            <p class="channel-desc-new">พนักงานประจำสาขาและจุดบริการลูกค้า</p>
           </div>
           <div class="channel-card-new" onclick="goToForm('Non Shop')">
             <span class="channel-name-new">Non Shop</span>
-            <p class="channel-desc-new">พนักงานฝ่ายขายและงานสนาม</p>
+            <p class="channel-desc-new">พนักงานฝ่ายขาย พนักงานสนาม Retail DS</p>
           </div>
           <div class="channel-card-new" onclick="goToForm('Back Office')">
             <span class="channel-name-new">Back Office</span>
-            <p class="channel-desc-new">พนักงานส่วนกลางและสำนักงาน</p>
+            <p class="channel-desc-new">พนักงานส่วนกลาง สำนักงาน สนับสนุนงานขาย</p>
           </div>
         </div>
       </div>
@@ -126,7 +147,7 @@
             ข้าพเจ้าให้ความยินยอมในเอกสารนี้ด้วยความสมัครใจ
           </div>
           <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 13.5px; font-weight: 600; padding-top: 10px; border-top: 1px solid #EEE;">
-            <input type="checkbox" id="consentCheck" style="width: 18px; height: 18px; accent-color: #FF0000;"> ยอมรับเงื่อนไขยินยอม
+            <input type="checkbox" id="consentCheck" style="width: 19px; height: 19px; accent-color: #FF0000;"> ยอมรับเงื่อนไขยินยอม
           </label>
         </div>
         
@@ -157,7 +178,10 @@
   </div>
 
   <script>
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbxQ0-VSX6OZ8sa2mH0Y-r1Z11WyZf87lho-pqD02P6Vwp1V6KqdHc--BFApr8L8GYK6/exec';
+    // *******************************************************
+    // 🌟 กรุณาใส่ URL ของ Google Apps Script ของคุณที่นี่ 🌟
+    // *******************************************************
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbxQ0-VSX6OZ8sa2mH0Y-r1Z11WyZf87lho-pqD02P6Vwp1V6KqdHc--BFApr8L8GYK6/exec'; 
     const LIFF_ID = '1656846002-7Dj11vMZ';
     let lineProfile = {};
     let selectedChannel = "";
@@ -188,7 +212,10 @@
         document.getElementById('loading-overlay').style.display = 'none';
         if (user) showSuccessUI(user);
         else document.getElementById('type-selection').style.display = 'block';
-      } catch (e) { document.getElementById('loading-overlay').style.display = 'none'; }
+      } catch (e) { 
+        document.getElementById('loading-overlay').style.display = 'none';
+        console.error(e); 
+      }
     }
 
     function showSuccessUI(user) {
@@ -197,8 +224,11 @@
       document.getElementById('reg-form').style.display = 'none';
       document.getElementById('success-view').style.display = 'block';
       
-      // ปรับลำดับ ยินดีต้อนรับ คุณ [ชื่อ]
-      document.getElementById('welcome-text').innerHTML = `ยินดีต้อนรับ<br><span style="font-size:16px; font-weight:400;">คุณ</span><br>${user.firstName} ${user.lastName}`;
+      // ปรับลำดับ: ยินดีต้อนรับ (บรรทัดบน) | คุณ (ตัวบาง) ชื่อ นามสกุล (บรรทัดล่าง)
+      document.getElementById('welcome-text').innerHTML = `
+        ยินดีต้อนรับ<br>
+        <span style="font-weight: 300; font-size: 18px;">คุณ</span> ${user.firstName} ${user.lastName}
+      `;
       
       document.getElementById('resEmpId').innerText = user.empId;
       document.getElementById('resChannel').innerText = user.channelType;
@@ -225,12 +255,14 @@
       const thaiRegex = /^[ก-๙\s]+$/;
 
       if (!empId || !fName || !lName) return Swal.fire('ข้อมูลไม่ครบ', 'กรุณากรอกข้อมูลให้ครบถ้วน', 'warning');
-      if (!thaiRegex.test(fName) || !thaiRegex.test(lName)) return Swal.fire('ผิดพลาด', 'กรุณากรอกภาษาไทยเท่านั้น', 'error');
-      if (!isConsent) return Swal.fire('แจ้งเตือน', 'กรุณาติ๊กยินยอม PDPA', 'info');
+      if (!thaiRegex.test(fName) || !thaiRegex.test(lName)) return Swal.fire('ผิดพลาด', 'กรุณากรอกชื่อ-นามสกุลเป็นภาษาไทยเท่านั้น', 'error');
+      if (!isConsent) return Swal.fire('แจ้งเตือน', 'กรุณาติ๊กยินยอม PDPA เพื่อดำเนินการต่อ', 'info');
 
       Swal.fire({
         title: 'ยืนยันลงทะเบียน?',
-        showCancelButton: true, confirmButtonColor: '#FF0000', confirmButtonText: 'ตกลง'
+        text: "โปรดตรวจสอบข้อมูลให้ถูกต้องก่อนกดตกลง",
+        icon: 'question',
+        showCancelButton: true, confirmButtonColor: '#FF0000', confirmButtonText: 'ตกลง', cancelButtonText: 'ยกเลิก'
       }).then(async (result) => {
         if (result.isConfirmed) {
           document.getElementById('loading-overlay').style.display = 'flex';
@@ -239,16 +271,27 @@
             uid: lineProfile.userId, 
             displayName: lineProfile.displayName, 
             pictureUrl: lineProfile.pictureUrl,
-            email: lineProfile.email, // ส่งอีเมลไปด้วย
+            email: lineProfile.email,
             channelType: selectedChannel, 
             empId: empId, 
             firstName: fName, 
             lastName: lName 
           };
-          const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
-          const status = await res.json();
-          document.getElementById('loading-overlay').style.display = 'none';
-          if (status.status === 'success') Swal.fire({ icon: 'success', title: 'สำเร็จ', timer: 2000, showConfirmButton: false }).then(() => location.reload());
+          
+          try {
+            const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
+            const status = await res.json();
+            document.getElementById('loading-overlay').style.display = 'none';
+            if (status.status === 'success') {
+              Swal.fire({ icon: 'success', title: 'ลงทะเบียนสำเร็จ', timer: 2000, showConfirmButton: false })
+              .then(() => location.reload());
+            } else {
+              Swal.fire('ผิดพลาด', 'ไม่สามารถบันทึกข้อมูลได้', 'error');
+            }
+          } catch (err) {
+            document.getElementById('loading-overlay').style.display = 'none';
+            Swal.fire('Error', 'การเชื่อมต่อฐานข้อมูลขัดข้อง', 'error');
+          }
         }
       });
     }
