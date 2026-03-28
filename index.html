@@ -8,7 +8,7 @@
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
-    :root { --primary: #FF0000; --green: #28a745; --bg-color: #F8F9FA; --card-bg: #FFFFFF; --text-main: #333; --text-sub: #666; }
+    :root { --primary: #FF0000; --blue: #007AFF; --bg-color: #F8F9FA; --card-bg: #FFFFFF; --text-main: #333; --text-sub: #666; }
     body { font-family: 'Sarabun', sans-serif; background-color: var(--bg-color); margin: 0; padding: 15px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
     
     .card { background: var(--card-bg); padding: 35px 25px; border-radius: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.08); width: 100%; max-width: 400px; box-sizing: border-box; border: 1px solid #EEE; }
@@ -16,15 +16,17 @@
     h2 { font-family: 'Kanit', sans-serif; text-align: center; color: var(--text-main); margin: 0 0 8px 0; font-size: 24px; font-weight: 600;}
     .app-desc { font-size: 13px; color: var(--text-sub); text-align: center; margin-bottom: 25px; background: #FFF1F1; padding: 14px; border-radius: 16px; line-height: 1.6; border: 1px solid #FFE0E0; }
     
-    .channel-container { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; }
-    .channel-card { display: flex; align-items: center; padding: 16px; border: 2px solid #F0F0F0; border-radius: 20px; cursor: pointer; transition: 0.3s; background: #FFF; }
+    .channel-card { display: flex; align-items: center; padding: 16px; border: 2px solid #F0F0F0; border-radius: 20px; cursor: pointer; transition: 0.3s; background: #FFF; margin-bottom: 12px;}
     .channel-card:hover { border-color: var(--primary); background-color: #FFF8F8; transform: translateY(-3px); }
     .channel-icon { width: 48px; height: 48px; background: #F8F9FA; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-right: 16px; }
     .channel-name { font-family: 'Kanit', sans-serif; font-size: 16px; font-weight: 600; color: #333; margin: 0; }
     .channel-desc { font-size: 12px; color: #888; margin: 0; }
 
-    .consent-box { background: #F9F9F9; border-radius: 16px; padding: 15px; border: 1px solid #DDD; margin-bottom: 20px; font-size: 13px; color: #555; }
-    .consent-content { height: 100px; overflow-y: auto; padding-right: 5px; line-height: 1.6; margin-bottom: 10px; }
+    .consent-box { background: #FDFDFD; border-radius: 16px; padding: 15px; border: 1px solid #E0E0E0; margin-bottom: 20px; font-size: 13.5px; color: #444; }
+    .consent-content { max-height: 120px; overflow-y: auto; padding-right: 10px; line-height: 1.7; margin-bottom: 12px; text-align: left; }
+    .consent-content::-webkit-scrollbar { width: 4px; }
+    .consent-content::-webkit-scrollbar-thumb { background: #DDD; border-radius: 10px; }
+
     input[type="text"] { width: 100%; padding: 14px 18px; margin-bottom: 15px; border: 1px solid #DDD; border-radius: 16px; box-sizing: border-box; font-size: 16px; font-family: 'Sarabun'; }
     .input-label { display: block; font-size: 13px; font-weight: 600; color: var(--text-sub); margin-bottom: 8px; text-align: left; padding-left: 5px; }
     
@@ -34,23 +36,24 @@
     
     .profile-pic { width: 90px; height: 90px; border-radius: 50%; border: 4px solid white; box-shadow: 0 8px 20px rgba(0,0,0,0.1); margin: 0 auto 15px auto; display: block; object-fit: cover; }
     
-    /* --- Success Card Green (ปรับปรุงใหม่ตามสั่ง) --- */
-    .success-card-green {
-      background: linear-gradient(135deg, #28a745, #1e7e34);
-      padding: 30px 20px; border-radius: 30px; color: white; text-align: center; margin: 15px 0;
-      box-shadow: 0 15px 35px rgba(40, 167, 69, 0.25);
+    /* --- 🆕 Success Card Gradient Red-Blue (ปรับปรุงใหม่) --- */
+    .success-card-gradient {
+      background: linear-gradient(135deg, #FF0000 0%, #007AFF 100%);
+      padding: 35px 20px; border-radius: 30px; color: white; text-align: center; margin: 15px 0;
+      box-shadow: 0 15px 35px rgba(255, 0, 0, 0.2);
     }
     .check-icon-circle {
-      width: 50px; height: 50px; background: white; border-radius: 50%; display: flex;
-      align-items: center; justify-content: center; margin: 0 auto 15px auto; color: var(--green);
-      font-size: 22px;
+      width: 55px; height: 55px; background: white; border-radius: 50%; display: flex;
+      align-items: center; justify-content: center; margin: 0 auto 15px auto; color: var(--blue);
+      font-size: 24px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
-    .badge-container { display: flex; justify-content: center; gap: 8px; margin-top: 15px; }
+    .badge-container { display: flex; justify-content: center; gap: 8px; margin-top: 20px; }
     .badge-item {
-      background: rgba(255, 255, 255, 0.15); padding: 4px 12px; border-radius: 20px;
-      font-size: 11px; border: 1px solid rgba(255, 255, 255, 0.25); font-weight: 400;
+      background: rgba(255, 255, 255, 0.2); padding: 5px 14px; border-radius: 20px;
+      font-size: 11px; border: 1px solid rgba(255, 255, 255, 0.3); font-weight: 400;
+      backdrop-filter: blur(5px);
     }
-    .commu-msg { font-size: 13px; opacity: 0.9; margin-top: 20px; line-height: 1.5; font-weight: 400; }
+    .commu-msg { font-size: 13px; opacity: 0.95; margin-top: 25px; line-height: 1.6; font-weight: 400; }
     .update-time-text { font-size: 11px; color: #999; margin-top: 10px; text-align: center; }
 
     #loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); z-index: 9999; flex-direction: column; align-items: center; justify-content: center; }
@@ -81,19 +84,17 @@
       
       <div id="type-selection" style="display: none;">
         <p style="color: #666; font-size: 14px; margin-bottom: 10px;">กรุณาเลือกประเภทช่องทางที่สังกัด</p>
-        <div class="channel-container">
-          <div class="channel-card" onclick="goToForm('Shop')">
-            <div class="channel-icon">🏪</div>
-            <div class="channel-info"><p class="channel-name">Shop</p><p class="channel-desc">ประจำสาขา / จุดบริการ</p></div>
-          </div>
-          <div class="channel-card" onclick="goToForm('Non Shop')">
-            <div class="channel-icon">🛵</div>
-            <div class="channel-info"><p class="channel-name">Non Shop</p><p class="channel-desc">ฝ่ายขาย / พนักงานสนาม / Retail / DS</p></div>
-          </div>
-          <div class="channel-card" onclick="goToForm('Back Office')">
-            <div class="channel-icon">💻</div>
-            <div class="channel-info"><p class="channel-name">Back Office</p><p class="channel-desc">ส่วนกลาง / สำนักงาน</p></div>
-          </div>
+        <div class="channel-card" onclick="goToForm('Shop')">
+          <div class="channel-icon">🏪</div>
+          <div class="channel-info"><p class="channel-name">Shop</p><p class="channel-desc">ประจำสาขา / จุดบริการ</p></div>
+        </div>
+        <div class="channel-card" onclick="goToForm('Non Shop')">
+          <div class="channel-icon">🛵</div>
+          <div class="channel-info"><p class="channel-name">Non Shop</p><p class="channel-desc">ฝ่ายขาย / พนักงานสนาม / Retail / DS</p></div>
+        </div>
+        <div class="channel-card" onclick="goToForm('Back Office')">
+          <div class="channel-icon">💻</div>
+          <div class="channel-info"><p class="channel-name">Back Office</p><p class="channel-desc">ส่วนกลาง / สำนักงาน</p></div>
         </div>
       </div>
 
@@ -110,11 +111,11 @@
 
         <div class="consent-box">
           <div class="consent-content">
-            <b>เอกสารแสดงความยินยอม (Consent Form)</b><br>
-            ข้าพเจ้า “ให้” ความยินยอม บมจ.ทรู คอร์ปอเรชั่น จำกัด เปิดเผยข้อมูลส่วนบุคคลให้ Channel Academy & Communication เพื่อเก็บข้อมูล พนักงานทรู...
+            <b style="font-family: 'Kanit';">เอกสารแสดงความยินยอม (Consent Form)</b><br><br>
+            ข้าพเจ้า “ให้” ความยินยอม บมจ.ทรู คอร์ปอเรชั่น จำกัด เปิดเผยข้อมูลส่วนบุคคลให้ Channel Academy & Communication เพื่อเก็บข้อมูล พนักงานทรูช่องทาง Retail, DS และ Back Office สำหรับใช้ในการส่งข้อมุลข่าวสารได้ทั่วถึงและมีประสิทธิภาพ ผ่านช่องทาง LINE OA ที่สร้างขึ้นเพื่อใช้ในการสื่อสาร ระหว่าง ทีม back office กับพนักงานขายหน้าร้านเท่านั้น...
           </div>
-          <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 13px; font-weight: 600;">
-            <input type="checkbox" id="consentCheck" style="width: 18px; height: 18px; accent-color: #FF0000;"> ยอมรับและให้ความยินยอม
+          <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 13.5px; font-weight: 600; padding-top: 5px; border-top: 1px solid #EEE;">
+            <input type="checkbox" id="consentCheck" style="width: 19px; height: 19px; accent-color: #FF0000;"> ยอมรับและให้ความยินยอม
           </label>
         </div>
         
@@ -123,19 +124,13 @@
       </div>
 
       <div id="success-view" style="display: none;">
-        <div class="success-card-green">
+        <div class="success-card-gradient">
           <div class="check-icon-circle">✓</div>
-          <div style="font-size: 22px; font-weight: bold; font-family: 'Kanit';">ลงทะเบียนสำเร็จ</div>
+          <div style="font-size: 24px; font-weight: bold; font-family: 'Kanit'; letter-spacing: 0.5px;">ลงทะเบียนสำเร็จ</div>
           
-          <div style="margin-top: 15px;">
-             <div style="font-size: 14px; opacity: 0.85;">ยินดีต้อนรับ</div>
-             <div style="font-size: 16px; margin-top: 4px; font-family: 'Kanit';">คุณ</div>
-             <div id="resFullName" style="font-size: 20px; font-weight: 600; font-family: 'Kanit'; margin-top: 2px;"></div>
-             
-             <div class="badge-container">
-               <span class="badge-item">ID: <span id="resEmpId"></span></span>
-               <span class="badge-item">ช่องทาง: <span id="resChannel"></span></span>
-             </div>
+          <div class="badge-container">
+            <span class="badge-item">ID: <span id="resEmpId"></span></span>
+            <span class="badge-item">ช่องทาง: <span id="resChannel"></span></span>
           </div>
 
           <div class="commu-msg">
@@ -188,10 +183,7 @@
         } else {
           document.getElementById('type-selection').style.display = 'block';
         }
-      } catch (e) {
-        document.getElementById('loading-overlay').style.display = 'none';
-        console.error(e);
-      }
+      } catch (e) { console.error(e); }
     }
 
     function showSuccessUI(user) {
@@ -200,9 +192,9 @@
       document.getElementById('reg-form').style.display = 'none';
       document.getElementById('success-view').style.display = 'block';
       
+      // แสดงชื่อด้านบนกล่อง
       document.getElementById('welcome-text').innerText = `ยินดีต้อนรับ คุณ ${user.firstName} ${user.lastName}`;
       
-      document.getElementById('resFullName').innerText = `${user.firstName} ${user.lastName}`;
       document.getElementById('resEmpId').innerText = user.empId;
       document.getElementById('resChannel').innerText = user.channelType;
       document.getElementById('resTime').innerText = user.regDate;
@@ -227,13 +219,13 @@
       const isConsent = document.getElementById('consentCheck').checked;
 
       if (!empId || !fName || !lName) return Swal.fire({ title: 'ข้อมูลไม่ครบ', text: 'กรุณาระบุข้อมูลให้ครบถ้วนนะครับ', icon: 'warning', confirmButtonColor: '#FF0000' });
-      if (!isConsent) return Swal.fire({ title: 'โปรดยอมรับเงื่อนไข', text: 'กรุณาติ๊กยินยอมเพื่ออนุญาตตามนโยบาย PDPA', icon: 'info', confirmButtonColor: '#FF0000' });
+      if (!isConsent) return Swal.fire({ title: 'โปรดยอมรับเงื่อนไข', text: 'กรุณาติ๊กยินยอมตามนโยบาย PDPA', icon: 'info', confirmButtonColor: '#FF0000' });
 
       Swal.fire({
         title: 'ยืนยันการลงทะเบียน',
         text: "โปรดตรวจสอบข้อมูลให้ถูกต้องก่อนส่งเข้าระบบ",
         icon: 'question',
-        showCancelButton: true, confirmButtonColor: '#FF0000', cancelButtonColor: '#666', confirmButtonText: 'ยืนยันข้อมูล', cancelButtonText: 'แก้ไข'
+        showCancelButton: true, confirmButtonColor: '#FF0000', cancelButtonColor: '#666', confirmButtonText: 'ยืนยัน', cancelButtonText: 'แก้ไข'
       }).then(async (result) => {
         if (result.isConfirmed) {
           document.getElementById('loading-overlay').style.display = 'flex';
