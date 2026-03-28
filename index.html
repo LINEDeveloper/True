@@ -2,91 +2,103 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <title>LINE Channel Commu</title>
+  <title>True Corporation - Channel Commu</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600&family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
-    /* คงธีมเดิม 100% */
-    :root { --primary: #1976D2; --primary-dark: #1565C0; --bg-color: #E3F2FD; --card-bg: #FFFFFF; --text-main: #333; --text-sub: #666; }
+    :root { --primary: #FF0000; --primary-dark: #D50000; --bg-color: #F5F5F5; --card-bg: #FFFFFF; --text-main: #333; --text-sub: #666; }
     body { font-family: 'Sarabun', sans-serif; background-color: var(--bg-color); margin: 0; padding: 15px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    .card { background: var(--card-bg); padding: 25px 20px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 100%; max-width: 400px; box-sizing: border-box; }
-    h2 { font-family: 'Kanit', sans-serif; text-align: center; color: var(--primary); margin: 0 0 5px 0; font-size: 22px;}
-    .app-desc { font-size: 13px; color: var(--text-sub); text-align: center; margin-bottom: 20px; background: #F0F4F8; padding: 12px; border-radius: 8px; line-height: 1.5; }
-    input[type="text"] { width: 100%; padding: 14px 15px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 12px; box-sizing: border-box; font-size: 16px; }
+    .card { background: var(--card-bg); padding: 30px 20px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 100%; max-width: 400px; box-sizing: border-box; }
+    h2 { font-family: 'Kanit', sans-serif; text-align: center; color: var(--text-main); margin: 0 0 5px 0; font-size: 22px; font-weight: 600;}
+    .app-desc { font-size: 13px; color: var(--text-sub); text-align: center; margin-bottom: 25px; background: #FFF1F1; padding: 12px; border-radius: 8px; line-height: 1.5; border: 1px solid #FFE0E0; }
+    input[type="text"] { width: 100%; padding: 14px 15px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 12px; box-sizing: border-box; font-size: 16px; font-family: 'Sarabun'; }
     .input-label { display: block; font-size: 13px; font-weight: 600; color: var(--text-sub); margin-bottom: 5px; text-align: left; }
     
-    /* ปุ่มเลือกประเภทแบบเดิม */
-    .sync-btn { width: 100%; padding: 15px; color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; font-family: 'Kanit', sans-serif; cursor: pointer; margin-top: 10px; }
-    .btn-blue { background-color: #1976D2; margin-bottom: 8px; }
-    .btn-orange { background-color: #F57C00; margin-bottom: 8px; }
-    .btn-green { background-color: #388E3C; margin-bottom: 8px; }
+    .sync-btn { width: 100%; padding: 15px; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; font-family: 'Kanit', sans-serif; cursor: pointer; margin-top: 10px; transition: transform 0.1s; }
+    .sync-btn:active { transform: scale(0.98); }
+    .btn-red { background-color: #FF0000; margin-bottom: 10px; }
+    .btn-orange { background-color: #F57C00; margin-bottom: 10px; }
+    .btn-dark { background-color: #333; margin-bottom: 10px; }
     .btn-line { background-color: #00B900; }
     
-    .profile-pic { width: 80px; height: 80px; border-radius: 50%; border: 3px solid white; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin: 0 auto 10px auto; display: block; }
-    .step-result-card { background: linear-gradient(135deg, #1976D2, #1565C0); padding: 25px 15px; border-radius: 20px; color: white; text-align: center; margin: 15px 0; box-shadow: 0 8px 20px rgba(25,118,210,0.3); }
-    #loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); z-index: 9999; flex-direction: column; align-items: center; justify-content: center; }
-    .spinner { border: 5px solid #f3f3f3; border-top: 5px solid #1976D2; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+    .profile-pic { width: 90px; height: 90px; border-radius: 50%; border: 4px solid white; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin: 0 auto 15px auto; display: block; object-fit: cover; }
+    .step-result-card { background: linear-gradient(135deg, #FF0000, #B71C1C); padding: 25px 20px; border-radius: 22px; color: white; text-align: center; margin: 15px 0; box-shadow: 0 8px 25px rgba(255,0,0,0.25); }
+    
+    #loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); z-index: 9999; flex-direction: column; align-items: center; justify-content: center; }
+    .spinner { border: 5px solid #f3f3f3; border-top: 5px solid #FF0000; border-radius: 50%; width: 45px; height: 45px; animation: spin 1s linear infinite; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    .footer { text-align: center; font-size: 12px; color: var(--text-sub); margin-top: 25px; line-height: 1.6; }
+    .footer a { color: #FF0000; text-decoration: none; font-weight: 600; }
   </style>
 </head>
 <body>
 
   <div id="loading-overlay">
     <div class="spinner"></div>
-    <p style="font-family: 'Kanit'; color: #1976D2; margin-top: 10px;">กำลังตรวจสอบข้อมูล...</p>
+    <p style="font-family: 'Kanit'; color: #FF0000; margin-top: 15px; font-weight: 500;">กำลังประมวลผล...</p>
   </div>
 
   <div class="card">
-    <div style="text-align: center; margin-bottom: 15px;"><img src="https://img2.pic.in.th/tqm-og-image-removebg-preview_0.png" alt="Logo" style="max-width: 120px;"></div>
+    <div style="text-align: center; margin-bottom: 20px;">
+      <img src="https://img1.pic.in.th/images/True--C.png" alt="True Logo" style="max-height: 50px;">
+    </div>
     <h2>ลงทะเบียนยืนยันตัวตน</h2>
-    <div class="app-desc" id="appDesc">กรุณายืนยันข้อมูลเพื่อใช้งานระบบ<br>LINE Channel Communication</div>
+    <div class="app-desc" id="appDesc">เพื่อสิทธิประโยชน์และการรับข้อมูลข่าวสาร<br>กรุณายืนยันตัวตนพนักงาน True Corporation</div>
 
     <div id="auth-section" style="display: none; text-align: center;">
       <img id="userPic" class="profile-pic" src="">
-      <div id="welcome-text" style="font-weight: 600; margin-bottom: 15px; font-size: 16px;"></div>
+      <div id="welcome-text" style="font-weight: 600; margin-bottom: 20px; font-size: 18px; font-family: 'Kanit'; color: #333;"></div>
       
       <div id="type-selection" style="display: none;">
-        <h3 style="color: #1976D2; font-family: 'Kanit'; font-size: 16px; margin-bottom: 15px;">เลือกประเภทช่องทาง</h3>
-        <button class="sync-btn btn-blue" onclick="goToForm('Shop')">Shop</button>
+        <p style="color: #666; font-size: 14px; margin-bottom: 15px;">กรุณาเลือกประเภทช่องทางของท่าน</p>
+        <button class="sync-btn btn-red" onclick="goToForm('Shop')">Shop</button>
         <button class="sync-btn btn-orange" onclick="goToForm('Non Shop')">Non Shop</button>
-        <button class="sync-btn btn-green" onclick="goToForm('Back Office')">Back Office</button>
+        <button class="sync-btn btn-dark" onclick="goToForm('Back Office')">Back Office</button>
       </div>
 
       <div id="reg-form" style="display: none; text-align: left;">
-        <div style="background: #E3F2FD; padding: 10px; border-radius: 10px; margin-bottom: 15px; text-align: center; color: #1565C0; font-weight: bold;">
-          ช่องทางที่เลือก: <span id="selectedChannelText"></span>
+        <div style="background: #F5F5F5; padding: 12px; border-radius: 12px; margin-bottom: 20px; text-align: center; color: #FF0000; font-weight: bold; border: 1px dashed #FF0000;">
+          ช่องทาง: <span id="selectedChannelText"></span>
         </div>
         <label class="input-label">รหัสพนักงาน</label>
-        <input type="text" id="empId" placeholder="ระบุรหัสพนักงาน">
-        <label class="input-label">ชื่อ (ไม่ต้องมีคำนำหน้า)</label>
-        <input type="text" id="firstName" placeholder="ชื่อภาษาไทย">
+        <input type="text" id="empId" placeholder="ระบุรหัสพนักงาน (ตัวเลข)">
+        <label class="input-label">ชื่อจริง (ไม่ต้องระบุคำนำหน้า)</label>
+        <input type="text" id="firstName" placeholder="ระบุชื่อภาษาไทย">
         <label class="input-label">นามสกุล</label>
-        <input type="text" id="lastName" placeholder="นามสกุลภาษาไทย">
-        <button class="sync-btn btn-blue" onclick="submitData()">ยืนยันข้อมูล</button>
-        <button style="width: 100%; background: none; border: none; color: #666; font-size: 13px; margin-top: 10px; cursor: pointer;" onclick="backToType()">กลับไปเลือกประเภทช่องทาง</button>
+        <input type="text" id="lastName" placeholder="ระบุนามสกุลภาษาไทย">
+        
+        <button class="sync-btn btn-red" onclick="submitData()">ยืนยันลงทะเบียน</button>
+        <button style="width: 100%; background: none; border: none; color: #999; font-size: 13px; margin-top: 15px; cursor: pointer;" onclick="backToType()">ย้อนกลับ</button>
       </div>
 
       <div id="success-view" style="display: none;">
         <div class="step-result-card">
-          <div style="font-size: 20px; font-weight: bold; font-family: 'Kanit'; margin-bottom: 10px;">ลงทะเบียนสำเร็จ!</div>
-          <div style="font-size: 15px; line-height: 1.6; opacity: 0.9;">
-            คุณ <span id="resName"></span><br>
-            ช่องทาง: <span id="resChannel"></span><br>
-            รหัสพนักงาน: <span id="resEmpId"></span>
+          <div style="font-size: 22px; font-weight: bold; font-family: 'Kanit'; margin-bottom: 15px;">ลงทะเบียนสำเร็จ!</div>
+          <div style="text-align: left; font-size: 15px; line-height: 2; display: inline-block;">
+            <b>รหัสพนักงาน:</b> <span id="resEmpId"></span><br>
+            <b>ชื่อ-นามสกุล:</b> <span id="resName"></span><br>
+            <b>ช่องทาง:</b> <span id="resChannel"></span><br>
+            <b>เวลาลงทะเบียน:</b> <span id="resTime"></span>
           </div>
-          <div id="resTime" style="font-size: 11px; margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 10px;"></div>
         </div>
+        <p style="font-size: 13px; color: #28a745; font-weight: 500; margin-top: 15px;">✓ ระบบบันทึกข้อมูลการยืนยันตัวตนเรียบร้อยแล้ว</p>
       </div>
     </div>
     
     <button class="sync-btn btn-line" id="loginBtn" onclick="liff.login()" style="display: none;">เข้าสู่ระบบด้วย LINE</button>
   </div>
 
+  <div class="footer">
+    บริษัท ทรู คอร์ปอเรชั่น จำกัด (มหาชน)<br>
+    <a href="privacy.html" target="_blank">นโยบายความเป็นส่วนตัว (Privacy Policy)</a>
+  </div>
+
   <script>
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbxQ0-VSX6OZ8sa2mH0Y-r1Z11WyZf87lho-pqD02P6Vwp1V6KqdHc--BFApr8L8GYK6/exec';
-    const LIFF_ID = '1656846002-7Dj11vMZ';
+    const GAS_URL = 'ใส่_URL_Web_App_ของคุณที่นี่';
+    const LIFF_ID = 'ใส่_LIFF_ID_ของคุณที่นี่';
     let lineProfile = {};
     let selectedChannel = "";
 
@@ -96,12 +108,12 @@
         document.getElementById('loginBtn').style.display = 'block';
       } else {
         const profile = await liff.getProfile();
-        const userEmail = liff.getDecodedIDToken().email || "ไม่มีข้อมูลอีเมล";
+        const userEmail = liff.getDecodedIDToken().email || "ไม่ระบุอีเมล";
         lineProfile = { ...profile, email: userEmail };
         
         document.getElementById('auth-section').style.display = 'block';
         document.getElementById('userPic').src = profile.pictureUrl;
-        document.getElementById('welcome-text').innerText = `คุณ ${profile.displayName}`;
+        document.getElementById('welcome-text').innerText = `สวัสดีคุณ ${profile.displayName}`;
         
         checkUser();
       }
@@ -114,16 +126,23 @@
       document.getElementById('loading-overlay').style.display = 'none';
 
       if (user) {
-        document.getElementById('appDesc').style.display = 'none';
-        document.getElementById('type-selection').style.display = 'none';
-        document.getElementById('success-view').style.display = 'block';
-        document.getElementById('resName').innerText = `${user.firstName} ${user.lastName}`;
-        document.getElementById('resChannel').innerText = user.channelType;
-        document.getElementById('resEmpId').innerText = user.empId;
-        document.getElementById('resTime').innerText = `วันที่ลงทะเบียน: ${user.regDate}`;
+        showSuccessUI(user);
       } else {
         document.getElementById('type-selection').style.display = 'block';
       }
+    }
+
+    function showSuccessUI(user) {
+      document.getElementById('appDesc').style.display = 'none';
+      document.getElementById('type-selection').style.display = 'none';
+      document.getElementById('reg-form').style.display = 'none';
+      document.getElementById('success-view').style.display = 'block';
+      
+      // 4. แสดงข้อมูลตามลำดับที่ต้องการ
+      document.getElementById('resEmpId').innerText = user.empId;
+      document.getElementById('resName').innerText = `${user.firstName} ${user.lastName}`;
+      document.getElementById('resChannel').innerText = user.channelType;
+      document.getElementById('resTime').innerText = user.regDate;
     }
 
     function goToForm(type) {
@@ -143,13 +162,14 @@
       const fName = document.getElementById('firstName').value.trim();
       const lName = document.getElementById('lastName').value.trim();
 
-      if (!empId || !fName || !lName) return Swal.fire('ข้อมูลไม่ครบ', 'กรุณากรอกข้อมูลให้ครบถ้วนนะครับ', 'warning');
+      if (!empId || !fName || !lName) return Swal.fire('ข้อมูลไม่ครบ', 'กรุณาระบุข้อมูลให้ครบถ้วนก่อนยืนยันนะครับ', 'warning');
 
+      // 3. กดยืนยันด้วยธีมเดิม ข้อความเหมาะสม
       Swal.fire({
-        title: 'ยืนยันข้อมูล',
-        text: "ข้อมูลของคุณจะถูกบันทึกเข้าระบบ ยืนยันนะครับ?",
+        title: 'ยืนยันการลงทะเบียน',
+        text: "ตรวจสอบความถูกต้องของข้อมูลก่อนส่งเข้าระบบ",
         icon: 'question',
-        showCancelButton: true, confirmButtonColor: '#1976D2', cancelButtonColor: '#666', confirmButtonText: 'ยืนยัน', cancelButtonText: 'ยกเลิก'
+        showCancelButton: true, confirmButtonColor: '#FF0000', cancelButtonColor: '#666', confirmButtonText: 'ยืนยันข้อมูล', cancelButtonText: 'แก้ไข'
       }).then(async (result) => {
         if (result.isConfirmed) {
           document.getElementById('loading-overlay').style.display = 'flex';
@@ -169,7 +189,8 @@
           document.getElementById('loading-overlay').style.display = 'none';
 
           if (status.status === 'success') {
-            Swal.fire('สำเร็จ!', 'ลงทะเบียนยืนยันตัวตนเรียบร้อยแล้ว', 'success').then(() => { window.location.reload(); });
+            Swal.fire({ icon: 'success', title: 'ลงทะเบียนสำเร็จ', text: 'ข้อมูลของคุณถูกบันทึกเรียบร้อยแล้ว', timer: 2000, showConfirmButton: false })
+            .then(() => { window.location.reload(); });
           }
         }
       });
