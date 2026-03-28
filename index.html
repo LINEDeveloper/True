@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>True Together</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600&family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    :root { --primary: #1976D2; --primary-dark: #1565C0; --bg-color: #E3F2FD; --card-bg: #FFFFFF; --text-main: #333; --text-sub: #666; }
+    body { font-family: 'Sarabun', sans-serif; background-color: var(--bg-color); margin: 0; padding: 15px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; }
+    .card { background: var(--card-bg); padding: 25px 20px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 100%; max-width: 400px; box-sizing: border-box; }
+    h2 { font-family: 'Kanit', sans-serif; text-align: center; color: var(--primary); margin: 0 0 5px 0; font-size: 24px;}
+    .app-desc { font-size: 13px; color: var(--text-sub); text-align: center; margin-bottom: 20px; background: #F0F4F8; padding: 12px; border-radius: 8px; line-height: 1.5; }
+    input[type="text"], input[type="number"], input[type="file"] { width: 100%; padding: 14px 15px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 12px; box-sizing: border-box; font-size: 16px; transition: border 0.3s ease; }
+    input:focus { border: 2px solid var(--primary); outline: none; }
+    .input-label { display: block; font-size: 13px; font-weight: 600; color: var(--text-sub); margin-bottom: 5px; text-align: left; }
+    .sync-btn { width: 100%; padding: 15px; color: white; background-color: var(--primary); border: none; border-radius: 10px; font-size: 16px; font-weight: 600; font-family: 'Kanit', sans-serif; cursor: pointer; margin-top: 10px; box-shadow: 0 4px 10px rgba(25,118,210,0.2); }
+    .btn-line { background-color: #00B900; box-shadow: 0 4px 10px rgba(0,185,0,0.3); }
+    .btn-type-indiv { background-color: #1976D2; margin-bottom: 10px; }
+    .btn-type-team { background-color: #F57C00; }
+    #status-text { text-align: center; font-size: 14px; margin-top: 15px; font-weight: 600;}
+    .logo-header { text-align: center; margin-bottom: 15px; }
+    .logo-header img { max-width: 150px; height: auto; }
+    .profile-container { text-align: center; margin-bottom: 20px; }
+    .profile-pic { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid white; box-shadow: 0 4px 15px rgba(25,118,210,0.2); background-color: #f0f0f0; display: none; margin: 0 auto 10px auto; }
+    .welcome-text { font-size: 15px; font-weight: 600; color: var(--text-main); }
+    .welcome-name { color: var(--primary); font-size: 20px; font-family: 'Kanit', sans-serif; }
+    .footer { text-align: center; font-size: 13px; color: var(--text-sub); margin-top: 25px; line-height: 1.6; }
+    .footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
+    
+    .blue-theme-popup { border-radius: 20px !important; padding: 1.5rem !important; background-color: #F0F8FF !important; }
+    .blue-theme-title { font-family: 'Kanit', sans-serif !important; color: #1976D2 !important; font-weight: 600 !important; font-size: 22px !important; }
+    .blue-theme-confirm-btn { border-radius: 10px !important; font-family: 'Kanit', sans-serif !important; padding: 12px 24px !important; }
+    
+    .step-alert-popup { border-radius: 30px !important; padding: 2rem !important; background-color: #F0F8FF !important; border: 3px solid #BBDEFB !important; }
+    .step-alert-btn { border-radius: 50px !important; font-family: 'Kanit', sans-serif !important; padding: 12px 35px !important; font-size: 16px !important; box-shadow: 0 4px 10px rgba(25,118,210,0.3) !important; }
+    .success-alert-popup { border-radius: 30px !important; padding: 1.5rem !important; background-color: #E3F2FD !important; border: 2px solid #90CAF9 !important; width: 280px !important; box-shadow: 0 8px 20px rgba(25,118,210,0.2) !important; }
+
+    .btn-gold-shine { position: relative; overflow: hidden; background: linear-gradient(135deg, #F3C300, #FFE65A, #F3C300); color: #5C3A21 !important; box-shadow: 0 4px 15px rgba(243, 195, 0, 0.4); text-decoration:none; box-sizing: border-box; display:inline-block; margin-top:10px; padding:15px; width:100%; text-align:center; font-family: 'Kanit', sans-serif; font-weight: 600; border-radius: 10px;}
+    
+    .step-result-card {
+      background-color: #1976D2; 
+      background-image: linear-gradient(135deg, #1976D2, #1565C0);
+      padding: 25px 15px;
+      border-radius: 20px;
+      margin: 15px 0;
+      box-shadow: 0 8px 20px rgba(25, 118, 210, 0.3);
+    }
+
+    /* 🌟 ปรับสีพื้นหลังหน้าจอโหลดให้โปร่งใส 80% */
+    #loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.8); z-index: 9999; flex-direction: column; align-items: center; justify-content: center; }
+    .spinner { border: 6px solid #E3F2FD; border-top: 6px solid #1976D2; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin-bottom: 15px; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .loading-text { font-family: 'Kanit', sans-serif; color: #1976D2; font-size: 18px; font-weight: 500; }
+  </style>
+</head>
+<body>
+  <div id="loading-overlay">
+    <div class="spinner"></div>
+    <div class="loading-text">กำลังบันทึกข้อมูล...</div>
+  </div>
+
+  <div class="card">
+    <div class="logo-header"><img src="https://img2.pic.in.th/tqm-og-image-removebg-preview_0.png" alt="Logo"></div>
+    <h2 id="main-title">ภารกิจพิชิต 1,200 ล้านก้าว</h2>
+    <div class="app-desc" id="appDescription">กิจกรรมส่งเสริมสุขภาพพนักงาน<br>กรุณากรอกยอดก้าวเดินเพื่อสะสมคะแนน</div>
+    
+    <div class="profile-container" id="profile-container" style="display: none;">
+      <img id="userProfilePic" class="profile-pic" src="">
+      <div id="welcome-text" class="welcome-text">กำลังตรวจสอบข้อมูล...</div>
+    </div>
+    
+    <button class="sync-btn btn-line" id="lineLoginBtn" onclick="liff.login()" style="display: none;">เข้าสู่ระบบด้วย LINE</button>
+
+    <div id="type-selection-section" style="display: none; text-align: center; margin-bottom: 20px;">
+      <h3 style="color: var(--primary); font-family: 'Kanit', sans-serif; margin-bottom: 15px;">เลือกประเภทการสมัคร</h3>
+      <button class="sync-btn btn-type-indiv" onclick="selectType('individual')">สมัครประเภทบุคคล</button>
+      <button class="sync-btn btn-type-team" onclick="selectType('team')">สมัครประเภททีม (4 คน)</button>
+      <div style="font-size: 12px; color: #E65100; margin-top: 8px; font-weight: 500;">*จำนวนแค่ 50 ทีม เท่านั้น</div>
+    </div>
+
+    <div id="form-section" style="display: none;">
+      <div id="register-section" style="display: none;">
+        <div id="team-name-container" style="display: none; background: #FFF3E0; padding: 12px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #FFE0B2;">
+          <label class="input-label" style="color: #E65100;">ตั้งชื่อทีม (พิมพ์ให้ตรงกับเพื่อนเป๊ะๆ)</label>
+          <input type="text" id="teamName" placeholder="เช่น ทีมสายลุย">
+        </div>
+        <label class="input-label">รหัสพนักงาน</label>
+        <input type="text" id="empId" placeholder="เช่น 12345">
+        <label class="input-label">ชื่อจริง (ไม่ต้องใส่คำนำหน้า)</label>
+        <input type="text" id="firstName" placeholder="ชื่อจริง">
+        <label class="input-label">นามสกุล</label>
+        <input type="text" id="lastName" placeholder="นามสกุล">
+        <label class="input-label">น้ำหนักเริ่มแรก (กิโลกรัม)</label>
+        <input type="number" id="weight" placeholder="เช่น 65" step="0.1">
+        <label class="input-label">ส่วนสูง (เซนติเมตร)</label>
+        <input type="number" id="height" placeholder="เช่น 170">
+        
+        <label class="input-label">ค่าเฉลี่ยก้าวเดินต่อวัน (ประเมินคร่าวๆ)</label>
+        <input type="number" id="avgSteps" placeholder="เช่น 5000">
+
+        <div id="weight-loss-comp-section" style="display: none; background-color: #F8F9FA; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #E0E0E0;">
+          <label class="input-label" style="color: #1565C0; font-size: 15px; margin-bottom: 10px;">🏆 ร่วมแข่งลดน้ำหนัก</label>
+          <div style="display: flex; gap: 15px; margin-bottom: 10px;">
+            <label style="font-size: 15px; display: flex; align-items: center; gap: 5px;">
+              <input type="radio" name="weightComp" value="join" onchange="toggleWeightCompDocs()" style="width: auto; margin: 0;"> เข้าร่วม
+            </label>
+            <label style="font-size: 15px; display: flex; align-items: center; gap: 5px;">
+              <input type="radio" name="weightComp" value="not_join" onchange="toggleWeightCompDocs()" checked style="width: auto; margin: 0;"> ไม่เข้าร่วม
+            </label>
+          </div>
+          
+          <div id="weight-comp-docs" style="display: none; margin-top: 15px;">
+             <label class="input-label" style="color: #E65100;">📸 รูปที่ 1: รูปเต็มตัว</label>
+             <input type="file" id="fullBodyPic" accept="image/*">
+             
+             <label class="input-label" style="color: #E65100;">📸 รูปที่ 2: รูปด้านข้าง</label>
+             <input type="file" id="sidePic" accept="image/*">
+          </div>
+        </div>
+
+      </div>
+      
+      <div id="daily-step-section" style="display: none;">
+        <label class="input-label" id="stepLabel">ยอดก้าวเดินวันนี้ (ตัวเลขเท่านั้น)</label>
+        <input type="number" id="stepCount" placeholder="เช่น 8500">
+      </div>
+      
+      <div id="daily-weight-section" style="display: none;">
+        <div style="background-color: #E8F5E9; padding: 10px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #C8E6C9;">
+          <label class="input-label" style="color: #2E7D32;">✨ อัปเดตน้ำหนักประจำเดือน (เปิดให้กรอก 1-7 ของเดือน)</label>
+          <input type="number" id="dailyWeight" placeholder="อัปเดตน้ำหนักล่าสุด (กก.)" step="0.1" style="margin-bottom:0;">
+        </div>
+      </div>
+      
+      <button class="sync-btn" onclick="submitData()" id="syncBtn">บันทึกข้อมูล</button>
+      <div id="status-text"></div>
+    </div>
+
+    <div id="result-section" style="display: none; text-align: center;">
+      <h3 id="result-title" style="display: none; font-family: 'Sarabun', sans-serif; font-weight: 500; color: #333; font-size: 18px; margin-bottom: 5px;"></h3>
+      <div id="step-result" style="margin: 5px 0;"></div>
+      <a href="https://linedeveloper.github.io/TQM/leaderboard.html" id="leaderboardBtn" class="btn-gold-shine">🏆 ดูอันดับ</a>
+    </div>
+  </div>
+
+  <div class="footer">
+    บริษัท ทีคิวเอ็ม อินชัวร์รันส์ โบรคเกอร์ จำกัด<br>
+    <a href="privacy.html" target="_blank">นโยบายความเป็นส่วนตัว (Privacy Policy)</a>
+  </div>
+
+  <script>
+    const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxQ0-VSX6OZ8sa2mH0Y-r1Z11WyZf87lho-pqD02P6Vwp1V6KqdHc--BFApr8L8GYK6/exec';
+    const LIFF_ID = '1656846002-7Dj11vMZ'; 
+    let lineUserId = "Unknown", isRegistered = false, savedFirstName = "", savedLastName = "", savedPicUrl = "";
+    let selectedUserType = "individual"; 
+
+    async function main() {
+      await liff.init({ liffId: LIFF_ID });
+      if (!liff.isLoggedIn()) {
+         document.getElementById('lineLoginBtn').style.display = "block"; 
+      } else {
+        const profile = await liff.getProfile();
+        lineUserId = profile.userId;
+        document.getElementById('profile-container').style.display = "block";
+        if (profile.pictureUrl) {
+          savedPicUrl = profile.pictureUrl;
+          document.getElementById('userProfilePic').src = profile.pictureUrl;
+          document.getElementById('userProfilePic').style.display = 'block'; 
+        }
+        checkUserInDatabase(lineUserId);
+      }
+    }
+    window.onload = main;
+
+    function selectType(type) {
+      selectedUserType = type;
+      document.getElementById('type-selection-section').style.display = "none";
+      document.getElementById('form-section').style.display = "block";
+      document.getElementById('register-section').style.display = "block";
+      document.getElementById('team-name-container').style.display = type === "team" ? "block" : "none";
+      
+      document.getElementById('weight-loss-comp-section').style.display = type === "individual" ? "block" : "none";
+    }
+
+    function toggleWeightCompDocs() {
+       const val = document.querySelector('input[name="weightComp"]:checked').value;
+       document.getElementById('weight-comp-docs').style.display = val === 'join' ? "block" : "none";
+    }
+
+    function readFileAsBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve({
+                data: reader.result.split(',')[1],
+                mimeType: file.type,
+                name: file.name
+            });
+            reader.onerror = error => reject(error);
+            reader.readAsDataURL(file);
+        });
+    }
+
+    function buildResultHTML(steps, weight, totalSteps, submitTime, trend, userType, teamTotalSteps) {
+      let displaySteps = steps ? steps.toLocaleString() : "0";
+      let displayWeight = weight ? parseFloat(weight).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 1}) : "0";
+      let displayTotalSteps = totalSteps ? totalSteps.toLocaleString() : "0";
+      let timeHtml = submitTime ? `<div style="font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 15px; text-align: center; font-weight: 300;">อัปเดตล่าสุด: ${submitTime} น.</div>` : "";
+
+      let trendHtml = "";
+      if (trend > 0) {
+        trendHtml = `<div style="font-size: 12px; color: #FF8A65; margin-top: 4px; font-weight: 600;">📈 ขึ้น ${trend.toFixed(1)} กก.</div>`;
+      } else if (trend < 0) {
+        trendHtml = `<div style="font-size: 12px; color: #81C784; margin-top: 4px; font-weight: 600;">📉 ลง ${Math.abs(trend).toFixed(1)} กก.</div>`;
+      } else {
+        trendHtml = `<div style="font-size: 12px; color: #E3F2FD; margin-top: 4px; font-weight: 300;">➖ คงที่</div>`;
+      }
+
+      let displayTotalTitle = userType === 'team' ? "🏆 ยอดรวมสะสมทั้งหมดของทีม" : "🏆 ยอดสะสมรวมทั้งหมด";
+      let displayTotalStepsText = userType === 'team' ? (teamTotalSteps ? teamTotalSteps.toLocaleString() : "0") : (totalSteps ? totalSteps.toLocaleString() : "0");
+
+      return `
+        <div class="step-result-card">
+          <div style="font-size: 15px; color: #E3F2FD; margin-bottom: 15px; font-weight: 500; text-align: center;">สรุปผลประจำวันนี้</div>
+          <div style="display: flex; justify-content: space-around; align-items: center; margin-bottom: 5px;">
+            <div style="text-align: center; width: 45%;">
+              <div style="font-size: 32px; font-weight: bold; color: #FFFFFF; font-family: 'Kanit', sans-serif; line-height: 1;">${displaySteps}</div>
+              <div style="font-size: 13px; color: #E3F2FD; margin-top: 5px;">👣 ก้าวเดิน</div>
+            </div>
+            <div style="width: 1px; height: 40px; background-color: rgba(255,255,255,0.3);"></div>
+            <div style="text-align: center; width: 45%;">
+              <div style="font-size: 32px; font-weight: bold; color: #FFD54F; font-family: 'Kanit', sans-serif; line-height: 1;">${displayWeight}</div>
+              <div style="font-size: 13px; color: #E3F2FD; margin-top: 5px;">⚖️ น้ำหนัก (กก.)</div>
+              ${trendHtml}
+            </div>
+          </div>
+          ${timeHtml}
+
+          <div style="background: rgba(255, 255, 255, 0.15); padding: 15px; border-radius: 12px; margin-top: 15px;">
+            <div style="font-size: 13px; color: #FFFFFF; margin-bottom: 12px; font-weight: 500; text-align: center;">${displayTotalTitle}</div>
+            <div style="text-align: center;">
+              <div style="font-size: 24px; font-weight: bold; color: #FFFFFF; font-family: 'Kanit', sans-serif; line-height: 1;">${displayTotalStepsText}</div>
+              <div style="font-size: 13px; color: #E3F2FD; margin-top: 4px;">รวมก้าวเดิน</div>
+            </div>
+          </div>
+        </div>
+        <div style="color:#666; font-size:14px; margin-bottom: 15px;">บันทึกข้อมูลได้วันละ 1 ครั้งเท่านั้น<br>พรุ่งนี้อย่าลืมมาส่งใหม่นะ ✌️</div>
+      `;
+    }
+
+    async function checkUserInDatabase(uid) {
+      try {
+        const response = await fetch(GAS_WEB_APP_URL, { 
+          method: 'POST', redirect: 'follow', body: JSON.stringify({ action: 'checkUser', uid: uid }) 
+        });
+        const user = await response.json();
+        
+        if (user) {
+          isRegistered = true; 
+          savedFirstName = user.firstName; 
+          savedLastName = user.lastName;
+          window.userData = user; 
+          selectedUserType = user.userType;
+
+          let displayType = user.userType === 'team' ? `👥 ประเภททีม: ${user.teamName}` : `👤 ประเภทบุคคล`;
+          let weightCompBadge = (user.userType === 'individual' && user.weightLossStatus === 'เข้าร่วม') ? `<span style="font-size: 13px; color: #E65100; background-color: #FFF3E0; padding: 3px 10px; border-radius: 12px; display: inline-block; font-weight: 500;">🏆 เข้าร่วมแข่งลดน้ำหนัก</span>` : "";
+          
+          document.getElementById('welcome-text').innerHTML = `ยินดีต้อนรับ<br><span class="welcome-name">คุณ ${user.firstName} ${user.lastName}</span>
+          <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 8px;">
+            <span style="font-size: 13px; color: #1565C0; background-color: #E3F2FD; padding: 3px 10px; border-radius: 12px; display: inline-block; font-weight: 500;">${displayType}</span>
+            ${weightCompBadge}
+          </div>`;
+
+          document.getElementById('syncBtn').innerText = "บันทึกข้อมูล";
+          
+          if (user.hasSubmittedToday) {
+            document.getElementById('appDescription').style.display = "none";
+            document.getElementById('result-section').style.display = "block";
+            document.getElementById('leaderboardBtn').style.display = "inline-block";
+            document.getElementById('step-result').innerHTML = buildResultHTML(user.todaySteps, user.todayWeight, user.totalSteps, user.submitTime, user.trend, user.userType, user.teamTotalSteps);
+          } 
+          else if (user.registeredToday) {
+            document.getElementById('appDescription').style.display = "none";
+            document.getElementById('result-section').style.display = "block";
+            
+            document.getElementById('leaderboardBtn').style.display = "none";
+            
+            document.getElementById('step-result').innerHTML = `
+              <div class="step-result-card" style="text-align: center; padding: 35px 15px;">
+                <div style="display: inline-flex; justify-content: center; align-items: center; width: 64px; height: 64px; border-radius: 50%; background-color: #4CAF50; border: 3px solid #FFFFFF; box-shadow: 0 4px 15px rgba(0,0,0,0.2); margin-bottom: 15px;">
+                  <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div style="font-size: 22px; font-weight: bold; color: #FFFFFF; font-family: 'Kanit', sans-serif;">ลงทะเบียนเรียบร้อย!</div>
+                <div style="font-size: 15px; color: #E3F2FD; margin-top: 10px; line-height: 1.6;">
+                  คุณสามารถเริ่มส่งยอดเฉลี่ยก้าวเดินต่อวัน<br>
+                  ได้ใน <b>วันถัดไป</b> นะครับ ✌️
+                </div>
+              </div>
+            `;
+          } 
+          else { 
+            document.getElementById('form-section').style.display = "block"; 
+            document.getElementById('daily-step-section').style.display = "block";
+            
+            const todayDate = new Date().getDate();
+            const isUpdateWindow = todayDate >= 1 && todayDate <= 7;
+            
+            if (isUpdateWindow && !user.hasUpdatedWeightThisMonth) {
+               document.getElementById('daily-weight-section').style.display = "block";
+            } else {
+               document.getElementById('daily-weight-section').style.display = "none";
+               document.getElementById('dailyWeight').value = ""; 
+            }
+          }
+        } else {
+          document.getElementById('welcome-text').innerHTML = `<span style="color:#28a745; font-size:16px;">ลงทะเบียนสมัครร่วมกิจกรรม</span>`;
+          document.getElementById('type-selection-section').style.display = "block";
+          document.getElementById('syncBtn').innerText = "ลงทะเบียน";
+          document.getElementById('daily-step-section').style.display = "none";
+        }
+      } catch (error) { document.getElementById('welcome-text').innerText = "เชื่อมต่อระบบฐานข้อมูลไม่สำเร็จ"; }
+    }
+
+    function submitData() {
+      let empIdVal = isRegistered ? "" : document.getElementById('empId').value.trim();
+      let fName = isRegistered ? savedFirstName : document.getElementById('firstName').value.trim();
+      let lName = isRegistered ? savedLastName : document.getElementById('lastName').value.trim();
+      let heightVal = isRegistered ? "" : document.getElementById('height').value.trim();
+      let teamNameVal = isRegistered ? "" : document.getElementById('teamName').value.trim();
+      let weightVal = isRegistered ? document.getElementById('dailyWeight').value.trim() : document.getElementById('weight').value.trim();
+      let avgStepsVal = isRegistered ? "" : document.getElementById('avgSteps').value.trim(); 
+      
+      const stepInput = document.getElementById('stepCount').value.trim();
+
+      let isMissingData = false;
+      let steps = 0;
+      
+      if (isRegistered) {
+         if (!stepInput) isMissingData = true;
+         steps = parseInt(stepInput) || 0;
+         if (document.getElementById('daily-weight-section').style.display === "block" && !weightVal) {
+             isMissingData = true;
+         }
+      } else {
+         if (!empIdVal || !fName || !lName || !heightVal || !weightVal || !avgStepsVal) isMissingData = true;
+         if (selectedUserType === "team" && !teamNameVal) isMissingData = true;
+         
+         if (selectedUserType === "individual") {
+             const compChoice = document.querySelector('input[name="weightComp"]:checked').value;
+             if (compChoice === 'join') {
+                 const file1 = document.getElementById('fullBodyPic').files[0];
+                 const file2 = document.getElementById('sidePic').files[0];
+                 if (!file1 || !file2) isMissingData = true;
+             }
+         }
+      }
+
+      if (isMissingData) {
+        return Swal.fire({ 
+          icon: 'info', 
+          iconColor: '#1976D2',
+          title: 'แวะก่อนน้า~ ข้อมูลยังไม่ครบ', 
+          text: 'รบกวนเช็คอีกนิดนึง กรอกข้อมูลให้ครบทุกช่อง(รวมถึงรูปภาพ) ก่อนกดส่งนะค้าบ ✌️', 
+          confirmButtonText: 'โอเคจ้า',
+          confirmButtonColor: '#1976D2',
+          customClass: { 
+            popup: 'step-alert-popup', 
+            title: 'blue-theme-title', 
+            confirmButton: 'step-alert-btn' 
+          } 
+        });
+      }
+      
+      if (isRegistered && steps < 7000) {
+        return Swal.fire({ 
+          icon: 'info', 
+          iconColor: '#1976D2',
+          title: 'ยังไม่ถึงเป้าหมาย!', 
+          text: 'ยอดก้าวของคุณยังไม่ถึง 7,000 ก้าว พยายามเดินให้ถึงเป้าหมายแล้วมาส่งใหม่นะ ✌️',
+          confirmButtonText: 'ตกลง',
+          confirmButtonColor: '#1976D2',
+          customClass: { 
+            popup: 'step-alert-popup', 
+            title: 'blue-theme-title', 
+            confirmButton: 'step-alert-btn' 
+          } 
+        });
+      }
+
+      Swal.fire({
+        title: 'ยืนยันการส่งข้อมูล',
+        html: '<div style="font-size: 15px; color: #555; line-height: 1.6;">ข้าพเจ้าขอยืนยันว่า <b>ข้อมูลเป็นความจริงทุกประการ</b> หากตรวจสอบพบว่าไม่ถูกต้อง กรรมการขอสงวนสิทธิ์ในการรับรางวัล</div>',
+        icon: 'info', 
+        showCancelButton: true, 
+        confirmButtonColor: '#1976D2', 
+        cancelButtonColor: '#d33', 
+        confirmButtonText: 'ยืนยันการส่ง', 
+        cancelButtonText: 'ยกเลิก', 
+        reverseButtons: true, 
+        customClass: { popup: 'blue-theme-popup', title: 'blue-theme-title', confirmButton: 'blue-theme-confirm-btn', cancelButton: 'blue-theme-confirm-btn' }
+      }).then(async (result) => { 
+        if (result.isConfirmed) {
+            
+            document.getElementById('syncBtn').disabled = true;
+            document.getElementById('loading-overlay').style.display = "flex";
+            
+            let finalTrend = 0;
+            if (isRegistered) {
+               finalTrend = window.userData.trend; 
+               if (weightVal && parseFloat(weightVal) !== window.userData.lastKnownWeight) {
+                   finalTrend = parseFloat(weightVal) - window.userData.lastKnownWeight;
+               }
+            }
+
+            let weightCompData = null;
+            if (!isRegistered && selectedUserType === "individual") {
+               const compChoice = document.querySelector('input[name="weightComp"]:checked').value;
+               if (compChoice === 'join') {
+                   const file1 = document.getElementById('fullBodyPic').files[0];
+                   const file2 = document.getElementById('sidePic').files[0];
+                   try {
+                       const fbData = await readFileAsBase64(file1);
+                       const spData = await readFileAsBase64(file2);
+                       weightCompData = { join: true, file1: fbData, file2: spData };
+                   } catch (e) {
+                       Swal.fire('ผิดพลาด', 'ไม่สามารถอ่านไฟล์รูปภาพได้ กรุณาลองใหม่อีกครั้ง', 'error');
+                       document.getElementById('syncBtn').disabled = false;
+                       document.getElementById('loading-overlay').style.display = "none";
+                       return;
+                   }
+               } else {
+                   weightCompData = { join: false };
+               }
+            }
+            
+            const payload = {
+              action: 'submitSteps', uid: lineUserId, empId: empIdVal, firstName: fName, lastName: lName, 
+              weight: weightVal, height: heightVal, steps: steps, 
+              userType: selectedUserType, teamName: teamNameVal,
+              pictureUrl: savedPicUrl,
+              isRegistration: !isRegistered,
+              avgSteps: avgStepsVal,
+              weightCompData: weightCompData 
+            };
+
+            fetch(GAS_WEB_APP_URL, { method: 'POST', redirect: 'follow', body: JSON.stringify(payload) })
+            .then(res => res.json())
+            .then(res => {
+              document.getElementById('loading-overlay').style.display = "none";
+
+              if (res.status === "success") {
+                  if (!isRegistered) {
+                      Swal.fire({
+                          icon: 'success',
+                          title: 'ลงทะเบียนสำเร็จ!',
+                          text: 'คุณสามารถเริ่มส่งยอดเฉลี่ยก้าวเดินต่อวัน ในวันถัดไปนะครับ ✌️',
+                          confirmButtonText: 'ตกลง',
+                          confirmButtonColor: '#1976D2',
+                          customClass: { popup: 'step-alert-popup', title: 'blue-theme-title', confirmButton: 'step-alert-btn' }
+                      }).then(() => { window.location.reload(); });
+                  } else {
+                      document.getElementById("form-section").style.display = "none";
+                      document.getElementById("appDescription").style.display = "none";
+                      document.getElementById("result-section").style.display = "block";
+                      document.getElementById('leaderboardBtn').style.display = "inline-block";
+                      document.getElementById("step-result").innerHTML = buildResultHTML(res.steps, res.weight, res.totalSteps, "", finalTrend, selectedUserType, res.teamTotalSteps);
+                      
+                      Swal.fire({ 
+                          icon: 'success', 
+                          iconColor: '#1976D2',
+                          title: 'บันทึกสำเร็จ', 
+                          showConfirmButton: false, 
+                          timer: 2000,
+                          customClass: { 
+                              popup: 'success-alert-popup', 
+                              title: 'blue-theme-title' 
+                          } 
+                      });
+                  }
+              } 
+              else if (res.status === "max_teams_reached") {
+                  Swal.fire({ icon: 'error', title: 'โควตาเต็มแล้ว', text: 'ประเภททีมจำนวน 50 ทีม เต็มแล้ว ขอบคุณที่สนใจในการสมัคร ไว้โอกาสหน้าร่วมสนุกกันใหม่', confirmButtonColor: '#d33' });
+                  document.getElementById('syncBtn').disabled = false; 
+              }
+              else if (res.status === "team_full") { 
+                  Swal.fire({ icon: 'error', title: 'ทีมนี้เต็มแล้ว!', text: 'ภายชื่อทีมนี้มีสมาชิกครบ 4 คนแล้วครับ ต้องหาทีมใหม่หรือตั้งชื่อทีมอื่น', confirmButtonColor: '#d33' });
+                  document.getElementById('syncBtn').disabled = false; 
+              }
+              else if (res.status === "already_submitted") { 
+                  Swal.fire({ icon: 'info', title: 'วันนี้ส่งไปแล้ว', text: 'คุณส่งข้อมูลของวันนี้ไปแล้วครับ', confirmButtonColor: '#1976D2' }).then(() => { window.location.reload(); });
+              }
+            }).catch(err => { 
+              document.getElementById('loading-overlay').style.display = "none";
+              Swal.fire({ icon: 'error', title: 'ผิดพลาด', text: 'การเชื่อมต่อระบบล้มเหลว', confirmButtonColor: '#d33' });
+              document.getElementById('syncBtn').disabled = false; 
+            });
+            
+        } 
+      }); 
+    }
+  </script>
+</body>
+</html>
