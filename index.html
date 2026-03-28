@@ -13,13 +13,11 @@
     
     .card { background: var(--card-bg); padding: 35px 25px; border-radius: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.08); width: 100%; max-width: 400px; box-sizing: border-box; border: 1px solid #EEE; }
     
-    /* 🌟 ปรับแต่ง Pop-up SweetAlert2 ให้มนสวยงาม */
     .swal2-popup { border-radius: 30px !important; padding: 2rem !important; font-family: 'Sarabun', sans-serif !important; }
 
     h2 { font-family: 'Kanit', sans-serif; text-align: center; color: var(--text-main); margin: 0 0 8px 0; font-size: 24px; font-weight: 600;}
     .app-desc { font-size: 13px; color: var(--text-sub); text-align: center; margin-bottom: 25px; background: #FFF1F1; padding: 14px; border-radius: 16px; line-height: 1.6; border: 1px solid #FFE0E0; }
     
-    /* 🆕 UX/UI เลือกช่องทางแบบคลีน (ไม่มี Icon) */
     .channel-container { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; }
     .channel-card-new {
       padding: 18px 22px;
@@ -28,27 +26,15 @@
       cursor: pointer;
       transition: all 0.2s ease-in-out;
       background: #FFF;
-      text-align: center; /* ปรับให้ดูคลีนแบบปุ่ม */
+      text-align: center;
     }
-    .channel-card-new:hover {
-      border-color: var(--primary);
-      background-color: #FFF9F9;
-      transform: translateY(-2px);
-    }
+    .channel-card-new:hover { border-color: var(--primary); background-color: #FFF9F9; transform: translateY(-2px); }
     .channel-card-new:active { transform: scale(0.97); }
-    .channel-name-new {
-      font-family: 'Kanit', sans-serif;
-      font-size: 18px;
-      font-weight: 600;
-      color: var(--text-main);
-      display: block;
-      margin-bottom: 2px;
-    }
+    .channel-name-new { font-family: 'Kanit', sans-serif; font-size: 18px; font-weight: 600; color: var(--text-main); display: block; margin-bottom: 2px; }
     .channel-desc-new { font-size: 12px; color: #999; margin: 0; }
 
-    /* Consent Form */
     .consent-box { background: #FDFDFD; border-radius: 16px; padding: 15px; border: 1px solid #E0E0E0; margin-bottom: 20px; font-size: 13.5px; color: #444; }
-    .consent-content { max-height: 100px; overflow-y: auto; padding-right: 10px; line-height: 1.7; margin-bottom: 12px; text-align: left; }
+    .consent-content { max-height: 150px; overflow-y: auto; padding-right: 10px; line-height: 1.7; margin-bottom: 12px; text-align: left; }
     .consent-content::-webkit-scrollbar { width: 3px; }
     .consent-content::-webkit-scrollbar-thumb { background: #DDD; }
 
@@ -61,7 +47,6 @@
     
     .profile-pic { width: 90px; height: 90px; border-radius: 50%; border: 4px solid white; box-shadow: 0 8px 20px rgba(0,0,0,0.1); margin: 0 auto 15px auto; display: block; object-fit: cover; }
     
-    /* Success Card Red-Blue Gradient */
     .success-card-gradient {
       background: linear-gradient(135deg, #FF0000 0%, #007AFF 100%);
       padding: 35px 20px; border-radius: 30px; color: white; text-align: center; margin: 15px 0;
@@ -73,17 +58,8 @@
       font-size: 24px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
-    /* 🌀 Spinner แก้ไขให้หมุน */
     #loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); z-index: 9999; flex-direction: column; align-items: center; justify-content: center; }
-    .spinner { 
-      border: 5px solid #F3F3F3; 
-      border-top: 5px solid var(--primary); 
-      border-radius: 50%; 
-      width: 50px; 
-      height: 50px; 
-      animation: spin 1s linear infinite; 
-      margin-bottom: 15px; 
-    }
+    .spinner { border: 5px solid #F3F3F3; border-top: 5px solid var(--primary); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin-bottom: 15px; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
     .footer { text-align: center; font-size: 12px; color: var(--text-sub); margin-top: 25px; line-height: 1.6; }
@@ -139,10 +115,12 @@
 
         <div class="consent-box">
           <div class="consent-content">
-            <b style="font-family: 'Kanit';">เอกสารแสดงความยินยอม (Consent Form)</b><br>
-            ข้าพเจ้า “ให้” ความยินยอม บมจ.ทรู คอร์ปอเรชั่น จำกัด เปิดเผยข้อมูลส่วนบุคคลให้ Channel Academy & Communication เพื่อเก็บข้อมูลพนักงาน...
+            <b style="font-family: 'Kanit'; color: #333;">เอกสารแสดงความยินยอม (Consent Form)</b><br><br>
+            ข้าพเจ้า “ให้” ความยินยอม บมจ.ทรู คอร์ปอเรชั่น จำกัด เปิดเผยข้อมูลส่วนบุคคลให้ Channel Academy & Communication เพื่อเก็บข้อมูล พนักงานทรูช่องทาง Retail, DS และ Back Office สำหรับใช้ในการส่งข้อมุลข่าวสารได้ทั่วถึงและมีประสิทธิภาพ ผ่านช่องทาง LINE OA ที่สร้างขึ้นเพื่อใช้ในการสื่อสาร ระหว่าง ทีม back office กับพนักงานขายหน้าร้านเท่านั้น<br><br>
+            ทั้งนี้ ก่อนการแสดงเจตนา ข้าพเจ้าได้รับคำอธิบายจาก ทีม Channel Academy & Communication ถึงวัตถุประสงค์ในการเก็บรวบรวม ใช้หรือเปิดเผย (“ประมวลผล”) ข้อมูลส่วนบุคคล และมีความเข้าใจดีแล้ว<br><br>
+            ข้าพเจ้าให้ความยินยอมในเอกสารนี้ด้วยความสมัครใจ
           </div>
-          <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 13.5px; font-weight: 600; padding-top: 5px;">
+          <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 13.5px; font-weight: 600; padding-top: 10px; border-top: 1px solid #EEE;">
             <input type="checkbox" id="consentCheck" style="width: 18px; height: 18px; accent-color: #FF0000;"> ยอมรับเงื่อนไขยินยอม
           </label>
         </div>
@@ -244,11 +222,22 @@
       }).then(async (result) => {
         if (result.isConfirmed) {
           document.getElementById('loading-overlay').style.display = 'flex';
-          const payload = { action: 'submitRegistration', uid: lineProfile.userId, displayName: lineProfile.displayName, pictureUrl: lineProfile.pictureUrl, channelType: selectedChannel, empId: empId, firstName: fName, lastName: lName };
+          const payload = { 
+            action: 'submitRegistration', 
+            uid: lineProfile.userId, 
+            displayName: lineProfile.displayName, 
+            pictureUrl: lineProfile.pictureUrl, 
+            channelType: selectedChannel, 
+            empId: empId, 
+            firstName: fName, 
+            lastName: lName 
+          };
           const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
-          document.getElementById('loading-overlay').style.display = 'none';
           const status = await res.json();
-          if (status.status === 'success') Swal.fire({ icon: 'success', title: 'สำเร็จ', timer: 2000, showConfirmButton: false }).then(() => location.reload());
+          document.getElementById('loading-overlay').style.display = 'none';
+          if (status.status === 'success') {
+            Swal.fire({ icon: 'success', title: 'สำเร็จ', timer: 2000, showConfirmButton: false }).then(() => location.reload());
+          }
         }
       });
     }
