@@ -10,17 +10,44 @@
   <style>
     :root { --primary: #FF0000; --primary-dark: #D50000; --bg-color: #F5F5F5; --card-bg: #FFFFFF; --text-main: #333; --text-sub: #666; }
     body { font-family: 'Sarabun', sans-serif; background-color: var(--bg-color); margin: 0; padding: 15px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    .card { background: var(--card-bg); padding: 30px 20px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 100%; max-width: 400px; box-sizing: border-box; }
-    h2 { font-family: 'Kanit', sans-serif; text-align: center; color: var(--text-main); margin: 0 0 5px 0; font-size: 22px; font-weight: 600;}
-    .app-desc { font-size: 13px; color: var(--text-sub); text-align: center; margin-bottom: 25px; background: #FFF1F1; padding: 12px; border-radius: 8px; line-height: 1.5; border: 1px solid #FFE0E0; }
-    input[type="text"] { width: 100%; padding: 14px 15px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 12px; box-sizing: border-box; font-size: 16px; font-family: 'Sarabun'; }
-    .input-label { display: block; font-size: 13px; font-weight: 600; color: var(--text-sub); margin-bottom: 5px; text-align: left; }
+    .card { background: var(--card-bg); padding: 30px 20px; border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); width: 100%; max-width: 400px; box-sizing: border-box; }
+    h2 { font-family: 'Kanit', sans-serif; text-align: center; color: var(--text-main); margin: 0 0 8px 0; font-size: 24px; font-weight: 600;}
+    .app-desc { font-size: 13px; color: var(--text-sub); text-align: center; margin-bottom: 25px; background: #FFF1F1; padding: 14px; border-radius: 12px; line-height: 1.6; border: 1px solid #FFE0E0; }
     
-    .sync-btn { width: 100%; padding: 15px; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; font-family: 'Kanit', sans-serif; cursor: pointer; margin-top: 10px; transition: transform 0.1s; }
-    .sync-btn:active { transform: scale(0.98); }
-    .btn-red { background-color: #FF0000; margin-bottom: 10px; }
-    .btn-orange { background-color: #F57C00; margin-bottom: 10px; }
-    .btn-dark { background-color: #333; margin-bottom: 10px; }
+    /* UX UI ใหม่สำหรับช่องทาง */
+    .channel-container { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; }
+    .channel-card {
+      display: flex;
+      align-items: center;
+      padding: 16px;
+      border: 2px solid #EEE;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: #FFF;
+    }
+    .channel-card:hover { border-color: var(--primary); background-color: #FFF8F8; transform: translateY(-2px); }
+    .channel-card:active { transform: scale(0.98); }
+    .channel-icon {
+      width: 48px;
+      height: 48px;
+      background: #F8F9FA;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-right: 16px;
+    }
+    .channel-info { flex: 1; text-align: left; }
+    .channel-name { font-family: 'Kanit', sans-serif; font-size: 16px; font-weight: 600; color: #333; margin: 0; }
+    .channel-desc { font-size: 12px; color: #888; margin: 0; }
+
+    input[type="text"] { width: 100%; padding: 14px 15px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 12px; box-sizing: border-box; font-size: 16px; font-family: 'Sarabun'; }
+    .input-label { display: block; font-size: 13px; font-weight: 600; color: var(--text-sub); margin-bottom: 6px; text-align: left; }
+    
+    .sync-btn { width: 100%; padding: 16px; color: white; border: none; border-radius: 14px; font-size: 16px; font-weight: 600; font-family: 'Kanit', sans-serif; cursor: pointer; margin-top: 10px; transition: 0.2s; }
+    .btn-red { background-color: var(--primary); box-shadow: 0 4px 12px rgba(255, 0, 0, 0.2); }
     .btn-line { background-color: #00B900; }
     
     .profile-pic { width: 90px; height: 90px; border-radius: 50%; border: 4px solid white; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin: 0 auto 15px auto; display: block; object-fit: cover; }
@@ -42,8 +69,8 @@
   </div>
 
   <div class="card">
-    <div style="text-align: center; margin-bottom: 20px;">
-      <img src="https://img1.pic.in.th/images/True--C.png" alt="True Logo" style="max-height: 50px;">
+    <div style="text-align: center; margin-bottom: 25px;">
+      <img src="https://img1.pic.in.th/images/True--C.png" alt="True Logo" style="max-height: 80px; width: auto; display: block; margin: 0 auto;">
     </div>
     <h2>ลงทะเบียนยืนยันตัวตน</h2>
     <div class="app-desc" id="appDesc">เพื่อสิทธิประโยชน์และการรับข้อมูลข่าวสาร<br>กรุณายืนยันตัวตนพนักงาน True Corporation</div>
@@ -53,15 +80,35 @@
       <div id="welcome-text" style="font-weight: 600; margin-bottom: 20px; font-size: 18px; font-family: 'Kanit'; color: #333;"></div>
       
       <div id="type-selection" style="display: none;">
-        <p style="color: #666; font-size: 14px; margin-bottom: 15px;">กรุณาเลือกประเภทช่องทางของท่าน</p>
-        <button class="sync-btn btn-red" onclick="goToForm('Shop')">Shop</button>
-        <button class="sync-btn btn-orange" onclick="goToForm('Non Shop')">Non Shop</button>
-        <button class="sync-btn btn-dark" onclick="goToForm('Back Office')">Back Office</button>
+        <p style="color: #666; font-size: 14px; margin-bottom: 10px;">กรุณาเลือกประเภทช่องทางของท่าน</p>
+        <div class="channel-container">
+          <div class="channel-card" onclick="goToForm('Shop')">
+            <div class="channel-icon">🏪</div>
+            <div class="channel-info">
+              <p class="channel-name">Shop</p>
+              <p class="channel-desc">พนักงานประจำสาขา / จุดบริการ</p>
+            </div>
+          </div>
+          <div class="channel-card" onclick="goToForm('Non Shop')">
+            <div class="channel-icon">🛵</div>
+            <div class="channel-info">
+              <p class="channel-name">Non Shop</p>
+              <p class="channel-desc">ฝ่ายขาย / พนักงานสนาม</p>
+            </div>
+          </div>
+          <div class="channel-card" onclick="goToForm('Back Office')">
+            <div class="channel-icon">💻</div>
+            <div class="channel-info">
+              <p class="channel-name">Back Office</p>
+              <p class="channel-desc">ส่วนกลาง / สำนักงาน</p>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div id="reg-form" style="display: none; text-align: left;">
-        <div style="background: #F5F5F5; padding: 12px; border-radius: 12px; margin-bottom: 20px; text-align: center; color: #FF0000; font-weight: bold; border: 1px dashed #FF0000;">
-          ช่องทาง: <span id="selectedChannelText"></span>
+        <div style="background: #F8F9FA; padding: 12px; border-radius: 12px; margin-bottom: 20px; text-align: center; color: #FF0000; font-weight: bold; border: 1px solid #EEE;">
+          ช่องทางที่เลือก: <span id="selectedChannelText"></span>
         </div>
         <label class="input-label">รหัสพนักงาน</label>
         <input type="text" id="empId" placeholder="ระบุรหัสพนักงาน (ตัวเลข)">
@@ -71,13 +118,13 @@
         <input type="text" id="lastName" placeholder="ระบุนามสกุลภาษาไทย">
         
         <button class="sync-btn btn-red" onclick="submitData()">ยืนยันลงทะเบียน</button>
-        <button style="width: 100%; background: none; border: none; color: #999; font-size: 13px; margin-top: 15px; cursor: pointer;" onclick="backToType()">ย้อนกลับ</button>
+        <button style="width: 100%; background: none; border: none; color: #999; font-size: 13px; margin-top: 15px; cursor: pointer;" onclick="backToType()">ย้อนกลับไปหน้าเลือกช่องทาง</button>
       </div>
 
       <div id="success-view" style="display: none;">
         <div class="step-result-card">
           <div style="font-size: 22px; font-weight: bold; font-family: 'Kanit'; margin-bottom: 15px;">ลงทะเบียนสำเร็จ!</div>
-          <div style="text-align: left; font-size: 15px; line-height: 2; display: inline-block;">
+          <div style="text-align: left; font-size: 15px; line-height: 2.2; display: inline-block;">
             <b>รหัสพนักงาน:</b> <span id="resEmpId"></span><br>
             <b>ชื่อ-นามสกุล:</b> <span id="resName"></span><br>
             <b>ช่องทาง:</b> <span id="resChannel"></span><br>
@@ -110,11 +157,9 @@
         const profile = await liff.getProfile();
         const userEmail = liff.getDecodedIDToken().email || "ไม่ระบุอีเมล";
         lineProfile = { ...profile, email: userEmail };
-        
         document.getElementById('auth-section').style.display = 'block';
         document.getElementById('userPic').src = profile.pictureUrl;
         document.getElementById('welcome-text').innerText = `สวัสดีคุณ ${profile.displayName}`;
-        
         checkUser();
       }
     }
@@ -124,7 +169,6 @@
       const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'checkUser', uid: lineProfile.userId }) });
       const user = await res.json();
       document.getElementById('loading-overlay').style.display = 'none';
-
       if (user) {
         showSuccessUI(user);
       } else {
@@ -137,8 +181,6 @@
       document.getElementById('type-selection').style.display = 'none';
       document.getElementById('reg-form').style.display = 'none';
       document.getElementById('success-view').style.display = 'block';
-      
-      // 4. แสดงข้อมูลตามลำดับที่ต้องการ
       document.getElementById('resEmpId').innerText = user.empId;
       document.getElementById('resName').innerText = `${user.firstName} ${user.lastName}`;
       document.getElementById('resChannel').innerText = user.channelType;
@@ -162,12 +204,11 @@
       const fName = document.getElementById('firstName').value.trim();
       const lName = document.getElementById('lastName').value.trim();
 
-      if (!empId || !fName || !lName) return Swal.fire('ข้อมูลไม่ครบ', 'กรุณาระบุข้อมูลให้ครบถ้วนก่อนยืนยันนะครับ', 'warning');
+      if (!empId || !fName || !lName) return Swal.fire({ title: 'ข้อมูลไม่ครบ', text: 'กรุณาระบุข้อมูลให้ครบถ้วนก่อนยืนยันนะครับ', icon: 'warning', confirmButtonColor: '#FF0000' });
 
-      // 3. กดยืนยันด้วยธีมเดิม ข้อความเหมาะสม
       Swal.fire({
         title: 'ยืนยันการลงทะเบียน',
-        text: "ตรวจสอบความถูกต้องของข้อมูลก่อนส่งเข้าระบบ",
+        text: "โปรดตรวจสอบข้อมูลของท่านให้ถูกต้องก่อนส่งเข้าระบบ",
         icon: 'question',
         showCancelButton: true, confirmButtonColor: '#FF0000', cancelButtonColor: '#666', confirmButtonText: 'ยืนยันข้อมูล', cancelButtonText: 'แก้ไข'
       }).then(async (result) => {
@@ -187,9 +228,8 @@
           const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
           const status = await res.json();
           document.getElementById('loading-overlay').style.display = 'none';
-
           if (status.status === 'success') {
-            Swal.fire({ icon: 'success', title: 'ลงทะเบียนสำเร็จ', text: 'ข้อมูลของคุณถูกบันทึกเรียบร้อยแล้ว', timer: 2000, showConfirmButton: false })
+            Swal.fire({ icon: 'success', title: 'ลงทะเบียนสำเร็จ', text: 'ข้อมูลของคุณถูกบันทึกเรียบร้อยแล้วครับ', timer: 2000, showConfirmButton: false })
             .then(() => { window.location.reload(); });
           }
         }
