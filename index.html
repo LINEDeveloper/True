@@ -15,7 +15,23 @@
     h2 { font-family: 'Kanit', sans-serif; text-align: center; color: var(--text-main); margin: 0 0 8px 0; font-size: 24px; font-weight: 600;}
     .app-desc { font-size: 13px; color: var(--text-sub); text-align: center; margin-bottom: 25px; background: #FFF1F1; padding: 14px; border-radius: 16px; line-height: 1.6; border: 1px solid #FFE0E0; }
     
-    /* กรอบเลือกช่องทางแบบ Gradient แดง-ฟ้า */
+    /* 🌟 ปรับแต่ง Pop-up ให้มันวาว ธีมแดง (Glossy Red) */
+    .glossy-swal-popup {
+      border-radius: 30px !important;
+      background: linear-gradient(145deg, #ffffff, #f0f0f0) !important;
+      border: 2px solid #FF0000 !important;
+      box-shadow: 0 20px 60px rgba(255, 0, 0, 0.15) !important;
+    }
+    .glossy-swal-title { color: #FF0000 !important; font-family: 'Kanit', sans-serif !important; font-weight: 600 !important; }
+    .glossy-swal-confirm {
+      background: linear-gradient(180deg, #FF4B4B 0%, #D50000 100%) !important;
+      box-shadow: 0 5px 15px rgba(213, 0, 0, 0.3) !important;
+      border-radius: 15px !important;
+      border: 1px solid rgba(255,255,255,0.2) !important;
+      padding: 12px 35px !important;
+    }
+
+    /* กรอบเลือกช่องทางแบบ Gradient */
     .channel-container { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; }
     .channel-card-old { 
       padding: 20px; border-radius: 20px; cursor: pointer; transition: 0.2s; text-align: center;
@@ -26,7 +42,6 @@
     .channel-name-old { font-family: 'Kanit', sans-serif; font-size: 19px; font-weight: 600; color: #FFFFFF; display: block; }
     .channel-desc-old { font-size: 12.5px; color: rgba(255, 255, 255, 0.9); margin-top: 2px; }
 
-    /* Consent Box ฉบับสมบูรณ์ */
     .consent-box { background: #FDFDFD; border-radius: 16px; padding: 15px; border: 1px solid #E0E0E0; margin-bottom: 20px; font-size: 13.5px; color: #444; }
     .consent-content { max-height: 160px; overflow-y: auto; padding-right: 10px; line-height: 1.7; margin-bottom: 12px; text-align: left; }
     .consent-content::-webkit-scrollbar { width: 3px; }
@@ -42,7 +57,6 @@
 
     .profile-pic { width: 90px; height: 90px; border-radius: 50%; border: 4px solid white; box-shadow: 0 8px 20px rgba(0,0,0,0.1); margin: 0 auto 15px auto; display: block; object-fit: cover; }
     
-    /* Dashboard Member */
     .success-card-gradient { background: linear-gradient(135deg, #FF0000 0%, #007AFF 100%); padding: 30px 20px; border-radius: 30px; color: white; text-align: left; margin: 15px 0; }
     .info-row { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.2); padding: 10px 0; font-size: 14px; }
 
@@ -110,9 +124,7 @@
         <div id="pdpa-box" class="consent-box">
           <div class="consent-content">
             <b style="font-family: 'Kanit';">เอกสารแสดงความยินยอม (Consent Form)</b><br><br>
-            ข้าพเจ้า “ให้” ความยินยอม บมจ.ทรู คอร์ปอเรชั่น จำกัด เปิดเผยข้อมูลส่วนบุคคลให้ Channel Academy & Communication เพื่อเก็บข้อมูล พนักงานทรูช่องทาง Retail, DS และ Back Office สำหรับใช้ในการส่งข้อมุลข่าวสารได้ทั่วถึงและมีประสิทธิภาพ ผ่านช่องทาง LINE OA ที่สร้างขึ้นเพื่อใช้ในการสื่อสาร ระหว่าง ทีม back office กับพนักงานขายหน้าร้านเท่านั้น<br><br>
-            ทั้งนี้ ก่อนการแสดงเจตนา ข้าพเจ้าได้รับคำอธิบายจาก ทีม Channel Academy & Communication ถึงวัตถุประสงค์ในการเก็บรวบรวม ใช้หรือเปิดเผย (“ประมวลผล”) ข้อมูลส่วนบุคคล และมีความเข้าใจดีแล้ว<br><br>
-            ข้าพเจ้าให้ความยินยอมในเอกสารนี้ด้วยความสมัครใจ
+            ข้าพเจ้า “ให้” ความยินยอม บมจ.ทรู คอร์ปอเรชั่น จำกัด เปิดเผยข้อมูลส่วนบุคคลให้ Channel Academy & Communication เพื่อเก็บข้อมูล พนักงานทรูช่องทาง Retail, DS และ Back Office สำหรับใช้ในการส่งข้อมุลข่าวสารได้ทั่วถึงและมีประสิทธิภาพ ผ่านช่องทาง LINE OA ที่สร้างขึ้นเพื่อใช้ในการสื่อสาร ระหว่าง ทีม back office กับพนักงานขายหน้าร้านเท่านั้น...
           </div>
           <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 13.5px; font-weight: 600; padding-top: 5px; border-top: 1px solid #EEE;">
             <input type="checkbox" id="consentCheck" checked style="width: 18px; height: 18px; accent-color: #FF0000;"> ยอมรับและให้ความยินยอม
@@ -235,20 +247,46 @@
       const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
       const status = await res.json();
       toggleLoading(false);
+      
       if (status.status === 'success') {
-        Swal.fire({ icon: 'success', title: 'สำเร็จ', text: currentUserData ? 'อัปเดตข้อมูลพนักงานเรียบร้อยแล้ว' : 'ลงทะเบียนสำเร็จ' }).then(() => location.reload());
+        // 🌟 ปรับปรุง Pop-up ให้มันวาวธีมแดง (Glossy Red)
+        Swal.fire({
+          title: 'สำเร็จ!',
+          text: currentUserData ? 'อัปเดตข้อมูลพนักงานเรียบร้อยแล้ว' : 'ลงทะเบียนพนักงานเรียบร้อยแล้ว',
+          icon: 'success',
+          customClass: {
+            popup: 'glossy-swal-popup',
+            title: 'glossy-swal-title',
+            confirmButton: 'glossy-swal-confirm'
+          },
+          confirmButtonText: 'ตกลง',
+          buttonsStyling: false
+        }).then(() => location.reload());
       }
     }
 
     async function cancelMember() {
-      const confirm = await Swal.fire({ title: 'ยืนยันการยกเลิกสมาชิก?', text: "คุณจะระงับสถานะสมาชิกในระบบ", icon: 'warning', showCancelButton: true, confirmButtonColor: '#FF0000', confirmButtonText: 'ยืนยันยกเลิก', cancelButtonText: 'ปิด' });
+      const confirm = await Swal.fire({ 
+        title: 'ยืนยันการยกเลิก?', 
+        text: "คุณต้องการระงับสถานะสมาชิกในระบบใช่หรือไม่", 
+        icon: 'warning', 
+        showCancelButton: true, 
+        confirmButtonColor: '#FF0000', 
+        confirmButtonText: 'ยืนยันยกเลิก', 
+        cancelButtonText: 'ปิด' 
+      });
       if (confirm.isConfirmed) {
         toggleLoading(true);
         const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'cancelMember', uid: lineProfile.userId }) });
         const status = await res.json();
         toggleLoading(false);
         if (status.status === 'success') {
-          Swal.fire('ยกเลิกสำเร็จ', 'ระบบได้ยกเลิกสถานะสมาชิกแล้ว', 'success').then(() => location.reload());
+          Swal.fire({
+            title: 'ยกเลิกสำเร็จ',
+            text: 'ระบบได้บันทึกการยกเลิกสถานะของคุณแล้ว',
+            icon: 'success',
+            confirmButtonColor: '#FF0000'
+          }).then(() => location.reload());
         }
       }
     }
