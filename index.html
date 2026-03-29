@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <title>True Corporation - Personal Info</title>
+  <title>True Corporation - Channel Commu</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
@@ -12,101 +12,120 @@
     body { font-family: 'Sarabun', sans-serif; background-color: var(--bg-color); margin: 0; padding: 15px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
     .card { background: var(--card-bg); padding: 35px 25px; border-radius: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.08); width: 100%; max-width: 400px; box-sizing: border-box; border: 1px solid #EEE; }
     
-    .swal2-popup { border-radius: 30px !important; font-family: 'Sarabun', sans-serif !important; }
-
     h2 { font-family: 'Kanit', sans-serif; text-align: center; color: var(--text-main); margin: 0 0 8px 0; font-size: 24px; font-weight: 600;}
     .app-desc { font-size: 13px; color: var(--text-sub); text-align: center; margin-bottom: 25px; background: #FFF1F1; padding: 14px; border-radius: 16px; line-height: 1.6; border: 1px solid #FFE0E0; }
     
-    .channel-card-new { padding: 22px; background: linear-gradient(135deg, #FF0000 0%, #007AFF 100%); border-radius: 20px; cursor: pointer; transition: all 0.2s; text-align: center; margin-bottom: 10px; border:none; }
-    .channel-name-new { font-family: 'Kanit', sans-serif; font-size: 19px; font-weight: 600; color: #FFF; display: block; }
-    .channel-desc-new { font-size: 12.5px; color: rgba(255, 255, 255, 0.9); }
+    /* UI คลีนเดิม */
+    .channel-container { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; }
+    .channel-card-old { padding: 18px; border: 1.5px solid #EAEAEA; border-radius: 20px; cursor: pointer; transition: 0.2s; background: #FFF; text-align: center; }
+    .channel-card-old:hover { border-color: var(--primary); background-color: #FFF9F8; }
+    .channel-name-old { font-family: 'Kanit', sans-serif; font-size: 18px; font-weight: 600; color: var(--text-main); display: block; }
+    .channel-desc-old { font-size: 12px; color: #999; }
 
-    .consent-box { background: #FDFDFD; border-radius: 16px; padding: 15px; border: 1px solid #E0E0E0; margin-bottom: 20px; font-size: 13.5px; }
-    .consent-content { max-height: 120px; overflow-y: auto; text-align: left; line-height: 1.6; margin-bottom: 10px; }
+    /* Consent Box ครบถ้วน */
+    .consent-box { background: #FDFDFD; border-radius: 16px; padding: 15px; border: 1px solid #E0E0E0; margin-bottom: 20px; font-size: 13.5px; color: #444; }
+    .consent-content { max-height: 150px; overflow-y: auto; padding-right: 10px; line-height: 1.7; margin-bottom: 12px; text-align: left; }
+    .consent-content::-webkit-scrollbar { width: 3px; }
+    .consent-content::-webkit-scrollbar-thumb { background: #DDD; }
 
-    input[type="text"], input[type="tel"] { width: 100%; padding: 14px; margin-bottom: 12px; border: 1px solid #DDD; border-radius: 16px; box-sizing: border-box; font-family: 'Sarabun'; }
+    input[type="text"], input[type="tel"] { width: 100%; padding: 14px; margin-bottom: 12px; border: 1px solid #DDD; border-radius: 16px; box-sizing: border-box; font-size: 16px; }
     .input-label { display: block; font-size: 13px; font-weight: 600; color: var(--text-sub); margin-bottom: 5px; padding-left: 5px; }
     
-    .sync-btn { width: 100%; padding: 16px; color: white; border: none; border-radius: 18px; font-size: 16px; font-weight: 600; font-family: 'Kanit'; cursor: pointer; margin-top: 10px; transition: 0.3s; }
+    .sync-btn { width: 100%; padding: 16px; color: white; border: none; border-radius: 18px; font-size: 16px; font-weight: 600; font-family: 'Kanit'; cursor: pointer; margin-top: 10px; }
     .btn-red { background: linear-gradient(135deg, #FF0000, #D50000); }
-    .btn-line { background-color: #00B900; }
-    .btn-outline { background: #fff; border: 1px solid #ddd; color: #666; margin-top: 10px; }
+    .btn-outline { background: #fff; border: 1px solid #ddd; color: #666; }
     .btn-cancel { background: #fff; color: #ff4d4d; border: 1px solid #ff4d4d; font-size: 14px; margin-top: 15px; }
 
     .profile-pic { width: 90px; height: 90px; border-radius: 50%; border: 4px solid white; box-shadow: 0 8px 20px rgba(0,0,0,0.1); margin: 0 auto 15px auto; display: block; object-fit: cover; }
     
-    .success-card-gradient {
-      background: linear-gradient(135deg, #FF0000 0%, #007AFF 100%);
-      padding: 30px 20px; border-radius: 30px; color: white; text-align: left; margin: 15px 0;
-    }
-    .info-row { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.2); padding: 8px 0; font-size: 14px; }
+    /* Success View */
+    .success-card-gradient { background: linear-gradient(135deg, #FF0000 0%, #007AFF 100%); padding: 30px 20px; border-radius: 30px; color: white; text-align: left; margin: 15px 0; }
+    .info-row { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.2); padding: 10px 0; font-size: 14px; }
 
     #loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); z-index: 9999; flex-direction: column; align-items: center; justify-content: center; }
     .spinner { border: 5px solid #F3F3F3; border-top: 5px solid var(--primary); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    .footer { text-align: center; font-size: 12px; color: var(--text-sub); margin-top: 25px; line-height: 1.6; }
+    .footer a { color: #FF0000; text-decoration: none; font-weight: 600; }
   </style>
 </head>
 <body>
 
   <div id="loading-overlay">
     <div class="spinner"></div>
-    <p style="font-family: 'Kanit'; color: #FF0000; margin-top:15px;">กำลังดำเนินการ...</p>
+    <p style="font-family: 'Kanit'; color: #FF0000; margin-top:15px;">กำลังโหลด...</p>
   </div>
 
   <div class="card">
     <div style="text-align: center; margin-bottom: 25px;">
-      <img src="https://img1.pic.in.th/images/True--C.png" alt="True Logo" style="max-height: 70px; width: auto; display: block; margin: 0 auto;">
+      <img src="https://img1.pic.in.th/images/True--C.png" alt="True Logo" style="max-height: 80px; width: auto; display: block; margin: 0 auto;">
     </div>
     
-    <h2 id="page-title">ลงทะเบียนยืนยันตัวตน</h2>
-    <div class="app-desc" id="appDesc">พนักงาน True Corporation ยืนยันข้อมูล</div>
+    <div id="reg-header">
+      <h2>ลงทะเบียนยืนยันตัวตน</h2>
+      <div class="app-desc">พนักงาน True Corporation ยืนยันข้อมูล<br>เพื่อรับข่าวสารผ่าน Channel Academy & Commu</div>
+    </div>
 
     <div id="auth-section" style="display: none; text-align: center;">
       <img id="userPic" class="profile-pic" src="">
-      <div id="welcome-text" style="margin-bottom: 20px; font-family: 'Kanit';"></div>
+      <div id="welcome-text" style="margin-bottom: 20px; font-family: 'Kanit'; font-size: 18px;"></div>
       
       <div id="type-selection" style="display: none;">
-        <div class="channel-card-new" onclick="goToForm('Shop')">
-            <span class="channel-name-new">Shop</span>
-        </div>
-        <div class="channel-card-new" onclick="goToForm('Non Shop')">
-            <span class="channel-name-new">Non Shop</span>
-        </div>
-        <div class="channel-card-new" onclick="goToForm('Back Office')">
-            <span class="channel-name-new">Back Office</span>
+        <p style="color: #666; font-size: 14px; margin-bottom: 10px;">กรุณาเลือกประเภทช่องทางที่สังกัด</p>
+        <div class="channel-container">
+          <div class="channel-card-old" onclick="goToForm('Shop')">
+            <span class="channel-name-old">Shop</span>
+            <p class="channel-desc-old">ประจำสาขา / จุดบริการ</p>
+          </div>
+          <div class="channel-card-old" onclick="goToForm('Non Shop')">
+            <span class="channel-name-old">Non Shop</span>
+            <p class="channel-desc-old">ฝ่ายขาย / พนักงานสนาม / Retail / DS</p>
+          </div>
+          <div class="channel-card-old" onclick="goToForm('Back Office')">
+            <span class="channel-name-old">Back Office</span>
+            <p class="channel-desc-old">ส่วนกลาง / สำนักงาน</p>
+          </div>
         </div>
       </div>
 
       <div id="reg-form" style="display: none; text-align: left;">
+        <div style="background: #F8F9FA; padding: 10px; border-radius: 12px; margin-bottom: 15px; text-align: center; color: #FF0000; font-weight: bold; border: 1px solid #EEE;">
+          ช่องทาง: <span id="selectedChannelText"></span>
+        </div>
         <label class="input-label">รหัสพนักงาน</label>
         <input type="text" id="empId" placeholder="ระบุรหัสพนักงาน">
-        <label class="input-label">ชื่อจริง (ภาษาไทย)</label>
-        <input type="text" id="firstName" placeholder="ระบุชื่อจริง">
-        <label class="input-label">นามสกุล (ภาษาไทย)</label>
-        <input type="text" id="lastName" placeholder="ระบุนามสกุล">
+        <label class="input-label">ชื่อจริง (ภาษาไทยเท่านั้น)</label>
+        <input type="text" id="firstName" placeholder="ชื่อจริง">
+        <label class="input-label">นามสกุล (ภาษาไทยเท่านั้น)</label>
+        <input type="text" id="lastName" placeholder="นามสกุล">
         <label class="input-label">เบอร์โทรศัพท์</label>
         <input type="tel" id="phone" placeholder="ระบุเบอร์โทรศัพท์" maxlength="10">
 
-        <div id="pdpa-section" class="consent-box">
-          <div class="consent-content">...เนื้อหา PDPA...</div>
-          <label style="display: flex; align-items: center; gap: 10px; font-size: 13px;">
-            <input type="checkbox" id="consentCheck" checked> ยอมรับเงื่อนไขยินยอม
+        <div id="pdpa-box" class="consent-box">
+          <div class="consent-content">
+            <b style="font-family: 'Kanit';">เอกสารแสดงความยินยอม (Consent Form)</b><br><br>
+            ข้าพเจ้า “ให้” ความยินยอม บมจ.ทรู คอร์ปอเรชั่น จำกัด เปิดเผยข้อมูลส่วนบุคคลให้ Channel Academy & Communication เพื่อเก็บข้อมูล พนักงานทรูช่องทาง Retail, DS และ Back Office สำหรับใช้ในการส่งข้อมุลข่าวสารได้ทั่วถึงและมีประสิทธิภาพ ผ่านช่องทาง LINE OA ที่สร้างขึ้นเพื่อใช้ในการสื่อสาร ระหว่าง ทีม back office กับพนักงานขายหน้าร้านเท่านั้น<br><br>
+            ทั้งนี้ ก่อนการแสดงเจตนา ข้าพเจ้าได้รับคำอธิบายจาก ทีม Channel Academy & Communication ถึงวัตถุประสงค์ในการเก็บรวบรวม ใช้หรือเปิดเผย (“ประมวลผล”) ข้อมูลส่วนบุคคล และมีความเข้าใจดีแล้ว<br><br>
+            ข้าพเจ้าให้ความยินยอมในเอกสารนี้ด้วยความสมัครใจ
+          </div>
+          <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 13.5px; font-weight: 600; padding-top: 5px; border-top: 1px solid #EEE;">
+            <input type="checkbox" id="consentCheck" checked style="width: 18px; height: 18px; accent-color: #FF0000;"> ยอมรับและให้ความยินยอม
           </label>
         </div>
         
-        <button id="submitBtn" class="sync-btn btn-red" onclick="submitData()">ยืนยันข้อมูล</button>
-        <button id="backBtn" class="sync-btn btn-outline" onclick="location.reload()">ยกเลิก</button>
+        <button class="sync-btn btn-red" onclick="submitData()">ยืนยันลงทะเบียน</button>
+        <button id="cancelEditBtn" class="sync-btn btn-outline" style="display:none;" onclick="location.reload()">ยกเลิกการแก้ไข</button>
       </div>
 
       <div id="success-view" style="display: none;">
         <div class="success-card-gradient">
-          <div style="font-size: 18px; font-weight: bold; margin-bottom: 15px; border-bottom: 1px solid #fff; padding-bottom: 5px;">ข้อมูลส่วนตัว</div>
+          <div style="font-size: 18px; font-weight: bold; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 8px;">ข้อมูลส่วนตัว</div>
           <div class="info-row"><span>รหัสพนักงาน:</span> <span id="resEmpId"></span></div>
           <div class="info-row"><span>ชื่อ-นามสกุล:</span> <span id="resName"></span></div>
           <div class="info-row"><span>เบอร์โทรศัพท์:</span> <span id="resPhone"></span></div>
           <div class="info-row"><span>ช่องทาง:</span> <span id="resChannel"></span></div>
         </div>
-        
         <button class="sync-btn btn-red" onclick="enableEdit()">แก้ไขข้อมูล</button>
         <button class="sync-btn btn-cancel" onclick="cancelMember()">ยกเลิกการเป็นสมาชิก</button>
       </div>
@@ -115,50 +134,54 @@
     <button class="sync-btn btn-line" id="loginBtn" onclick="liff.login()" style="display: none;">เข้าสู่ระบบด้วย LINE</button>
   </div>
 
+  <div class="footer">
+    บริษัท ทรู คอร์ปอเรชั่น จำกัด (มหาชน)<br>
+    <a href="privacy.html" target="_blank">นโยบายความเป็นส่วนตัว (Privacy Policy)</a>
+  </div>
+
   <script>
     const GAS_URL = 'https://script.google.com/macros/s/AKfycbxQ0-VSX6OZ8sa2mH0Y-r1Z11WyZf87lho-pqD02P6Vwp1V6KqdHc--BFApr8L8GYK6/exec'; 
     const LIFF_ID = '1656846002-7Dj11vMZ';
     let lineProfile = {};
     let currentUserData = null;
+    let selectedChannel = "";
 
     async function initLiff() {
       await liff.init({ liffId: LIFF_ID });
       if (!liff.isLoggedIn()) {
         document.getElementById('loginBtn').style.display = 'block';
       } else {
-        lineProfile = await liff.getProfile();
+        const profile = await liff.getProfile();
+        const idToken = liff.getDecodedIDToken();
+        lineProfile = { ...profile, email: idToken.email || "" };
         document.getElementById('auth-section').style.display = 'block';
-        document.getElementById('userPic').src = lineProfile.pictureUrl;
+        document.getElementById('userPic').src = profile.pictureUrl;
         checkUser();
       }
     }
 
     async function checkUser() {
       toggleLoading(true);
-      const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'checkUser', uid: lineProfile.userId }) });
-      currentUserData = await res.json();
-      toggleLoading(false);
-
-      if (currentUserData && currentUserData.status !== "ยกเลิกเป็นสมาชิก") {
-        showMemberUI(currentUserData);
-      } else {
-        document.getElementById('welcome-text').innerText = `สวัสดีคุณ ${lineProfile.displayName}`;
-        document.getElementById('type-selection').style.display = 'block';
-      }
+      try {
+        const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'checkUser', uid: lineProfile.userId }) });
+        currentUserData = await res.json();
+        toggleLoading(false);
+        if (currentUserData && currentUserData.status !== "ยกเลิกเป็นสมาชิก") {
+          showMemberUI(currentUserData);
+        } else {
+          document.getElementById('welcome-text').innerText = `สวัสดีคุณ ${lineProfile.displayName}`;
+          document.getElementById('type-selection').style.display = 'block';
+        }
+      } catch(e) { toggleLoading(false); }
     }
 
     function showMemberUI(user) {
-      // 1. ซ่อนหัวข้อลงทะเบียน
-      document.getElementById('page-title').style.display = 'none';
-      document.getElementById('appDesc').style.display = 'none';
+      document.getElementById('reg-header').style.display = 'none';
       document.getElementById('type-selection').style.display = 'none';
-      
-      // 2. เปลี่ยนข้อความเป็น "ขอแสดงความยินดี" สีเขียว
       document.getElementById('welcome-text').innerHTML = `
-        <span style="color:var(--success); font-size:20px; font-weight:bold;">ขอแสดงความยินดี</span><br>
-        <span style="color:var(--text-sub); font-size:14px; font-weight:300;">สถานะ : คุณได้รับการยืนยันตัวตนแล้ว</span>
+        <span style="color:var(--success); font-size:22px; font-weight:600;">ขอแสดงความยินดี</span><br>
+        <span style="color:var(--text-sub); font-size:15px; font-weight:300;">สถานะ : คุณได้รับการยืนยันตัวตนแล้ว</span>
       `;
-
       document.getElementById('resEmpId').innerText = user.empId;
       document.getElementById('resName').innerText = `${user.firstName} ${user.lastName}`;
       document.getElementById('resPhone').innerText = user.phone || "-";
@@ -166,55 +189,51 @@
       document.getElementById('success-view').style.display = 'block';
     }
 
+    function goToForm(type) {
+      selectedChannel = type;
+      document.getElementById('selectedChannelText').innerText = type;
+      document.getElementById('type-selection').style.display = 'none';
+      document.getElementById('reg-form').style.display = 'block';
+    }
+
     function enableEdit() {
       document.getElementById('success-view').style.display = 'none';
+      document.getElementById('reg-header').style.display = 'block';
       document.getElementById('reg-form').style.display = 'block';
-      document.getElementById('pdpa-section').style.display = 'none'; // ซ่อน PDPA ตอนแก้ไข
-      
-      // เติมข้อมูลเดิมลงใน Input
+      document.getElementById('pdpa-box').style.display = 'none';
+      document.getElementById('cancelEditBtn').style.display = 'block';
       document.getElementById('empId').value = currentUserData.empId;
       document.getElementById('firstName').value = currentUserData.firstName;
       document.getElementById('lastName').value = currentUserData.lastName;
       document.getElementById('phone').value = currentUserData.phone || "";
+      selectedChannel = currentUserData.channelType;
+      document.getElementById('selectedChannelText').innerText = selectedChannel;
     }
 
     async function submitData() {
-      const payload = {
-        action: 'submitRegistration',
-        uid: lineProfile.userId,
-        empId: document.getElementById('empId').value,
-        firstName: document.getElementById('firstName').value,
-        lastName: document.getElementById('lastName').value,
-        phone: document.getElementById('phone').value,
-        isEdit: currentUserData ? true : false
-      };
-
+      const empId = document.getElementById('empId').value.trim();
+      const fName = document.getElementById('firstName').value.trim();
+      const lName = document.getElementById('lastName').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      if (!empId || !fName || !lName || !phone) return Swal.fire('ข้อมูลไม่ครบ', 'กรุณากรอกข้อมูลให้ครบถ้วน', 'warning');
+      
       toggleLoading(true);
+      const payload = { action: 'submitRegistration', uid: lineProfile.userId, displayName: lineProfile.displayName, pictureUrl: lineProfile.pictureUrl, email: lineProfile.email, channelType: selectedChannel, empId: empId, firstName: fName, lastName: lName, phone: phone };
       const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
-      const result = await res.json();
+      const status = await res.json();
       toggleLoading(false);
-
-      if(result.status === 'success') {
-        Swal.fire('สำเร็จ', currentUserData ? 'อัปเดตข้อมูลเรียบร้อยแล้ว' : 'ลงทะเบียนเรียบร้อย', 'success')
-        .then(() => location.reload());
+      if (status.status === 'success') {
+        Swal.fire({ icon: 'success', title: 'สำเร็จ', text: currentUserData ? 'อัปเดตข้อมูลพนักงานเรียบร้อยแล้ว' : 'ลงทะเบียนสำเร็จ' }).then(() => location.reload());
       }
     }
 
     async function cancelMember() {
-      const confirm = await Swal.fire({
-        title: 'ยืนยันการยกเลิก?',
-        text: "คุณต้องการยกเลิกการเป็นสมาชิกใช่หรือไม่",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'ยืนยันยกเลิก',
-        cancelButtonText: 'ปิด'
-      });
-
+      const confirm = await Swal.fire({ title: 'ยืนยันการยกเลิกสมาชิก?', text: "คุณจะระงับสถานะสมาชิกในระบบ", icon: 'warning', showCancelButton: true, confirmButtonColor: '#FF0000', confirmButtonText: 'ยืนยันยกเลิก', cancelButtonText: 'ปิด' });
       if (confirm.isConfirmed) {
         toggleLoading(true);
         const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'cancelMember', uid: lineProfile.userId }) });
         toggleLoading(false);
-        Swal.fire('ยกเลิกสำเร็จ', 'ระบบได้ยกเลิกสถานะสมาชิกของคุณแล้ว', 'success').then(() => location.reload());
+        Swal.fire('ยกเลิกสำเร็จ', 'ระบบได้ยกเลิกสถานะสมาชิกแล้ว', 'success').then(() => location.reload());
       }
     }
 
