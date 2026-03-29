@@ -8,7 +8,7 @@
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
-    :root { --primary: #FF0000; --blue: #007AFF; --bg-color: #F8F9FA; --card-bg: #FFFFFF; --text-main: #333; --text-sub: #666; --success: #28a745; }
+    :root { --primary: #FF0000; --blue: #007AFF; --line-green: #00B900; --bg-color: #F8F9FA; --card-bg: #FFFFFF; --text-main: #333; --text-sub: #666; --success: #28a745; }
     body { font-family: 'Sarabun', sans-serif; background-color: var(--bg-color); margin: 0; padding: 15px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
     .card { background: var(--card-bg); padding: 35px 25px; border-radius: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.08); width: 100%; max-width: 400px; box-sizing: border-box; border: 1px solid #EEE; position: relative; }
     
@@ -30,11 +30,12 @@
     .consent-content::-webkit-scrollbar { width: 3px; }
     .consent-content::-webkit-scrollbar-thumb { background: #DDD; }
 
-    input[type="text"], input[type="tel"] { width: 100%; padding: 14px; margin-bottom: 12px; border: 1px solid #DDD; border-radius: 16px; box-sizing: border-box; font-size: 16px; }
+    input[type="text"], input[type="tel"] { width: 100%; padding: 14px; margin-bottom: 12px; border: 1px solid #DDD; border-radius: 16px; box-sizing: border-box; font-size: 16px; font-family: 'Sarabun'; }
     .input-label { display: block; font-size: 13px; font-weight: 600; color: var(--text-sub); margin-bottom: 5px; padding-left: 5px; }
     
     .sync-btn { width: 100%; padding: 16px; color: white; border: none; border-radius: 18px; font-size: 16px; font-weight: 600; font-family: 'Kanit'; cursor: pointer; margin-top: 10px; transition: 0.3s; }
     .btn-red { background: linear-gradient(135deg, #FF0000, #D50000); }
+    .btn-line { background-color: var(--line-green); box-shadow: 0 8px 20px rgba(0, 185, 0, 0.2); }
     .btn-outline { background: #fff; border: 1px solid #ddd; color: #666; }
     .btn-cancel { background: #fff; color: #ff4d4d; border: 1px solid #ff4d4d; font-size: 14px; margin-top: 15px; }
 
@@ -42,9 +43,10 @@
     .success-card-gradient { background: linear-gradient(135deg, #FF0000 0%, #007AFF 100%); padding: 30px 20px; border-radius: 30px; color: white; text-align: left; margin: 15px 0; }
     .info-row { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.2); padding: 10px 0; font-size: 14px; }
 
-    #loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); z-index: 9999; flex-direction: column; align-items: center; justify-content: center; }
-    .spinner { border: 5px solid #F3F3F3; border-top: 5px solid var(--primary); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    /* 🌟 Loading Overlay แบบใหม่ (รูปโปรไฟล์) */
+    #loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #FFFFFF; z-index: 9999; flex-direction: column; align-items: center; justify-content: center; }
+    .profile-loader { width: 100px; height: 100px; border-radius: 50%; border: 4px solid var(--primary); margin-bottom: 20px; object-fit: cover; animation: pulse 2s infinite; }
+    @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.05); opacity: 0.8; } 100% { transform: scale(1); opacity: 1; } }
 
     .footer { text-align: center; font-size: 12px; color: var(--text-sub); margin-top: 25px; line-height: 1.6; }
     .footer a { color: #FF0000; text-decoration: none; font-weight: 600; }
@@ -55,10 +57,11 @@
   </style>
 </head>
 <body>
-  
-    <div id="loading-overlay">
-    <div class="spinner"></div>
-    <p style="font-family: 'Kanit'; color: #FF0000; margin-top:15px;">กำลังดำเนินการ...</p>
+
+  <div id="loading-overlay">
+    <img id="userProfilePicLoad" class="profile-loader" src="https://img1.pic.in.th/images/True--C.png">
+    <p style="font-family: 'Kanit'; color: #333; font-size: 18px; margin: 0;">กำลังตรวจสอบข้อมูล...</p>
+    <p style="font-size: 12px; color: #999; margin-top: 5px;">โปรดรอสักครู่</p>
   </div>
 
   <div class="card">
@@ -69,6 +72,11 @@
     <div id="reg-header">
       <h2>ลงทะเบียนยืนยันตัวตน</h2>
       <div class="app-desc">พนักงาน True Corporation ยืนยันข้อมูล<br>เพื่อรับข่าวสารผ่าน Channel Academy & Commu</div>
+    </div>
+
+    <div id="login-container" style="display: none; text-align: center; padding: 20px 0;">
+      <p style="color: #666; margin-bottom: 20px;">กรุณาเข้าสู่ระบบด้วย LINE เพื่อดำเนินการต่อ</p>
+      <button class="sync-btn btn-line" id="loginBtn" onclick="liff.login()">เข้าสู่ระบบ LINE</button>
     </div>
 
     <div id="auth-section" style="display: none; text-align: center;">
@@ -135,11 +143,9 @@
         </div>
         <button class="sync-btn btn-red" onclick="enableEdit()">แก้ไขข้อมูล</button>
         <button class="sync-btn btn-cancel" onclick="cancelMember()">ยกเลิกการเป็นสมาชิก</button>
-        <p style="font-size: 11px; color: #999; margin-top: 8px; font-weight: 300;">*กรณีสิ้นสุดสภาพการเป็นพนักงานเท่านั้น</p>
+        <p style="font-size: 11px; color: #999; margin-top: 10px; font-weight: 300;">*กรณีสิ้นสุดสภาพการเป็นพนักงานเท่านั้น</p>
       </div>
     </div>
-    
-    <button class="sync-btn btn-line" id="loginBtn" onclick="liff.login()" style="display: none;">เข้าสู่ระบบด้วย LINE</button>
   </div>
 
   <div class="footer">
@@ -157,13 +163,17 @@
     async function initLiff() {
       await liff.init({ liffId: LIFF_ID });
       if (!liff.isLoggedIn()) {
-        document.getElementById('loginBtn').style.display = 'block';
+        document.getElementById('login-container').style.display = 'block';
       } else {
         const profile = await liff.getProfile();
         const idToken = liff.getDecodedIDToken();
         lineProfile = { ...profile, email: idToken.email || "" };
-        document.getElementById('auth-section').style.display = 'block';
+        
+        // 🌟 ดึงรูปมาใส่ในหน้า Loading ทันที
+        document.getElementById('userProfilePicLoad').src = profile.pictureUrl;
         document.getElementById('userPic').src = profile.pictureUrl;
+        
+        document.getElementById('auth-section').style.display = 'block';
         checkUser();
       }
     }
@@ -244,7 +254,7 @@
       const status = await res.json();
       toggleLoading(false);
       if (status.status === 'success') {
-        Swal.fire({ icon: 'success', title: 'สำเร็จ', text: currentUserData ? 'อัปเดตข้อมูลเรียบร้อยแล้ว' : 'ลงทะเบียนสำเร็จ', confirmButtonColor: '#FF0000' }).then(() => location.reload());
+        Swal.fire({ icon: 'success', title: 'สำเร็จ', text: currentUserData ? 'อัปเดตข้อมูลพนักงานเรียบร้อยแล้ว' : 'ลงทะเบียนสำเร็จ', confirmButtonColor: '#FF0000' }).then(() => location.reload());
       }
     }
 
@@ -258,7 +268,11 @@
       }
     }
 
-    function toggleLoading(show) { document.getElementById('loading-overlay').style.display = show ? 'flex' : 'none'; }
+    function toggleLoading(show) { 
+      const overlay = document.getElementById('loading-overlay');
+      overlay.style.display = show ? 'flex' : 'none'; 
+    }
+    
     window.onload = initLiff;
   </script>
 </body>
