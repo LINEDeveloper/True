@@ -83,7 +83,6 @@
           </div>
         </div>
 
-        <button id="btn-menu-rewards" class="sync-btn btn-rewards" onclick="openRewardsFromHome()">ลงทะเบียน LINE Rewards</button>
         <button id="btn-menu-identity" class="sync-btn btn-red" onclick="goToRegForm()" style="margin-top: 15px;">ลงทะเบียนยืนยันตัวตน</button>
       </div>
 
@@ -127,13 +126,15 @@
           <div id="updateTimeContainer" style="display: none; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.3); text-align: right; font-size: 11px; color: rgba(255,255,255,0.9); font-weight: 300;">
             อัปเดตล่าสุด: <span id="resUpdateDate"></span>
           </div>
-
-          <div style="display: flex; gap: 10px; margin-top: 20px;">
-            <button class="sync-btn btn-red" onclick="enableEdit()" style="margin-top: 0; padding: 10px; font-size: 14px; border: 1px solid rgba(255,255,255,0.3); flex: 1;">แก้ไข</button>
-            <button class="sync-btn btn-cancel" onclick="cancelMember()" style="margin-top: 0; padding: 10px; font-size: 14px; flex: 1;">ยกเลิก</button>
-          </div>
-
         </div>
+
+        <button id="btn-profile-rewards" class="sync-btn btn-rewards" onclick="openRewardsFromProfile()" style="margin-top: 15px; margin-bottom: 5px;">ลงทะเบียน LINE Rewards</button>
+
+        <div style="display: flex; gap: 10px; margin-top: 15px;">
+          <button class="sync-btn btn-red" onclick="enableEdit()" style="margin-top: 0; padding: 10px; font-size: 14px; border: 1px solid rgba(255,255,255,0.3); flex: 1;">แก้ไข</button>
+          <button class="sync-btn btn-cancel" onclick="cancelMember()" style="margin-top: 0; padding: 10px; font-size: 14px; flex: 1;">ยกเลิก</button>
+        </div>
+
       </div>
     </div>
   </div>
@@ -174,7 +175,6 @@
         currentUserData = await res.json();
         toggleLoading(false);
         
-        const hasClickedRewards = localStorage.getItem('clicked_rewards_' + lineProfile.userId);
         const hasIdentity = (currentUserData && currentUserData.status !== "ยกเลิกเป็นสมาชิก");
 
         document.getElementById('welcome-text').innerHTML = `
@@ -182,61 +182,31 @@
           <span style="font-size: 13px; color: #666; font-weight: 300; display: block; margin-top: 4px;">ในการรับข่าวสารผ่าน LINE Channel Commu เท่านั้น</span>
         `;
 
-        if (hasIdentity && hasClickedRewards) {
+        if (hasIdentity) {
           showMemberUI(currentUserData);
         } else {
-          showHomeMenu(hasIdentity, hasClickedRewards);
+          showHomeMenu();
         }
       } catch(e) { toggleLoading(false); }
     }
 
-    function showHomeMenu(hasIdentity, hasClickedRewards) {
+    function showHomeMenu() {
       document.getElementById('reg-header').style.display = 'block';
       document.getElementById('reg-form').style.display = 'none';
       document.getElementById('success-view').style.display = 'none';
       document.getElementById('home-menu').style.display = 'block';
-
-      if (hasIdentity) {
-        document.getElementById('btn-menu-identity').style.display = 'none';
-        if (!hasClickedRewards) {
-          Swal.fire({
-            icon: 'warning',
-            title: 'แจ้งเตือน',
-            text: 'กรุณากด "ลงทะเบียน LINE Rewards" ให้ครบถ้วนก่อน',
-            confirmButtonColor: '#FF0000'
-          });
-        }
-      } else {
-        document.getElementById('btn-menu-identity').style.display = 'block';
-      }
-
-      if (hasClickedRewards) {
-        document.getElementById('btn-menu-rewards').style.display = 'none';
-      } else {
-        document.getElementById('btn-menu-rewards').style.display = 'block';
-      }
-    }
-
-    function openRewardsFromHome() {
-      localStorage.setItem('clicked_rewards_' + lineProfile.userId, 'true');
-      document.getElementById('btn-menu-rewards').style.display = 'none'; 
-      window.location.href = 'https://liff.line.me/2000733931-wPdEZX0R/channels/5000640583/crm/member/dashboard';
     }
 
     function goToRegForm() {
-      const hasClickedRewards = localStorage.getItem('clicked_rewards_' + lineProfile.userId);
-      if (!hasClickedRewards) {
-        Swal.fire({
-          icon: 'warning',
-          title: 'แจ้งเตือน',
-          text: 'กรุณากด "ลงทะเบียน LINE Rewards" ให้ครบถ้วนก่อนเข้าสู่หน้ากรอกข้อมูล',
-          confirmButtonColor: '#FF0000'
-        });
-        return;
-      }
-      
       document.getElementById('home-menu').style.display = 'none';
       document.getElementById('reg-form').style.display = 'block';
+    }
+
+    // 🌟 ฟังก์ชันสำหรับเปิดลิงก์และซ่อนปุ่มในหน้าโปรไฟล์
+    function openRewardsFromProfile() {
+      localStorage.setItem('clicked_rewards_' + lineProfile.userId, 'true');
+      document.getElementById('btn-profile-rewards').style.display = 'none'; 
+      window.location.href = 'https://liff.line.me/2000733931-wPdEZX0R/channels/5000640583/crm/member/dashboard';
     }
 
     function showMemberUI(user) {
@@ -257,6 +227,14 @@
         document.getElementById('resUpdateDate').innerText = user.updateDate;
       } else {
         document.getElementById('updateTimeContainer').style.display = 'none';
+      }
+
+      // 🌟 ตรวจสอบว่าเคยคลิกปุ่ม Rewards ไปหรือยัง ถ้าเคยแล้วให้ซ่อน
+      const hasClickedRewards = localStorage.getItem('clicked_rewards_' + lineProfile.userId);
+      if (hasClickedRewards) {
+        document.getElementById('btn-profile-rewards').style.display = 'none';
+      } else {
+        document.getElementById('btn-profile-rewards').style.display = 'block';
       }
 
       document.getElementById('success-view').style.display = 'block';
