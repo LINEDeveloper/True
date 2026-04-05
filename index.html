@@ -186,10 +186,10 @@
         const hasClickedRewards = localStorage.getItem('clicked_rewards_' + lineProfile.userId);
         const hasIdentity = (currentUserData && currentUserData.status !== "ยกเลิกเป็นสมาชิก");
 
-        // 🌟 ปรับข้อความใต้รูปโปรไฟล์: "ลงทะเบียนยืนยันตัวตน" (สีเขียว) และข้อความเล็กกำกับด้านล่าง
+        // 🌟 ปรับข้อความใต้รูปโปรไฟล์ตามที่ต้องการ
         document.getElementById('welcome-text').innerHTML = `
           <span style="color: #00B900; font-weight: 600; font-size: 20px;">ลงทะเบียนยืนยันตัวตน</span><br>
-          <span style="font-size: 13px; color: #666; font-weight: 300; display: block; margin-top: 4px;">เพื่อยืนยันตัวตนในการรับข่าวสารผ่าน LINE Channel Commu</span>
+          <span style="font-size: 13px; color: #666; font-weight: 300; display: block; margin-top: 4px;">ในการรับข่าวสารผ่าน LINE Channel Commu เท่านั้น</span>
         `;
 
         if (hasIdentity && hasClickedRewards) {
