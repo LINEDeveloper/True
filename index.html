@@ -15,6 +15,7 @@
     h2 { font-family: 'Kanit', sans-serif; text-align: center; color: var(--text-main); margin: 0 0 8px 0; font-size: 24px; font-weight: 600;}
     .app-desc { font-size: 13px; color: var(--text-sub); text-align: center; margin-bottom: 25px; background: #FFF1F1; padding: 14px; border-radius: 16px; line-height: 1.6; border: 1px solid #FFE0E0; }
     
+    /* สไตล์เดิมของปุ่ม Compact Gradient (เก็บไว้เผื่ออนาคต) */
     .channel-container { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
     .channel-card-compact { 
       padding: 12px 20px; border-radius: 15px; cursor: pointer; transition: 0.2s; text-align: center;
@@ -36,14 +37,13 @@
     .sync-btn { width: 100%; padding: 16px; color: white; border: none; border-radius: 18px; font-size: 16px; font-weight: 600; font-family: 'Kanit'; cursor: pointer; margin-top: 10px; transition: 0.3s; }
     .btn-red { background: linear-gradient(135deg, #FF0000, #D50000); }
     .btn-line { background-color: var(--line-green); box-shadow: 0 8px 20px rgba(0, 185, 0, 0.2); }
-    .btn-outline { background: #fff; border: 1px solid #ddd; color: #666; }
     .btn-cancel { background: #fff; color: #ff4d4d; border: 1px solid #ff4d4d; font-size: 14px; margin-top: 15px; }
 
     .profile-pic { width: 90px; height: 90px; border-radius: 50%; border: 4px solid white; box-shadow: 0 8px 20px rgba(0,0,0,0.1); margin: 0 auto 15px auto; display: block; object-fit: cover; }
     .success-card-gradient { background: linear-gradient(135deg, #FF0000 0%, #007AFF 100%); padding: 30px 20px; border-radius: 30px; color: white; text-align: left; margin: 15px 0; }
     .info-row { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.2); padding: 10px 0; font-size: 14px; }
 
-    /* 🌟 Loading Overlay แบบใหม่ (รูปโปรไฟล์) */
+    /* Loading Overlay แบบรูปโปรไฟล์ (คงเดิม) */
     #loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #FFFFFF; z-index: 9999; flex-direction: column; align-items: center; justify-content: center; }
     .profile-loader { width: 100px; height: 100px; border-radius: 50%; border: 4px solid var(--primary); margin-bottom: 20px; object-fit: cover; animation: pulse 2s infinite; }
     @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.05); opacity: 0.8; } 100% { transform: scale(1); opacity: 1; } }
@@ -71,7 +71,7 @@
     
     <div id="reg-header">
       <h2>ลงทะเบียนยืนยันตัวตน</h2>
-      <div class="app-desc">พนักงาน True Corporation ยืนยันข้อมูล<br>เพื่อรับข่าวสารผ่าน Channel communication</div>
+      <div class="app-desc">พนักงาน True Corporation ยืนยันข้อมูล<br>เพื่อรับข่าวสารผ่าน Channel Academy & Commu</div>
     </div>
 
     <div id="login-container" style="display: none; text-align: center; padding: 20px 0;">
@@ -82,30 +82,13 @@
       <img id="userPic" class="profile-pic" src="">
       <div id="welcome-text" style="margin-bottom: 20px; font-family: 'Kanit'; font-size: 18px;"></div>
       
-      <div id="type-selection" style="display: none;">
-        <p style="color: #666; font-size: 14px; margin-bottom: 10px;">กรุณาเลือกประเภทช่องทางที่สังกัด</p>
-        <div class="channel-container">
-          <div class="channel-card-compact" onclick="goToForm('Shop')">
-            <span class="channel-name-compact">Shop</span>
-            <p class="channel-desc-compact">ประจำสาขา / จุดบริการลูกค้า</p>
-          </div>
-          <div class="channel-card-compact" onclick="goToForm('Non Shop')">
-            <span class="channel-name-compact">Non Shop</span>
-            <p class="channel-desc-compact">ฝ่ายขาย / พนักงานสนาม / Retail / DS</p>
-          </div>
-          <div class="channel-card-compact" onclick="goToForm('Back Office')">
-            <span class="channel-name-compact">Back Office</span>
-            <p class="channel-desc-compact">ส่วนกลาง / สำนักงาน / สนับสนุนงานขาย</p>
-          </div>
-        </div>
-      </div>
-
       <div id="reg-form" style="display: none; text-align: left;">
+        
         <div style="background: #FF0000; padding: 10px; border-radius: 12px; margin-bottom: 15px; text-align: center; color: #FFFFFF; font-weight: bold; border: none; box-shadow: 0 4px 10px rgba(255,0,0,0.2);">
-          ช่องทาง: <span id="selectedChannelText"></span>
-        </div>
+          ช่องทาง: <span id="selectedChannelText">Non Shop</span> </div>
+
         <label class="input-label">รหัสพนักงาน</label>
-        <input type="text" id="empId" placeholder="ระบุรหัสพนักงาน (ให้ถูกต้อง)">
+        <input type="text" id="empId" placeholder="ระบุรหัสพนักงาน (อังกฤษและตัวเลข)">
         
         <label class="input-label">ชื่อจริง (ภาษาไทยเท่านั้น)</label>
         <input type="text" id="firstName" oninput="this.value=this.value.replace(/[^ก-๙\s]/g,'');" placeholder="ชื่อจริง">
@@ -119,8 +102,7 @@
         <div id="pdpa-box" class="consent-box">
           <div class="consent-content">
             <b style="font-family: 'Kanit'; color: #333;">เอกสารแสดงความยินยอม (Consent Form)</b><br><br>
-            ข้าพเจ้า “ให้” ความยินยอม บมจ.ทรู คอร์ปอเรชั่น จำกัด เปิดเผยข้อมูลส่วนบุคคลให้ Channel Academy & Communication เพื่อเก็บข้อมูล พนักงานทรูช่องทาง Retail, DS และ Back Office สำหรับใช้ในการส่งข้อมุลข่าวสารได้ทั่วถึงและมีประสิทธิภาพ ผ่านช่องทาง LINE OA ที่สร้างขึ้นเพื่อใช้ในการสื่อสาร ระหว่าง ทีม back office กับพนักงานขายหน้าร้านเท่านั้น<br><br>
-            ทั้งนี้ ก่อนการแสดงเจตนา ข้าพเจ้าได้รับคำอธิบายจาก ทีม Channel Academy & Communication ถึงวัตถุประสงค์ในการเก็บรวบรวม ใช้หรือเปิดเผย (“ประมวลผล”) ข้อมูลส่วนบุคคล และมีความเข้าใจดีแล้ว<br><br>
+            ข้าพเจ้า “ให้” ความยินยอม บมจ.ทรู คอร์ปอเรชั่น จำกัด เปิดเผยข้อมูลส่วนบุคคลให้ Channel Academy & Communication เพื่อเก็บข้อมูล พนักงานทรูช่องทาง Retail, DS และ Back Office สำหรับใช้ในการส่งข้อมุลข่าวสารได้ทั่วถึงและมีประสิทธิภาพ ผ่านช่องทาง LINE OA ที่สร้างขึ้นเพื่อใช้ในการสื่อสาร ระหว่าง ทีม back office กับพนักงานขายหน้าร้านเท่านั้น...<br><br>
             ข้าพเจ้าให้ความยินยอมในเอกสารนี้ด้วยความสมัครใจ
           </div>
           <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 13.5px; font-weight: 600; padding-top: 8px; border-top: 1px solid #EEE;">
@@ -129,12 +111,11 @@
         </div>
         
         <button class="sync-btn btn-red" onclick="submitData()">ยืนยันข้อมูล</button>
-        <div class="back-link" onclick="backToStep()">ย้อนกลับ</div>
-      </div>
+        </div>
 
       <div id="success-view" style="display: none;">
         <div class="success-card-gradient">
-          <div style="font-size: 18px; font-weight: bold; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 8px;">ข้อมูลส่วนตัว</div>
+          <div style="font-size: 18px; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 8px; margin-bottom: 5px;">ข้อมูลส่วนตัว</div>
           <div style="font-size: 11px; color: rgba(255,255,255,0.85); margin-bottom: 15px; font-weight: 300;">*ใช้สำหรับยืนยันตัวตน LINE Channel Commu เท่านั้น</div>
           
           <div class="info-row"><span>รหัสพนักงาน:</span> <span id="resEmpId"></span></div>
@@ -155,11 +136,12 @@
   </div>
 
   <script>
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbxQ0-VSX6OZ8sa2mH0Y-r1Z11WyZf87lho-pqD02P6Vwp1V6KqdHc--BFApr8L8GYK6/exec'; 
-    const LIFF_ID = '1656846002-7Dj11vMZ';
+    const GAS_URL = 'ใส่_URL_GAS_ของคุณ'; 
+    const LIFF_ID = 'ใส่_LIFF_ID_ของคุณ';
     let lineProfile = {};
     let currentUserData = null;
-    let selectedChannel = "";
+    // 🌟 กำหนดช่องทางเริ่มต้นเป็น Non Shop เสมอ
+    let selectedChannel = "Non Shop"; 
 
     async function initLiff() {
       await liff.init({ liffId: LIFF_ID });
@@ -168,9 +150,8 @@
       } else {
         const profile = await liff.getProfile();
         const idToken = liff.getDecodedIDToken();
-        lineProfile = { ...profile, email: idToken.email || "" };
+        lineProfile = { ...profile, email: idToken.email || "", displayName: profile.displayName };
         
-        // 🌟 ดึงรูปมาใส่ในหน้า Loading ทันที
         document.getElementById('userProfilePicLoad').src = profile.pictureUrl;
         document.getElementById('userPic').src = profile.pictureUrl;
         
@@ -189,14 +170,14 @@
           showMemberUI(currentUserData);
         } else {
           document.getElementById('welcome-text').innerText = `สวัสดีคุณ ${lineProfile.displayName}`;
-          document.getElementById('type-selection').style.display = 'block';
+          // 🌟 ข้ามหน้าเลือกช่องทาง และแสดงหน้าฟอร์มทันที
+          showRegistrationForm(); 
         }
       } catch(e) { toggleLoading(false); }
     }
 
     function showMemberUI(user) {
       document.getElementById('reg-header').style.display = 'none';
-      document.getElementById('type-selection').style.display = 'none';
       document.getElementById('reg-form').style.display = 'none';
       document.getElementById('welcome-text').innerHTML = `
         <span style="color:var(--success); font-size:22px; font-weight:600;">ขอแสดงความยินดี</span><br>
@@ -209,19 +190,15 @@
       document.getElementById('success-view').style.display = 'block';
     }
 
-    function goToForm(type) {
-      selectedChannel = type;
-      document.getElementById('selectedChannelText').innerText = type;
-      document.getElementById('type-selection').style.display = 'none';
+    // 🌟 ฟังก์ชันใหม่สำหรับแสดงหน้าฟอร์มโดยตรง
+    function showRegistrationForm() {
+      document.getElementById('selectedChannelText').innerText = selectedChannel;
       document.getElementById('reg-form').style.display = 'block';
     }
 
     function backToStep() {
+      // 🌟 ปุ่มย้อนกลับถูกลบแล้ว ฟังก์ชันนี้จะไม่ถูกเรียกใช้งานสำหรับพนักงานใหม่
       if (currentUserData) { location.reload(); } 
-      else {
-        document.getElementById('reg-form').style.display = 'none';
-        document.getElementById('type-selection').style.display = 'block';
-      }
     }
 
     function enableEdit() {
