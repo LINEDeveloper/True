@@ -124,7 +124,6 @@
   </div>
 
   <script>
-    // 🌟 ใส่ URL และ LIFF ID ของคุณเรียบร้อยแล้ว
     const GAS_URL = 'https://script.google.com/macros/s/AKfycbxQ0-VSX6OZ8sa2mH0Y-r1Z11WyZf87lho-pqD02P6Vwp1V6KqdHc--BFApr8L8GYK6/exec'; 
     const LIFF_ID = '1656846002-7Dj11vMZ';
     
@@ -226,8 +225,17 @@
       const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
       const status = await res.json();
       toggleLoading(false);
+      
       if (status.status === 'success') {
-        Swal.fire({ icon: 'success', title: 'สำเร็จ', text: currentUserData ? 'อัปเดตข้อมูลพนักงานเรียบร้อยแล้ว' : 'ลงทะเบียนสำเร็จ', confirmButtonColor: '#FF0000' }).then(() => location.reload());
+        // 🌟 เพิ่มเงื่อนไขตรวจสอบเพื่อแสดงข้อความที่ปรับปรุงใหม่ใน Pop-up
+        const successMessage = currentUserData ? 'อัปเดตข้อมูลพนักงานเรียบร้อยแล้ว' : `คุณ ${fName} ${lName} ลงทะเบียนสำเร็จ`;
+        
+        Swal.fire({ 
+          icon: 'success', 
+          title: 'สำเร็จ', 
+          text: successMessage, 
+          confirmButtonColor: '#FF0000' 
+        }).then(() => location.reload());
       }
     }
 
