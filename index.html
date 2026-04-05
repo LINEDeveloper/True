@@ -26,6 +26,7 @@
     .sync-btn { width: 100%; padding: 16px; color: white; border: none; border-radius: 18px; font-size: 16px; font-weight: 600; font-family: 'Kanit'; cursor: pointer; margin-top: 10px; transition: 0.3s; }
     .btn-red { background: linear-gradient(135deg, #FF0000, #D50000); }
     .btn-line { background-color: var(--line-green); box-shadow: 0 8px 20px rgba(0, 185, 0, 0.2); }
+    .btn-rewards { background: linear-gradient(135deg, #00C300, #009900); margin-bottom: 0px; box-shadow: 0 4px 15px rgba(0, 195, 0, 0.2); }
     .btn-cancel { background: #fff; color: #ff4d4d; border: 1px solid #ff4d4d; font-size: 14px; margin-top: 15px; }
 
     .profile-pic { width: 90px; height: 90px; border-radius: 50%; border: 4px solid white; box-shadow: 0 8px 20px rgba(0,0,0,0.1); margin: 0 auto 15px auto; display: block; object-fit: cover; }
@@ -106,7 +107,11 @@
           <div class="info-row"><span>ชื่อ-นามสกุล:</span> <span id="resName"></span></div>
           <div class="info-row"><span>เบอร์โทรศัพท์:</span> <span id="resPhone"></span></div>
         </div>
-        <button class="sync-btn btn-red" onclick="enableEdit()">แก้ไขข้อมูล</button>
+
+        <button id="btnRewards" class="sync-btn btn-rewards" onclick="openRewards()">ลงทะเบียน LINE Rewards</button>
+        <p style="font-size: 11.5px; color: #009900; margin-top: 6px; margin-bottom: 18px; font-weight: 500; text-align: center;">*สำหรับสะสมคะแนนลุ้นรับรางวัล</p>
+
+        <button class="sync-btn btn-red" onclick="enableEdit()">แก้ไขข้อมูลส่วนตัว</button>
         <button class="sync-btn btn-cancel" onclick="cancelMember()">ยกเลิกการเป็นสมาชิก</button>
         <p style="font-size: 11px; color: #999; margin-top: 10px; font-weight: 300;">*กรณีสิ้นสุดสภาพการเป็นพนักงานเท่านั้น</p>
       </div>
@@ -123,7 +128,6 @@
     const LIFF_ID = '1656846002-7Dj11vMZ';
     let lineProfile = {};
     let currentUserData = null;
-    // ลบตัวแปร selectedChannel ออกแล้ว
 
     async function initLiff() {
       await liff.init({ liffId: LIFF_ID });
@@ -167,7 +171,28 @@
       document.getElementById('resEmpId').innerText = user.empId;
       document.getElementById('resName').innerText = `${user.firstName} ${user.lastName}`;
       document.getElementById('resPhone').innerText = user.phone || "-";
+      
+      // 🌟 ตรวจสอบว่าพนักงานคนนี้เคยคลิกลิงก์ Rewards หรือยัง
+      const hasClickedRewards = localStorage.getItem('clicked_rewards_' + lineProfile.userId);
+      if (hasClickedRewards) {
+        document.getElementById('btnRewards').innerText = "แก้ไขข้อมูล LINE Rewards";
+      } else {
+        document.getElementById('btnRewards').innerText = "ลงทะเบียน LINE Rewards";
+      }
+
       document.getElementById('success-view').style.display = 'block';
+    }
+
+    // 🌟 ฟังก์ชันเมื่อกดปุ่ม LINE Rewards
+    function openRewards() {
+      // บันทึกการคลิกลงใน Local Storage
+      localStorage.setItem('clicked_rewards_' + lineProfile.userId, 'true');
+      
+      // เปลี่ยนข้อความปุ่มทันที
+      document.getElementById('btnRewards').innerText = "แก้ไขข้อมูล LINE Rewards";
+      
+      // เปิดลิงก์ที่ระบุ
+      window.location.href = 'https://liff.line.me/2000733931-wPdEZX0R/channels/5000640583/crm/member/dashboard';
     }
 
     function showRegistrationForm() {
@@ -202,7 +227,6 @@
       if (!digitRegex.test(phone) || phone.length !== 10) return Swal.fire({ title: 'เบอร์โทรศัพท์ไม่ถูกต้อง', text: 'กรุณาระบุหมายเลขให้ครบ 10 หลัก', icon: 'error', confirmButtonColor: '#FF0000' });
       
       toggleLoading(true);
-      // ส่งข้อมูลโดยไม่มี channelType แล้ว
       const payload = { action: 'submitRegistration', uid: lineProfile.userId, displayName: lineProfile.displayName, pictureUrl: lineProfile.pictureUrl, email: lineProfile.email, empId: empId, firstName: fName, lastName: lName, phone: phone };
       const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
       const status = await res.json();
