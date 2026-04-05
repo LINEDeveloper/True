@@ -50,7 +50,6 @@
 
     .footer { text-align: center; font-size: 12px; color: var(--text-sub); margin-top: 25px; line-height: 1.6; }
     .footer a { color: #FF0000; text-decoration: none; font-weight: 600; }
-    .back-link { display: block; text-align: center; color: #999; font-size: 13px; margin-top: 15px; cursor: pointer; text-decoration: underline; }
     
     .swal2-popup { border-radius: 30px !important; font-family: 'Sarabun', sans-serif !important; }
     .swal2-confirm { background: var(--primary) !important; color: #ffffff !important; border-radius: 15px !important; }
@@ -85,7 +84,8 @@
       <div id="reg-form" style="display: none; text-align: left;">
         
         <div style="background: #FF0000; padding: 10px; border-radius: 12px; margin-bottom: 15px; text-align: center; color: #FFFFFF; font-weight: bold; border: none; box-shadow: 0 4px 10px rgba(255,0,0,0.2);">
-          ช่องทาง: <span id="selectedChannelText">Non Shop</span> </div>
+          ช่องทาง: <span id="selectedChannelText">Non Shop</span> 
+        </div>
 
         <label class="input-label">รหัสพนักงาน</label>
         <input type="text" id="empId" placeholder="ระบุรหัสพนักงาน (อังกฤษและตัวเลข)">
@@ -111,7 +111,7 @@
         </div>
         
         <button class="sync-btn btn-red" onclick="submitData()">ยืนยันข้อมูล</button>
-        </div>
+      </div>
 
       <div id="success-view" style="display: none;">
         <div class="success-card-gradient">
@@ -140,7 +140,6 @@
     const LIFF_ID = 'ใส่_LIFF_ID_ของคุณ';
     let lineProfile = {};
     let currentUserData = null;
-    // 🌟 กำหนดช่องทางเริ่มต้นเป็น Non Shop เสมอ
     let selectedChannel = "Non Shop"; 
 
     async function initLiff() {
@@ -170,7 +169,6 @@
           showMemberUI(currentUserData);
         } else {
           document.getElementById('welcome-text').innerText = `สวัสดีคุณ ${lineProfile.displayName}`;
-          // 🌟 ข้ามหน้าเลือกช่องทาง และแสดงหน้าฟอร์มทันที
           showRegistrationForm(); 
         }
       } catch(e) { toggleLoading(false); }
@@ -190,14 +188,14 @@
       document.getElementById('success-view').style.display = 'block';
     }
 
-    // 🌟 ฟังก์ชันใหม่สำหรับแสดงหน้าฟอร์มโดยตรง
+    // แก้ไขจุดที่ทำให้ SyntaxError หายไป
     function showRegistrationForm() {
       document.getElementById('selectedChannelText').innerText = selectedChannel;
       document.getElementById('reg-form').style.display = 'block';
     }
 
+    // ลบปุ่มย้อนกลับออกแล้วใน HTML ฟังก์ชันนี้จึงไม่มีการผูกอีเวนต์ใดๆ เก็บไว้เพื่อความเข้ากันได้
     function backToStep() {
-      // 🌟 ปุ่มย้อนกลับถูกลบแล้ว ฟังก์ชันนี้จะไม่ถูกเรียกใช้งานสำหรับพนักงานใหม่
       if (currentUserData) { location.reload(); } 
     }
 
@@ -210,7 +208,7 @@
       document.getElementById('firstName').value = currentUserData.firstName;
       document.getElementById('lastName').value = currentUserData.lastName;
       document.getElementById('phone').value = currentUserData.phone || "";
-      selectedChannel = currentUserData.channelType;
+      selectedChannel = currentUserData.channelType || "Non Shop";
       document.getElementById('selectedChannelText').innerText = selectedChannel;
     }
 
