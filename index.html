@@ -26,6 +26,7 @@
     .sync-btn { width: 100%; padding: 16px; color: white; border: none; border-radius: 18px; font-size: 16px; font-weight: 600; font-family: 'Kanit'; cursor: pointer; margin-top: 10px; transition: 0.3s; }
     .btn-red { background: linear-gradient(135deg, #FF0000, #D50000); }
     .btn-line { background-color: var(--line-green); box-shadow: 0 8px 20px rgba(0, 185, 0, 0.2); }
+    .btn-rewards { background: linear-gradient(135deg, #00C300, #009900); margin-bottom: 0px; box-shadow: 0 4px 15px rgba(0, 195, 0, 0.2); }
     .btn-cancel { background: #fff; color: #ff4d4d; border: 1px solid #ff4d4d; font-size: 14px; margin-top: 15px; }
 
     .profile-pic { width: 90px; height: 90px; border-radius: 50%; border: 4px solid white; box-shadow: 0 8px 20px rgba(0,0,0,0.1); margin: 0 auto 15px auto; display: block; object-fit: cover; }
@@ -69,6 +70,17 @@
       <img id="userPic" class="profile-pic" src="">
       <div id="welcome-text" style="margin-bottom: 20px; font-family: 'Kanit'; font-size: 18px;"></div>
       
+      <div id="home-menu" style="display: none; text-align: center;">
+        <div style="background: #FFF8E1; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-size: 13.5px; color: #555; border: 1px solid #FFE082; text-align: left; line-height: 1.6;">
+          <b style="color: #FF8F00;">📢 ประกาศสำคัญ:</b><br>
+          พนักงานต้องดำเนินการ <b>ลงทะเบียนยืนยันตัวตน</b> และ <b>ลงทะเบียน LINE Rewards</b><br>
+          <span style="font-size: 12px; color: #777;">*เมื่อลงครบแล้ว ครั้งต่อไประบบจะแสดงหน้าข้อมูลส่วนตัวตามปกติ</span>
+        </div>
+
+        <button id="btn-menu-identity" class="sync-btn btn-red" onclick="goToRegForm()">ลงทะเบียนยืนยันตัวตน</button>
+        <button id="btn-menu-rewards" class="sync-btn btn-rewards" onclick="openRewardsFromHome()" style="margin-top: 15px;">ลงทะเบียน LINE Rewards</button>
+      </div>
+
       <div id="reg-form" style="display: none; text-align: left;">
         
         <label class="input-label">รหัสพนักงาน</label>
@@ -157,18 +169,81 @@
         const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'checkUser', uid: lineProfile.userId }) });
         currentUserData = await res.json();
         toggleLoading(false);
-        if (currentUserData && currentUserData.status !== "ยกเลิกเป็นสมาชิก") {
+        
+        const hasClickedRewards = localStorage.getItem('clicked_rewards_' + lineProfile.userId);
+        const hasIdentity = (currentUserData && currentUserData.status !== "ยกเลิกเป็นสมาชิก");
+
+        document.getElementById('welcome-text').innerText = `สวัสดีคุณ ${lineProfile.displayName}`;
+
+        if (hasIdentity && hasClickedRewards) {
+          // ลงครบ 2 อย่างแล้ว แสดงหน้าข้อมูลส่วนตัว (Success View)
           showMemberUI(currentUserData);
         } else {
-          document.getElementById('welcome-text').innerText = `สวัสดีคุณ ${lineProfile.displayName}`;
-          showRegistrationForm(); 
+          // ขาดอย่างใดอย่างหนึ่ง ให้แสดงหน้าแรก (Home Menu)
+          showHomeMenu(hasIdentity, hasClickedRewards);
         }
       } catch(e) { toggleLoading(false); }
+    }
+
+    // 🌟 ฟังก์ชันจัดการหน้าแรก (Home Menu)
+    function showHomeMenu(hasIdentity, hasClickedRewards) {
+      document.getElementById('reg-header').style.display = 'block';
+      document.getElementById('reg-form').style.display = 'none';
+      document.getElementById('success-view').style.display = 'none';
+      document.getElementById('home-menu').style.display = 'block';
+
+      if (hasIdentity) {
+        document.getElementById('btn-menu-identity').style.display = 'none';
+        if (!hasClickedRewards) {
+          // แจ้งเตือนกรณีลงทะเบียนเสร็จแล้ว แต่ยังไม่ได้กด Rewards
+          Swal.fire({
+            icon: 'warning',
+            title: 'แจ้งเตือน',
+            text: 'กรุณากด "ลงทะเบียน LINE Rewards" ให้ครบถ้วนก่อน',
+            confirmButtonColor: '#FF0000'
+          });
+        }
+      } else {
+        document.getElementById('btn-menu-identity').style.display = 'block';
+      }
+
+      if (hasClickedRewards) {
+        document.getElementById('btn-menu-rewards').style.display = 'none';
+      } else {
+        document.getElementById('btn-menu-rewards').style.display = 'block';
+      }
+    }
+
+    // 🌟 ฟังก์ชันเมื่อกดปุ่ม ลงทะเบียน LINE Rewards หน้าแรก
+    function openRewardsFromHome() {
+      localStorage.setItem('clicked_rewards_' + lineProfile.userId, 'true');
+      document.getElementById('btn-menu-rewards').style.display = 'none'; // ซ่อนทันทีเมื่อกด
+      window.location.href = 'https://liff.line.me/2000733931-wPdEZX0R/channels/5000640583/crm/member/dashboard';
+    }
+
+    // 🌟 ฟังก์ชันเมื่อกดปุ่ม ลงทะเบียนยืนยันตัวตน
+    function goToRegForm() {
+      const hasClickedRewards = localStorage.getItem('clicked_rewards_' + lineProfile.userId);
+      // ตรวจสอบว่ากด LINE Rewards หรือยัง ถ้ายังให้แจ้งเตือนและบล็อกไม่ให้ไปต่อ
+      if (!hasClickedRewards) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'แจ้งเตือน',
+          text: 'กรุณากด "ลงทะเบียน LINE Rewards" ให้ครบถ้วนก่อนเข้าสู่หน้ากรอกข้อมูล',
+          confirmButtonColor: '#FF0000'
+        });
+        return;
+      }
+      
+      document.getElementById('home-menu').style.display = 'none';
+      document.getElementById('reg-form').style.display = 'block';
     }
 
     function showMemberUI(user) {
       document.getElementById('reg-header').style.display = 'none';
       document.getElementById('reg-form').style.display = 'none';
+      document.getElementById('home-menu').style.display = 'none';
+      
       document.getElementById('welcome-text').innerHTML = `
         <span style="color:var(--success); font-size:22px; font-weight:600;">ขอแสดงความยินดี</span><br>
         <span style="font-weight: 300; font-size:15px; color:var(--text-sub);">สถานะ : ระบบบันทึกข้อมูลสำเร็จ</span>
@@ -177,7 +252,7 @@
       document.getElementById('resName').innerText = `${user.firstName} ${user.lastName}`;
       document.getElementById('resPhone').innerText = user.phone || "-";
       
-      // เช็คและแสดงเวลาอัปเดตเฉพาะกรณีที่มีการแก้ไข (สถานะอัปเดตข้อมูล)
+      // เช็คและแสดงเวลาอัปเดตเฉพาะกรณีที่มีการแก้ไข
       if (user.status === "อัปเดตข้อมูล" && user.updateDate) {
         document.getElementById('updateTimeContainer').style.display = 'block';
         document.getElementById('resUpdateDate').innerText = user.updateDate;
@@ -186,14 +261,6 @@
       }
 
       document.getElementById('success-view').style.display = 'block';
-    }
-
-    function showRegistrationForm() {
-      document.getElementById('reg-form').style.display = 'block';
-    }
-
-    function backToStep() {
-      if (currentUserData) { location.reload(); } 
     }
 
     function enableEdit() {
