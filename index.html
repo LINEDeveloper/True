@@ -59,7 +59,7 @@
     
     <div id="reg-header" style="text-align: center; margin-bottom: 25px;">
       <div style="font-size: 14px; color: var(--text-sub); line-height: 1.6;">
-        เพื่อยืนยันตัวตนในการรับข่าวสารผ่าน LINE Channel Commu บริษัทจะจัดเก็บข้อมูลของท่านอย่างปลอดภัย โดยจำกัดสิทธิ์การเข้าถึงเฉพาะเจ้าหน้าที่เท่านั้น ตามมาตรฐาน PDPA
+        บริษัทจะจัดเก็บข้อมูลของท่านอย่างปลอดภัย โดยจำกัดสิทธิ์การเข้าถึงเฉพาะเจ้าหน้าที่เท่านั้น ตามมาตรฐาน PDPA
       </div>
     </div>
 
@@ -186,7 +186,11 @@
         const hasClickedRewards = localStorage.getItem('clicked_rewards_' + lineProfile.userId);
         const hasIdentity = (currentUserData && currentUserData.status !== "ยกเลิกเป็นสมาชิก");
 
-        document.getElementById('welcome-text').innerHTML = `<span style="color: #00B900; font-weight: 600; font-size: 20px;">ลงทะเบียนยืนยันตัวตน</span>`;
+        // 🌟 ปรับข้อความใต้รูปโปรไฟล์: "ลงทะเบียนยืนยันตัวตน" (สีเขียว) และข้อความเล็กกำกับด้านล่าง
+        document.getElementById('welcome-text').innerHTML = `
+          <span style="color: #00B900; font-weight: 600; font-size: 20px;">ลงทะเบียนยืนยันตัวตน</span><br>
+          <span style="font-size: 13px; color: #666; font-weight: 300; display: block; margin-top: 4px;">เพื่อยืนยันตัวตนในการรับข่าวสารผ่าน LINE Channel Commu</span>
+        `;
 
         if (hasIdentity && hasClickedRewards) {
           showMemberUI(currentUserData);
