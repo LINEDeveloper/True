@@ -26,7 +26,6 @@
     .sync-btn { width: 100%; padding: 16px; color: white; border: none; border-radius: 18px; font-size: 16px; font-weight: 600; font-family: 'Kanit'; cursor: pointer; margin-top: 10px; transition: 0.3s; }
     .btn-red { background: linear-gradient(135deg, #FF0000, #D50000); }
     .btn-line { background-color: var(--line-green); box-shadow: 0 8px 20px rgba(0, 185, 0, 0.2); }
-    .btn-rewards { background: linear-gradient(135deg, #00C300, #009900); margin-bottom: 0px; box-shadow: 0 4px 15px rgba(0, 195, 0, 0.2); }
     .btn-cancel { background: #fff; color: #ff4d4d; border: 1px solid #ff4d4d; font-size: 14px; margin-top: 15px; }
 
     .profile-pic { width: 90px; height: 90px; border-radius: 50%; border: 4px solid white; box-shadow: 0 8px 20px rgba(0,0,0,0.1); margin: 0 auto 15px auto; display: block; object-fit: cover; }
@@ -119,10 +118,6 @@
           <span style="font-size: 11px; color: #999; font-weight: 300;">*กรณีสิ้นสุดสภาพการเป็นพนักงานเท่านั้น</span>
         </button>
 
-        <button id="btnRewards" class="sync-btn btn-rewards" onclick="openRewards()" style="margin-top: 15px; line-height: 1.4;">
-          <span id="btnRewardsText">ลงทะเบียน LINE Rewards</span><br>
-          <span style="font-size: 11.5px; font-weight: 400; color: rgba(255,255,255,0.9);">*สำหรับสะสมคะแนนลุ้นรับรางวัล</span>
-        </button>
       </div>
     </div>
   </div>
@@ -182,34 +177,15 @@
       document.getElementById('resName').innerText = `${user.firstName} ${user.lastName}`;
       document.getElementById('resPhone').innerText = user.phone || "-";
       
-      // 🌟 เช็คและแสดงเวลาอัปเดตเฉพาะกรณีที่มีการแก้ไข (สถานะอัปเดตข้อมูล)
+      // เช็คและแสดงเวลาอัปเดตเฉพาะกรณีที่มีการแก้ไข (สถานะอัปเดตข้อมูล)
       if (user.status === "อัปเดตข้อมูล" && user.updateDate) {
         document.getElementById('updateTimeContainer').style.display = 'block';
         document.getElementById('resUpdateDate').innerText = user.updateDate;
       } else {
         document.getElementById('updateTimeContainer').style.display = 'none';
       }
-      
-      const hasClickedRewards = localStorage.getItem('clicked_rewards_' + lineProfile.userId);
-      if (hasClickedRewards) {
-        document.getElementById('btnRewardsText').innerText = "แก้ไขข้อมูล LINE Rewards";
-      } else {
-        document.getElementById('btnRewardsText').innerText = "ลงทะเบียน LINE Rewards";
-      }
 
       document.getElementById('success-view').style.display = 'block';
-    }
-
-    function openRewards() {
-      const hasClickedRewards = localStorage.getItem('clicked_rewards_' + lineProfile.userId);
-      
-      if (hasClickedRewards) {
-        window.location.href = 'https://liff.line.me/2000733931-wPdEZX0R/channels/5000640583/crm/member/menu/profile';
-      } else {
-        localStorage.setItem('clicked_rewards_' + lineProfile.userId, 'true');
-        document.getElementById('btnRewardsText').innerText = "แก้ไขข้อมูล LINE Rewards";
-        window.location.href = 'https://liff.line.me/2000733931-wPdEZX0R/channels/5000640583/crm/member/dashboard';
-      }
     }
 
     function showRegistrationForm() {
