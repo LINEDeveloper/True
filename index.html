@@ -15,17 +15,6 @@
     h2 { font-family: 'Kanit', sans-serif; text-align: center; color: var(--text-main); margin: 0 0 8px 0; font-size: 24px; font-weight: 600;}
     .app-desc { font-size: 13px; color: var(--text-sub); text-align: center; margin-bottom: 25px; background: #FFF1F1; padding: 14px; border-radius: 16px; line-height: 1.6; border: 1px solid #FFE0E0; }
     
-    /* สไตล์เดิมของปุ่ม Compact Gradient (เก็บไว้เผื่ออนาคต) */
-    .channel-container { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
-    .channel-card-compact { 
-      padding: 12px 20px; border-radius: 15px; cursor: pointer; transition: 0.2s; text-align: center;
-      background: linear-gradient(135deg, #FF0000 0%, #007AFF 100%); border: none;
-      box-shadow: 0 4px 10px rgba(255, 0, 0, 0.1);
-    }
-    .channel-card-compact:hover { transform: translateY(-2px); opacity: 0.9; }
-    .channel-name-compact { font-family: 'Kanit', sans-serif; font-size: 16px; font-weight: 600; color: #FFFFFF; display: block; }
-    .channel-desc-compact { font-size: 11px; color: rgba(255, 255, 255, 0.85); margin-top: 1px; }
-
     .consent-box { background: #FDFDFD; border-radius: 16px; padding: 15px; border: 1px solid #E0E0E0; margin-bottom: 20px; font-size: 13.5px; color: #444; }
     .consent-content { max-height: 150px; overflow-y: auto; padding-right: 10px; line-height: 1.7; margin-bottom: 12px; text-align: left; }
     .consent-content::-webkit-scrollbar { width: 3px; }
@@ -43,7 +32,6 @@
     .success-card-gradient { background: linear-gradient(135deg, #FF0000 0%, #007AFF 100%); padding: 30px 20px; border-radius: 30px; color: white; text-align: left; margin: 15px 0; }
     .info-row { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.2); padding: 10px 0; font-size: 14px; }
 
-    /* Loading Overlay แบบรูปโปรไฟล์ (คงเดิม) */
     #loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #FFFFFF; z-index: 9999; flex-direction: column; align-items: center; justify-content: center; }
     .profile-loader { width: 100px; height: 100px; border-radius: 50%; border: 4px solid var(--primary); margin-bottom: 20px; object-fit: cover; animation: pulse 2s infinite; }
     @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.05); opacity: 0.8; } 100% { transform: scale(1); opacity: 1; } }
@@ -83,10 +71,6 @@
       
       <div id="reg-form" style="display: none; text-align: left;">
         
-        <div style="background: #FF0000; padding: 10px; border-radius: 12px; margin-bottom: 15px; text-align: center; color: #FFFFFF; font-weight: bold; border: none; box-shadow: 0 4px 10px rgba(255,0,0,0.2);">
-          ช่องทาง: <span id="selectedChannelText">Non Shop</span> 
-        </div>
-
         <label class="input-label">รหัสพนักงาน</label>
         <input type="text" id="empId" placeholder="ระบุรหัสพนักงาน (อังกฤษและตัวเลข)">
         
@@ -102,7 +86,7 @@
         <div id="pdpa-box" class="consent-box">
           <div class="consent-content">
             <b style="font-family: 'Kanit'; color: #333;">เอกสารแสดงความยินยอม (Consent Form)</b><br><br>
-            ข้าพเจ้า “ให้” ความยินยอม บมจ.ทรู คอร์ปอเรชั่น จำกัด เปิดเผยข้อมูลส่วนบุคคลให้ Channel Academy & Communication เพื่อเก็บข้อมูล พนักงานทรูช่องทาง Retail, DS และ Back Office สำหรับใช้ในการส่งข้อมุลข่าวสารได้ทั่วถึงและมีประสิทธิภาพ ผ่านช่องทาง LINE OA ที่สร้างขึ้นเพื่อใช้ในการสื่อสาร ระหว่าง ทีม back office กับพนักงานขายหน้าร้านเท่านั้น...<br><br>
+            ข้าพเจ้า “ให้” ความยินยอม บมจ.ทรู คอร์ปอเรชั่น จำกัด เปิดเผยข้อมูลส่วนบุคคลให้ Channel Academy & Communication เพื่อเก็บข้อมูล พนักงานทรูช่องทาง Retail, DS และ Back Office สำหรับใช้ในการส่งข้อมุลข่าวสารได้ทั่วถึงและมีประสิทธิภาพ ผ่านช่องทาง LINE OA ที่สร้างขึ้นเพื่อใช้ในการสื่อสาร ระหว่าง ทีม back office กับพนักงานขายหน้าร้านเท่านั้น<br><br>
             ข้าพเจ้าให้ความยินยอมในเอกสารนี้ด้วยความสมัครใจ
           </div>
           <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 13.5px; font-weight: 600; padding-top: 8px; border-top: 1px solid #EEE;">
@@ -121,7 +105,6 @@
           <div class="info-row"><span>รหัสพนักงาน:</span> <span id="resEmpId"></span></div>
           <div class="info-row"><span>ชื่อ-นามสกุล:</span> <span id="resName"></span></div>
           <div class="info-row"><span>เบอร์โทรศัพท์:</span> <span id="resPhone"></span></div>
-          <div class="info-row"><span>ช่องทาง:</span> <span id="resChannel"></span></div>
         </div>
         <button class="sync-btn btn-red" onclick="enableEdit()">แก้ไขข้อมูล</button>
         <button class="sync-btn btn-cancel" onclick="cancelMember()">ยกเลิกการเป็นสมาชิก</button>
@@ -140,7 +123,7 @@
     const LIFF_ID = '1656846002-7Dj11vMZ';
     let lineProfile = {};
     let currentUserData = null;
-    let selectedChannel = "Non Shop"; 
+    // ลบตัวแปร selectedChannel ออกแล้ว
 
     async function initLiff() {
       await liff.init({ liffId: LIFF_ID });
@@ -184,17 +167,13 @@
       document.getElementById('resEmpId').innerText = user.empId;
       document.getElementById('resName').innerText = `${user.firstName} ${user.lastName}`;
       document.getElementById('resPhone').innerText = user.phone || "-";
-      document.getElementById('resChannel').innerText = user.channelType;
       document.getElementById('success-view').style.display = 'block';
     }
 
-    // แก้ไขจุดที่ทำให้ SyntaxError หายไป
     function showRegistrationForm() {
-      document.getElementById('selectedChannelText').innerText = selectedChannel;
       document.getElementById('reg-form').style.display = 'block';
     }
 
-    // ลบปุ่มย้อนกลับออกแล้วใน HTML ฟังก์ชันนี้จึงไม่มีการผูกอีเวนต์ใดๆ เก็บไว้เพื่อความเข้ากันได้
     function backToStep() {
       if (currentUserData) { location.reload(); } 
     }
@@ -208,8 +187,6 @@
       document.getElementById('firstName').value = currentUserData.firstName;
       document.getElementById('lastName').value = currentUserData.lastName;
       document.getElementById('phone').value = currentUserData.phone || "";
-      selectedChannel = currentUserData.channelType || "Non Shop";
-      document.getElementById('selectedChannelText').innerText = selectedChannel;
     }
 
     async function submitData() {
@@ -225,7 +202,8 @@
       if (!digitRegex.test(phone) || phone.length !== 10) return Swal.fire({ title: 'เบอร์โทรศัพท์ไม่ถูกต้อง', text: 'กรุณาระบุหมายเลขให้ครบ 10 หลัก', icon: 'error', confirmButtonColor: '#FF0000' });
       
       toggleLoading(true);
-      const payload = { action: 'submitRegistration', uid: lineProfile.userId, displayName: lineProfile.displayName, pictureUrl: lineProfile.pictureUrl, email: lineProfile.email, channelType: selectedChannel, empId: empId, firstName: fName, lastName: lName, phone: phone };
+      // ส่งข้อมูลโดยไม่มี channelType แล้ว
+      const payload = { action: 'submitRegistration', uid: lineProfile.userId, displayName: lineProfile.displayName, pictureUrl: lineProfile.pictureUrl, email: lineProfile.email, empId: empId, firstName: fName, lastName: lName, phone: phone };
       const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
       const status = await res.json();
       toggleLoading(false);
