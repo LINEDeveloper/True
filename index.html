@@ -109,11 +109,16 @@
         </div>
 
         <button class="sync-btn btn-red" onclick="enableEdit()">แก้ไขข้อมูลส่วนตัว</button>
-        <button class="sync-btn btn-cancel" onclick="cancelMember()">ยกเลิกการเป็นสมาชิก</button>
-        <p style="font-size: 11px; color: #999; margin-top: 10px; font-weight: 300;">*กรณีสิ้นสุดสภาพการเป็นพนักงานเท่านั้น</p>
+        
+        <button class="sync-btn btn-cancel" onclick="cancelMember()" style="line-height: 1.4;">
+          ยกเลิกการเป็นสมาชิก<br>
+          <span style="font-size: 11px; color: #999; font-weight: 300;">*กรณีสิ้นสุดสภาพการเป็นพนักงานเท่านั้น</span>
+        </button>
 
-        <button id="btnRewards" class="sync-btn btn-rewards" onclick="openRewards()" style="margin-top: 15px;">ลงทะเบียน LINE Rewards</button>
-        <p style="font-size: 11.5px; color: #009900; margin-top: 6px; margin-bottom: 18px; font-weight: 500; text-align: center;">*สำหรับสะสมคะแนนลุ้นรับรางวัล</p>
+        <button id="btnRewards" class="sync-btn btn-rewards" onclick="openRewards()" style="margin-top: 15px; line-height: 1.4;">
+          <span id="btnRewardsText">ลงทะเบียน LINE Rewards</span><br>
+          <span style="font-size: 11.5px; font-weight: 400; color: rgba(255,255,255,0.9);">*สำหรับสะสมคะแนนลุ้นรับรางวัล</span>
+        </button>
       </div>
     </div>
   </div>
@@ -175,9 +180,10 @@
       
       const hasClickedRewards = localStorage.getItem('clicked_rewards_' + lineProfile.userId);
       if (hasClickedRewards) {
-        document.getElementById('btnRewards').innerText = "แก้ไขข้อมูล LINE Rewards";
+        // 🌟 แก้ไขเฉพาะ ID หลักของข้อความ เพื่อไม่ให้ไปทับ Subtitle ด้านล่าง
+        document.getElementById('btnRewardsText').innerText = "แก้ไขข้อมูล LINE Rewards";
       } else {
-        document.getElementById('btnRewards').innerText = "ลงทะเบียน LINE Rewards";
+        document.getElementById('btnRewardsText').innerText = "ลงทะเบียน LINE Rewards";
       }
 
       document.getElementById('success-view').style.display = 'block';
@@ -187,12 +193,10 @@
       const hasClickedRewards = localStorage.getItem('clicked_rewards_' + lineProfile.userId);
       
       if (hasClickedRewards) {
-        // กรณี "แก้ไขข้อมูล LINE Rewards" ใช้ลิงก์ใหม่
         window.location.href = 'https://liff.line.me/2000733931-wPdEZX0R/channels/5000640583/crm/member/menu/profile';
       } else {
-        // กรณี "ลงทะเบียน LINE Rewards" (ครั้งแรก) ใช้ลิงก์เดิม
         localStorage.setItem('clicked_rewards_' + lineProfile.userId, 'true');
-        document.getElementById('btnRewards').innerText = "แก้ไขข้อมูล LINE Rewards";
+        document.getElementById('btnRewardsText').innerText = "แก้ไขข้อมูล LINE Rewards";
         window.location.href = 'https://liff.line.me/2000733931-wPdEZX0R/channels/5000640583/crm/member/dashboard';
       }
     }
@@ -235,7 +239,7 @@
       toggleLoading(false);
       
       if (status.status === 'success') {
-        const successMessage = currentUserData ? 'อัปเดตข้อมูลพนักงานเรียบร้อยแล้ว' : `คุณ${fName} ${lName} ลงทะเบียนสำเร็จ`;
+        const successMessage = currentUserData ? 'อัปเดตข้อมูลพนักงานเรียบร้อยแล้ว' : `คุณ ${fName} ${lName} ลงทะเบียนสำเร็จ`;
         
         Swal.fire({ 
           icon: 'success', 
