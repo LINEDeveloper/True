@@ -105,7 +105,11 @@
           
           <div class="info-row"><span>รหัสพนักงาน:</span> <span id="resEmpId"></span></div>
           <div class="info-row"><span>ชื่อ-นามสกุล:</span> <span id="resName"></span></div>
-          <div class="info-row"><span>เบอร์โทรศัพท์:</span> <span id="resPhone"></span></div>
+          <div class="info-row" style="border-bottom: none;"><span>เบอร์โทรศัพท์:</span> <span id="resPhone"></span></div>
+          
+          <div id="updateTimeContainer" style="display: none; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.3); text-align: right; font-size: 11px; color: rgba(255,255,255,0.9); font-weight: 300;">
+            อัปเดตล่าสุด: <span id="resUpdateDate"></span>
+          </div>
         </div>
 
         <button class="sync-btn btn-red" onclick="enableEdit()">แก้ไขข้อมูลส่วนตัว</button>
@@ -178,9 +182,16 @@
       document.getElementById('resName').innerText = `${user.firstName} ${user.lastName}`;
       document.getElementById('resPhone').innerText = user.phone || "-";
       
+      // 🌟 เช็คและแสดงเวลาอัปเดตเฉพาะกรณีที่มีการแก้ไข (สถานะอัปเดตข้อมูล)
+      if (user.status === "อัปเดตข้อมูล" && user.updateDate) {
+        document.getElementById('updateTimeContainer').style.display = 'block';
+        document.getElementById('resUpdateDate').innerText = user.updateDate;
+      } else {
+        document.getElementById('updateTimeContainer').style.display = 'none';
+      }
+      
       const hasClickedRewards = localStorage.getItem('clicked_rewards_' + lineProfile.userId);
       if (hasClickedRewards) {
-        // 🌟 แก้ไขเฉพาะ ID หลักของข้อความ เพื่อไม่ให้ไปทับ Subtitle ด้านล่าง
         document.getElementById('btnRewardsText').innerText = "แก้ไขข้อมูล LINE Rewards";
       } else {
         document.getElementById('btnRewardsText').innerText = "ลงทะเบียน LINE Rewards";
