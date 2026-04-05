@@ -71,10 +71,22 @@
       <div id="welcome-text" style="margin-bottom: 20px; font-family: 'Kanit'; font-size: 18px;"></div>
       
       <div id="home-menu" style="display: none; text-align: center;">
-        <div style="background: #FFF8E1; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-size: 13.5px; color: #555; border: 1px solid #FFE082; text-align: left; line-height: 1.6;">
-          <b style="color: #FF8F00;">📢 ประกาศสำคัญ:</b><br>
-          พนักงานต้องดำเนินการ <b>ลงทะเบียนยืนยันตัวตน</b> และ <b>ลงทะเบียน LINE Rewards</b><br>
-          <span style="font-size: 12px; color: #777;">*เมื่อลงครบแล้ว ครั้งต่อไประบบจะแสดงหน้าข้อมูลส่วนตัวตามปกติ</span>
+        
+        <div style="background: #FFFFFF; padding: 18px; border-radius: 16px; margin-bottom: 25px; border-left: 6px solid #FF0000; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: left; line-height: 1.6;">
+          <div style="display: flex; align-items: center; margin-bottom: 8px;">
+            <span style="font-size: 18px; margin-right: 8px;">📢</span>
+            <b style="color: #FF0000; font-family: 'Kanit', sans-serif; font-size: 15px;">ประกาศสำคัญ</b>
+          </div>
+          <div style="font-size: 13.5px; color: #444; margin-bottom: 12px;">
+            กรุณาดำเนินการตามขั้นตอนต่อไปนี้ให้ครบถ้วน:<br>
+            <div style="margin-top: 6px; padding-left: 5px;">
+              <span style="display: block; margin-bottom: 4px;">1️⃣ <b>ลงทะเบียนยืนยันตัวตน</b></span>
+              <span style="display: block;">2️⃣ <b style="color: #00B900;">ลงทะเบียน LINE Rewards</b></span>
+            </div>
+          </div>
+          <div style="font-size: 11.5px; color: #777; background: #F8F9FA; padding: 8px 12px; border-radius: 8px; border: 1px dashed #DDD;">
+            *เมื่อลงทะเบียนครบทั้ง 2 ขั้นตอนแล้ว ครั้งต่อไประบบจะแสดงหน้าข้อมูลส่วนตัวตามปกติ
+          </div>
         </div>
 
         <button id="btn-menu-identity" class="sync-btn btn-red" onclick="goToRegForm()">ลงทะเบียนยืนยันตัวตน</button>
@@ -176,16 +188,13 @@
         document.getElementById('welcome-text').innerText = `สวัสดีคุณ ${lineProfile.displayName}`;
 
         if (hasIdentity && hasClickedRewards) {
-          // ลงครบ 2 อย่างแล้ว แสดงหน้าข้อมูลส่วนตัว (Success View)
           showMemberUI(currentUserData);
         } else {
-          // ขาดอย่างใดอย่างหนึ่ง ให้แสดงหน้าแรก (Home Menu)
           showHomeMenu(hasIdentity, hasClickedRewards);
         }
       } catch(e) { toggleLoading(false); }
     }
 
-    // 🌟 ฟังก์ชันจัดการหน้าแรก (Home Menu)
     function showHomeMenu(hasIdentity, hasClickedRewards) {
       document.getElementById('reg-header').style.display = 'block';
       document.getElementById('reg-form').style.display = 'none';
@@ -195,7 +204,6 @@
       if (hasIdentity) {
         document.getElementById('btn-menu-identity').style.display = 'none';
         if (!hasClickedRewards) {
-          // แจ้งเตือนกรณีลงทะเบียนเสร็จแล้ว แต่ยังไม่ได้กด Rewards
           Swal.fire({
             icon: 'warning',
             title: 'แจ้งเตือน',
@@ -214,17 +222,14 @@
       }
     }
 
-    // 🌟 ฟังก์ชันเมื่อกดปุ่ม ลงทะเบียน LINE Rewards หน้าแรก
     function openRewardsFromHome() {
       localStorage.setItem('clicked_rewards_' + lineProfile.userId, 'true');
-      document.getElementById('btn-menu-rewards').style.display = 'none'; // ซ่อนทันทีเมื่อกด
+      document.getElementById('btn-menu-rewards').style.display = 'none'; 
       window.location.href = 'https://liff.line.me/2000733931-wPdEZX0R/channels/5000640583/crm/member/dashboard';
     }
 
-    // 🌟 ฟังก์ชันเมื่อกดปุ่ม ลงทะเบียนยืนยันตัวตน
     function goToRegForm() {
       const hasClickedRewards = localStorage.getItem('clicked_rewards_' + lineProfile.userId);
-      // ตรวจสอบว่ากด LINE Rewards หรือยัง ถ้ายังให้แจ้งเตือนและบล็อกไม่ให้ไปต่อ
       if (!hasClickedRewards) {
         Swal.fire({
           icon: 'warning',
@@ -252,7 +257,6 @@
       document.getElementById('resName').innerText = `${user.firstName} ${user.lastName}`;
       document.getElementById('resPhone').innerText = user.phone || "-";
       
-      // เช็คและแสดงเวลาอัปเดตเฉพาะกรณีที่มีการแก้ไข
       if (user.status === "อัปเดตข้อมูล" && user.updateDate) {
         document.getElementById('updateTimeContainer').style.display = 'block';
         document.getElementById('resUpdateDate').innerText = user.updateDate;
