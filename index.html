@@ -78,13 +78,13 @@
             กรุณาดำเนินการตามขั้นตอนต่อไปนี้ให้ครบถ้วน:<br>
             <div style="margin-top: 10px; padding-left: 5px;">
               <span style="display: block; margin-bottom: 8px;">1️⃣ <b style="color: #00B900;">ลงทะเบียน LINE Rewards</b></span>
-              <span style="display: block;">2️⃣ <b>ลงทะเบียน ยืนยันตัวตน</b></span>
+              <span style="display: block;">2️⃣ <b>ลงทะเบียนยืนยันตัวตน</b></span>
             </div>
           </div>
         </div>
 
         <button id="btn-menu-rewards" class="sync-btn btn-rewards" onclick="openRewardsFromHome()">ลงทะเบียน LINE Rewards</button>
-        <button id="btn-menu-identity" class="sync-btn btn-red" onclick="goToRegForm()" style="margin-top: 15px;">ลงทะเบียน ยืนยันตัวตน</button>
+        <button id="btn-menu-identity" class="sync-btn btn-red" onclick="goToRegForm()" style="margin-top: 15px;">ลงทะเบียนยืนยันตัวตน</button>
       </div>
 
       <div id="reg-form" style="display: none; text-align: left;">
@@ -127,15 +127,15 @@
           <div id="updateTimeContainer" style="display: none; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.3); text-align: right; font-size: 11px; color: rgba(255,255,255,0.9); font-weight: 300;">
             อัปเดตล่าสุด: <span id="resUpdateDate"></span>
           </div>
+
+          <button class="sync-btn btn-red" onclick="enableEdit()" style="margin-top: 20px; border: 1px solid rgba(255,255,255,0.3);">แก้ไข</button>
+          
+          <button class="sync-btn btn-cancel" onclick="cancelMember()" style="line-height: 1.4;">
+            ยกเลิก<br>
+            <span style="font-size: 11px; color: #999; font-weight: 300;">*กรณีสิ้นสุดสภาพการเป็นพนักงานเท่านั้น</span>
+          </button>
+
         </div>
-
-        <button class="sync-btn btn-red" onclick="enableEdit()">แก้ไขข้อมูลส่วนตัว</button>
-        
-        <button class="sync-btn btn-cancel" onclick="cancelMember()" style="line-height: 1.4;">
-          ยกเลิกการเป็นสมาชิก<br>
-          <span style="font-size: 11px; color: #999; font-weight: 300;">*กรณีสิ้นสุดสภาพการเป็นพนักงานเท่านั้น</span>
-        </button>
-
       </div>
     </div>
   </div>
