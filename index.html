@@ -73,25 +73,18 @@
       
       <div id="home-menu" style="display: none; text-align: center;">
         
-        <div style="margin-bottom: 25px; text-align: left; line-height: 1.6;">
-          <div style="display: flex; align-items: center; margin-bottom: 8px;">
-            <span style="font-size: 18px; margin-right: 8px;">📢</span>
-            <b style="color: #FF0000; font-family: 'Kanit', sans-serif; font-size: 15px;">ประกาศสำคัญ</b>
-          </div>
-          <div style="font-size: 13.5px; color: #444; margin-bottom: 12px;">
+        <div style="background: #FFFFFF; padding: 18px; border-radius: 16px; margin-bottom: 25px; border: 1px solid #EAEAEA; box-shadow: 0 4px 12px rgba(0,0,0,0.04); text-align: left; line-height: 1.6;">
+          <div style="font-size: 13.5px; color: #444;">
             กรุณาดำเนินการตามขั้นตอนต่อไปนี้ให้ครบถ้วน:<br>
-            <div style="margin-top: 6px; padding-left: 5px;">
-              <span style="display: block; margin-bottom: 4px;">1️⃣ <b>ลงทะเบียนยืนยันตัวตน</b></span>
-              <span style="display: block;">2️⃣ <b style="color: #00B900;">ลงทะเบียน LINE Rewards</b></span>
+            <div style="margin-top: 10px; padding-left: 5px;">
+              <span style="display: block; margin-bottom: 8px;">1️⃣ <b style="color: #00B900;">ลงทะเบียน LINE Rewards</b></span>
+              <span style="display: block;">2️⃣ <b>ลงทะเบียนยืนยันตัวตน</b></span>
             </div>
-          </div>
-          <div style="font-size: 11.5px; color: #777; background: #F8F9FA; padding: 8px 12px; border-radius: 8px; border: 1px dashed #DDD;">
-            *เมื่อลงทะเบียนครบทั้ง 2 ขั้นตอนแล้ว ครั้งต่อไประบบจะแสดงหน้าข้อมูลส่วนตัวตามปกติ
           </div>
         </div>
 
-        <button id="btn-menu-identity" class="sync-btn btn-red" onclick="goToRegForm()">ลงทะเบียนยืนยันตัวตน</button>
-        <button id="btn-menu-rewards" class="sync-btn btn-rewards" onclick="openRewardsFromHome()" style="margin-top: 15px;">ลงทะเบียน LINE Rewards</button>
+        <button id="btn-menu-rewards" class="sync-btn btn-rewards" onclick="openRewardsFromHome()">ลงทะเบียน LINE Rewards</button>
+        <button id="btn-menu-identity" class="sync-btn btn-red" onclick="goToRegForm()" style="margin-top: 15px;">ลงทะเบียนยืนยันตัวตน</button>
       </div>
 
       <div id="reg-form" style="display: none; text-align: left;">
@@ -186,7 +179,6 @@
         const hasClickedRewards = localStorage.getItem('clicked_rewards_' + lineProfile.userId);
         const hasIdentity = (currentUserData && currentUserData.status !== "ยกเลิกเป็นสมาชิก");
 
-        // 🌟 ปรับข้อความใต้รูปโปรไฟล์ตามที่ต้องการ
         document.getElementById('welcome-text').innerHTML = `
           <span style="color: #00B900; font-weight: 600; font-size: 20px;">ลงทะเบียนยืนยันตัวตน</span><br>
           <span style="font-size: 13px; color: #666; font-weight: 300; display: block; margin-top: 4px;">ในการรับข่าวสารผ่าน LINE Channel Commu เท่านั้น</span>
