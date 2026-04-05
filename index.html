@@ -184,9 +184,17 @@
     }
 
     function openRewards() {
-      localStorage.setItem('clicked_rewards_' + lineProfile.userId, 'true');
-      document.getElementById('btnRewards').innerText = "แก้ไขข้อมูล LINE Rewards";
-      window.location.href = 'https://liff.line.me/2000733931-wPdEZX0R/channels/5000640583/crm/member/dashboard';
+      const hasClickedRewards = localStorage.getItem('clicked_rewards_' + lineProfile.userId);
+      
+      if (hasClickedRewards) {
+        // กรณี "แก้ไขข้อมูล LINE Rewards" ใช้ลิงก์ใหม่
+        window.location.href = 'https://liff.line.me/2000733931-wPdEZX0R/channels/5000640583/crm/member/menu/profile';
+      } else {
+        // กรณี "ลงทะเบียน LINE Rewards" (ครั้งแรก) ใช้ลิงก์เดิม
+        localStorage.setItem('clicked_rewards_' + lineProfile.userId, 'true');
+        document.getElementById('btnRewards').innerText = "แก้ไขข้อมูล LINE Rewards";
+        window.location.href = 'https://liff.line.me/2000733931-wPdEZX0R/channels/5000640583/crm/member/dashboard';
+      }
     }
 
     function showRegistrationForm() {
@@ -227,7 +235,6 @@
       toggleLoading(false);
       
       if (status.status === 'success') {
-        // 🌟 เพิ่มเงื่อนไขตรวจสอบเพื่อแสดงข้อความที่ปรับปรุงใหม่ใน Pop-up
         const successMessage = currentUserData ? 'อัปเดตข้อมูลพนักงานเรียบร้อยแล้ว' : `คุณ ${fName} ${lName} ลงทะเบียนสำเร็จ`;
         
         Swal.fire({ 
