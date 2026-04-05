@@ -53,13 +53,14 @@
   </div>
 
   <div class="card">
-    <div style="text-align: center; margin-bottom: 25px;">
+    <div style="text-align: center; margin-bottom: 15px;">
       <img src="https://img1.pic.in.th/images/True--C.png" alt="True Logo" style="max-height: 80px; width: auto; display: block; margin: 0 auto;">
     </div>
     
-    <div id="reg-header">
-      <h2>ลงทะเบียนยืนยันตัวตน</h2>
-      <div class="app-desc">พนักงาน True Corporation ยืนยันข้อมูล<br>เพื่อรับข่าวสารผ่าน Channel Academy & Commu</div>
+    <div id="reg-header" style="text-align: center; margin-bottom: 25px;">
+      <div style="font-size: 14px; color: var(--text-sub); line-height: 1.6;">
+        พนักงาน True Corporation ยืนยันข้อมูล<br>เพื่อรับข่าวสารผ่าน LINE Channel Channel Commu
+      </div>
     </div>
 
     <div id="login-container" style="display: none; text-align: center; padding: 20px 0;">
@@ -185,7 +186,8 @@
         const hasClickedRewards = localStorage.getItem('clicked_rewards_' + lineProfile.userId);
         const hasIdentity = (currentUserData && currentUserData.status !== "ยกเลิกเป็นสมาชิก");
 
-        document.getElementById('welcome-text').innerText = `สวัสดีคุณ ${lineProfile.displayName}`;
+        // 🌟 ปรับข้อความใต้รูปโปรไฟล์ให้เป็น "ลงทะเบียนยืนยันตัวตน" ด้วยฟอนต์สีเขียว
+        document.getElementById('welcome-text').innerHTML = `<span style="color: #00B900; font-weight: 600; font-size: 20px;">ลงทะเบียนยืนยันตัวตน</span>`;
 
         if (hasIdentity && hasClickedRewards) {
           showMemberUI(currentUserData);
