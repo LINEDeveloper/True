@@ -210,7 +210,7 @@
       
       document.getElementById('welcome-text').innerHTML = `
         <span style="color:var(--success); font-size:22px; font-weight:600;">ขอแสดงความยินดี</span><br>
-        <span style="font-weight: 300; font-size:15px; color:var(--text-sub);">สถานะ : ระบบบันทึกข้อมูลสำเร็จ</span>
+        <span style="font-weight: 300; font-size:15px; color:var(--text-sub);">ระบบบันทึกข้อมูลสำเร็จ</span>
       `;
       document.getElementById('resEmpId').innerText = user.empId;
       document.getElementById('resName').innerText = `${user.firstName} ${user.lastName}`;
@@ -268,7 +268,7 @@
     }
 
     async function cancelMember() {
-      const confirm = await Swal.fire({ title: 'ยืนยันการยกเลิกสมาชิก?', text: "คุณจะระงับสถานะสมาชิกในระบบ", icon: 'warning', showCancelButton: true, confirmButtonColor: '#FF0000', confirmButtonText: 'ยืนยันยกเลิก', cancelButtonText: 'ปิด' });
+      const confirm = await Swal.fire({ title: 'ยืนยันยกเลิก การรับข้อมูล?', text: "เมื่อคุณสิ้นสุดการเป็นพนักงานเท่านั้น", icon: 'warning', showCancelButton: true, confirmButtonColor: '#FF0000', confirmButtonText: 'ยืนยัน', cancelButtonText: 'ปิด' });
       if (confirm.isConfirmed) {
         toggleLoading(true);
         const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'cancelMember', uid: lineProfile.userId }) });
