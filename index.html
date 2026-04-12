@@ -121,7 +121,7 @@
       <div id="success-view" style="display: none;">
         <div class="success-card-gradient">
           <div style="font-size: 18px; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 8px; margin-bottom: 5px;">ข้อมูลส่วนตัว</div>
-          <div style="font-size: 11px; color: rgba(255,255,255,0.85); margin-bottom: 15px; font-weight: 300;">*ใช้สำหรับยืนยันตัวตน LINE Channel Commu เท่านั้น</div>
+          <div style="font-size: 11px; color: rgba(255,255,255,0.85); margin-bottom: 15px; font-weight: 300;">*ใช้สำหรับยืนยันตัวตนเพื่อรับข้อมูลข่าวสาร เท่านั้น</div>
           
           <div class="info-row"><span>รหัสพนักงาน:</span> <span id="resEmpId"></span></div>
           <div class="info-row"><span>ชื่อ-นามสกุล:</span> <span id="resName"></span></div>
@@ -256,7 +256,7 @@
       toggleLoading(false);
       
       if (status.status === 'success') {
-        const successMessage = currentUserData ? 'อัปเดตข้อมูลพนักงานเรียบร้อยแล้ว' : `คุณ ${fName} ${lName} ลงทะเบียนสำเร็จ`;
+        const successMessage = currentUserData ? 'อัปเดตข้อมูลเรียบร้อยแล้ว' : `คุณ ${fName} ${lName} ลงทะเบียนสำเร็จ`;
         
         Swal.fire({ 
           icon: 'success', 
