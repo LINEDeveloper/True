@@ -268,7 +268,7 @@
     }
 
     async function cancelMember() {
-      const confirm = await Swal.fire({ title: 'ยกเลิกการรับข้อมูล?', text: "คุณจะไม่ได้รับข่าวสารทันที เมื่อคุณสิ้นสุดเป็นพนักงานทรูแล้ว", icon: 'warning', showCancelButton: true, confirmButtonColor: '#FF0000', confirmButtonText: 'ยืนยัน', cancelButtonText: 'ปิด' });
+      const confirm = await Swal.fire({ title: 'ยกเลิกการรับข้อมูล?', text: "คุณได้สิ้นสุดการเป็นพนักงานทรูแล้ว! โปรดยืนยัน คุณจะไม่ได้รับข่าวสารทันที", icon: 'warning', showCancelButton: true, confirmButtonColor: '#FF0000', confirmButtonText: 'ยืนยัน', cancelButtonText: 'ปิด' });
       if (confirm.isConfirmed) {
         toggleLoading(true);
         const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'cancelMember', uid: lineProfile.userId }) });
