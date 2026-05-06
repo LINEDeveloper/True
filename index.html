@@ -45,7 +45,7 @@
     .swal2-popup { border-radius: 30px !important; font-family: 'Sarabun', sans-serif !important; }
     .swal2-confirm { background: var(--primary) !important; color: #ffffff !important; border-radius: 15px !important; }
 
-    /* ปรับแต่ง CSS สำหรับกล่อง QR Code (ดึงระยะให้กระชับขึ้น) */
+    /* ปรับแต่ง CSS สำหรับกล่อง QR Code */
     .qr-wrapper { text-align: center; margin: 0 auto 15px auto; padding-top: 5px; }
   </style>
 </head>
@@ -58,9 +58,7 @@
   </div>
 
   <div class="card">
-    <div style="text-align: center; margin-bottom: 15px;">
-      <img src="https://img1.pic.in.th/images/True--C.png" alt="True Logo" style="max-height: 80px; width: auto; display: block; margin: 0 auto;">
-    </div>
+    <!-- เอา Logo ด้านบนออกตามที่แจ้ง -->
     
     <div id="reg-header" style="text-align: center; margin-bottom: 25px;">
       <div style="font-size: 14px; color: var(--text-sub); line-height: 1.6;">
@@ -218,10 +216,13 @@
       document.getElementById('reg-form').style.display = 'none';
       document.getElementById('home-menu').style.display = 'none';
       
-      // ปรับแก้ข้อความเป็น Digital ID Card และ บัตรประจำตัวพนักงาน (ฟอนต์บางและชิดกัน)
+      // นำโลโก้มาวางหน้า Digital ID Card พร้อมปรับขนาดให้พอดีกับฟอนต์
       document.getElementById('welcome-text').innerHTML = `
-        <span style="background: linear-gradient(135deg, #FF0000, #007AFF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size:26px; font-weight:700; display: inline-block; line-height: 1.2;">Digital ID Card</span><br>
-        <span style="font-weight: 300; font-size:15px; color:var(--text-sub); display: inline-block; margin-top: -2px;">บัตรประจำตัวพนักงาน</span>
+        <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+          <img src="https://img1.pic.in.th/images/True--C.png" alt="True Logo" style="height: 26px; width: auto; object-fit: contain;">
+          <span style="background: linear-gradient(135deg, #FF0000, #007AFF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size:26px; font-weight:700; display: inline-block; line-height: 1.2;">Digital ID Card</span>
+        </div>
+        <span style="font-weight: 300; font-size:15px; color:var(--text-sub); display: inline-block; margin-top: 2px;">บัตรประจำตัวพนักงาน</span>
       `;
       document.getElementById('resEmpId').innerText = user.empId;
       document.getElementById('resName').innerText = `${user.firstName} ${user.lastName}`;
