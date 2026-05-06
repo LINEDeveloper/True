@@ -45,8 +45,8 @@
     .swal2-popup { border-radius: 30px !important; font-family: 'Sarabun', sans-serif !important; }
     .swal2-confirm { background: var(--primary) !important; color: #ffffff !important; border-radius: 15px !important; }
 
-    /* ปรับแต่ง CSS สำหรับกล่อง QR Code ด้านบน */
-    .qr-wrapper { background: #FFFFFF; border-radius: 20px; padding: 20px 15px 15px 15px; text-align: center; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); border: 1px solid #F0F0F0; }
+    /* ปรับแต่ง CSS สำหรับกล่อง QR Code ด้านบน (แบบไม่มีกรอบ) */
+    .qr-wrapper { text-align: center; margin-bottom: 15px; padding-top: 10px; }
     .qr-title { color: #333; font-size: 13.5px; font-weight: 600; margin-top: 12px; font-family: 'Kanit', sans-serif; }
   </style>
 </head>
@@ -126,7 +126,7 @@
 
       <div id="success-view" style="display: none;">
         
-        <!-- ย้ายกล่องแสดง QR Code (E-Badge) มาไว้ด้านบน -->
+        <!-- ย้ายกล่องแสดง QR Code (E-Badge) มาไว้ด้านบน แบบไม่มีกรอบ -->
         <div class="qr-wrapper">
           <div id="qrcode-box" style="display: flex; justify-content: center;"></div>
           <div class="qr-title">E-Badge ประจำตัวพนักงาน</div>
