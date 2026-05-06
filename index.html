@@ -58,7 +58,11 @@
   </div>
 
   <div class="card">
-    <!-- เอา Logo ด้านบนออกตามที่แจ้ง -->
+    
+    <!-- นำ Logo ด้านบนกลับมา และใส่ id ไว้ควบคุมการซ่อน/แสดง -->
+    <div id="main-logo" style="text-align: center; margin-bottom: 15px;">
+      <img src="https://img1.pic.in.th/images/True--C.png" alt="True Logo" style="max-height: 80px; width: auto; display: block; margin: 0 auto;">
+    </div>
     
     <div id="reg-header" style="text-align: center; margin-bottom: 25px;">
       <div style="font-size: 14px; color: var(--text-sub); line-height: 1.6;">
@@ -200,6 +204,7 @@
     }
 
     function showHomeMenu() {
+      document.getElementById('main-logo').style.display = 'block'; // แสดง Logo
       document.getElementById('reg-header').style.display = 'block';
       document.getElementById('reg-form').style.display = 'none';
       document.getElementById('success-view').style.display = 'none';
@@ -212,11 +217,11 @@
     }
 
     function showMemberUI(user) {
+      document.getElementById('main-logo').style.display = 'none'; // ซ่อน Logo ด้านบนในหน้านี้
       document.getElementById('reg-header').style.display = 'none';
       document.getElementById('reg-form').style.display = 'none';
       document.getElementById('home-menu').style.display = 'none';
       
-      // นำโลโก้มาวางหน้า Digital ID Card พร้อมปรับขนาดให้พอดีกับฟอนต์
       document.getElementById('welcome-text').innerHTML = `
         <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
           <img src="https://img1.pic.in.th/images/True--C.png" alt="True Logo" style="height: 26px; width: auto; object-fit: contain;">
@@ -252,6 +257,7 @@
 
     function enableEdit() {
       document.getElementById('success-view').style.display = 'none';
+      document.getElementById('main-logo').style.display = 'block'; // แสดง Logo กลับมาเมื่อกดแก้ไข
       document.getElementById('reg-header').style.display = 'block';
       document.getElementById('reg-form').style.display = 'block';
       document.getElementById('pdpa-box').style.display = 'none';
