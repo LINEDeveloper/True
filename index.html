@@ -7,6 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- เพิ่ม Library สำหรับสร้าง QR Code -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
     :root { --primary: #FF0000; --blue: #007AFF; --line-green: #00B900; --bg-color: #F8F9FA; --card-bg: #FFFFFF; --text-main: #333; --text-sub: #666; --success: #28a745; }
@@ -217,10 +218,10 @@
       document.getElementById('reg-form').style.display = 'none';
       document.getElementById('home-menu').style.display = 'none';
       
-      // ปรับแก้ข้อความเป็น Digital ID Card และ QR Code รหัสพนักงาน (จัดระยะชิดกัน)
+      // ปรับแก้ข้อความเป็น Digital ID Card และ บัตรประจำตัวพนักงาน (ฟอนต์บางและชิดกัน)
       document.getElementById('welcome-text').innerHTML = `
-        <span style="background: linear-gradient(135deg, #FF0000, #007AFF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size:26px; font-weight:700; display: inline-block;">Digital ID Card</span><br>
-        <span style="font-weight: 500; font-size:15px; color:var(--text-sub); display: inline-block; margin-top: 2px;">QR Code รหัสพนักงาน</span>
+        <span style="background: linear-gradient(135deg, #FF0000, #007AFF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size:26px; font-weight:700; display: inline-block; line-height: 1.2;">Digital ID Card</span><br>
+        <span style="font-weight: 300; font-size:15px; color:var(--text-sub); display: inline-block; margin-top: -2px;">บัตรประจำตัวพนักงาน</span>
       `;
       document.getElementById('resEmpId').innerText = user.empId;
       document.getElementById('resName').innerText = `${user.firstName} ${user.lastName}`;
