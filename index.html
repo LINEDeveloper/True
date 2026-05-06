@@ -47,7 +47,6 @@
 
     /* ปรับแต่ง CSS สำหรับกล่อง QR Code ด้านบน (แบบไม่มีกรอบ) */
     .qr-wrapper { text-align: center; margin-bottom: 15px; padding-top: 10px; }
-    .qr-title { color: #333; font-size: 13.5px; font-weight: 600; margin-top: 12px; font-family: 'Kanit', sans-serif; }
   </style>
 </head>
 <body>
@@ -126,10 +125,9 @@
 
       <div id="success-view" style="display: none;">
         
-        <!-- ย้ายกล่องแสดง QR Code (E-Badge) มาไว้ด้านบน แบบไม่มีกรอบ -->
+        <!-- กล่องแสดง QR Code (ไม่มีกรอบ) -->
         <div class="qr-wrapper">
           <div id="qrcode-box" style="display: flex; justify-content: center;"></div>
-          <div class="qr-title">E-Badge ประจำตัวพนักงาน</div>
         </div>
 
         <div class="success-card-gradient">
@@ -221,8 +219,9 @@
       document.getElementById('reg-form').style.display = 'none';
       document.getElementById('home-menu').style.display = 'none';
       
+      // ปรับแก้ข้อความเป็น Digital ID Card พร้อม Gradient สีแดง-น้ำเงิน
       document.getElementById('welcome-text').innerHTML = `
-        <span style="color:var(--success); font-size:22px; font-weight:600;">ขอแสดงความยินดี</span><br>
+        <span style="background: linear-gradient(135deg, #FF0000, #007AFF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size:26px; font-weight:700; display: inline-block; padding-bottom: 5px;">Digital ID Card</span><br>
         <span style="font-weight: 300; font-size:15px; color:var(--text-sub);">บันทึกข้อมูลของคุณสำเร็จ</span>
       `;
       document.getElementById('resEmpId').innerText = user.empId;
@@ -236,11 +235,11 @@
         document.getElementById('updateTimeContainer').style.display = 'none';
       }
 
-      // เพิ่มคำสั่งสร้างรูป QR Code ทันทีที่โหลดข้อมูลเสร็จ
+      // สร้างรูป QR Code
       const qrBox = document.getElementById("qrcode-box");
-      qrBox.innerHTML = ""; // ล้างรูปเก่าเผื่อกรณีแก้ไขข้อมูล
+      qrBox.innerHTML = ""; 
       new QRCode(qrBox, {
-        text: String(user.empId), // นำรหัสพนักงานมาสร้าง QR Code
+        text: String(user.empId), 
         width: 140,
         height: 140,
         colorDark : "#000000",
