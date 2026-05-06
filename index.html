@@ -7,6 +7,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- เพิ่ม Library สำหรับสร้าง QR Code -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
     :root { --primary: #FF0000; --blue: #007AFF; --line-green: #00B900; --bg-color: #F8F9FA; --card-bg: #FFFFFF; --text-main: #333; --text-sub: #666; --success: #28a745; }
     body { font-family: 'Sarabun', sans-serif; background-color: var(--bg-color); margin: 0; padding: 15px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
@@ -42,6 +44,10 @@
     
     .swal2-popup { border-radius: 30px !important; font-family: 'Sarabun', sans-serif !important; }
     .swal2-confirm { background: var(--primary) !important; color: #ffffff !important; border-radius: 15px !important; }
+
+    /* เพิ่ม CSS สำหรับกล่อง QR Code */
+    .qr-wrapper { background: #FFFFFF; border-radius: 20px; padding: 20px 15px 15px 15px; text-align: center; margin-top: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.15); }
+    .qr-title { color: #333; font-size: 13px; font-weight: 600; margin-top: 12px; font-family: 'Kanit', sans-serif; }
   </style>
 </head>
 <body>
@@ -129,6 +135,12 @@
           
           <div id="updateTimeContainer" style="display: none; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.3); text-align: right; font-size: 11px; color: rgba(255,255,255,0.9); font-weight: 300;">
             อัปเดตล่าสุด: <span id="resUpdateDate"></span>
+          </div>
+
+          <!-- เพิ่มกล่องแสดง QR Code (E-Badge) -->
+          <div class="qr-wrapper">
+            <div id="qrcode-box" style="display: flex; justify-content: center;"></div>
+            <div class="qr-title">E-Badge ประจำตัวพนักงาน</div>
           </div>
 
           <div style="display: flex; gap: 10px; margin-top: 20px;">
@@ -222,6 +234,18 @@
       } else {
         document.getElementById('updateTimeContainer').style.display = 'none';
       }
+
+      // เพิ่มคำสั่งสร้างรูป QR Code ทันทีที่โหลดข้อมูลเสร็จ
+      const qrBox = document.getElementById("qrcode-box");
+      qrBox.innerHTML = ""; // ล้างรูปเก่าเผื่อกรณีแก้ไขข้อมูล
+      new QRCode(qrBox, {
+        text: String(user.empId), // นำรหัสพนักงานมาสร้าง QR Code
+        width: 140,
+        height: 140,
+        colorDark : "#000000",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.H
+      });
 
       document.getElementById('success-view').style.display = 'block';
     }
