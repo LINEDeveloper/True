@@ -240,11 +240,19 @@
         document.getElementById('updateTimeContainer').style.display = 'none';
       }
 
+      // 🌟 ระบบอัจฉริยะ: ตรวจสอบว่ามีรหัสจากคอลัมน์ N (verifiedEmpId) หรือไม่
+      const finalQrData = (user.verifiedEmpId && user.verifiedEmpId !== "") ? user.verifiedEmpId : user.empId;
+
+      // 🌟 อัปเดตตัวเลขรหัสพนักงานที่โชว์บนหน้าบัตรให้ตรงกับ QR Code ด้วย
+      if (document.getElementById('resEmpId')) {
+        document.getElementById('resEmpId').innerText = finalQrData;
+      }
+
       // สร้างรูป QR Code
       const qrBox = document.getElementById("qrcode-box");
       qrBox.innerHTML = ""; 
       new QRCode(qrBox, {
-        text: String(user.empId), 
+        text: String(finalQrData), // 🌟 ใช้ข้อมูลที่ถูกต้องที่สุดมาทำ QR Code
         width: 140,
         height: 140,
         colorDark : "#000000",
