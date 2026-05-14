@@ -221,7 +221,8 @@
           <div style="margin-bottom: 20px;">
             <div id="qrcode-box" style="display: inline-block; padding: 20px; background: #fff; border-radius: 24px; box-shadow: 0 12px 35px rgba(0,0,0,0.1);"></div>
           </div>
-          <div id="qrEmpIdLabel" style="font-family: 'Kanit'; font-size: 26px; color: #1E293B; font-weight: 600; letter-spacing: 1px; margin-bottom: 12px;"></div>
+          <!-- 🌟 ปรับขนาดฟอนต์รหัสพนักงานให้เหลือ 20px เพื่อความพอดีและสวยงาม -->
+          <div id="qrEmpIdLabel" style="font-family: 'Kanit'; font-size: 20px; color: #1E293B; font-weight: 600; letter-spacing: 1px; margin-bottom: 12px;"></div>
           <div style="font-size: 14.5px; color: #64748B; font-weight: 400; background: #F8FAFC; padding: 10px 24px; border-radius: 24px; display: inline-block; border: 1px solid #E2E8F0; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
             โปรดแสดง QR Code นี้เพื่อรับสิทธิ์พนักงาน
           </div>
@@ -236,6 +237,7 @@
     <a href="privacy.html" target="_blank">นโยบายความเป็นส่วนตัว (Privacy Policy)</a>
   </div>
 
+  <!-- 🌟 แถบเมนูด้านล่าง (เรียงลำดับ: โปรไฟล์ -> QR Code -> Reward) -->
   <div id="bottom-nav-bar" class="bottom-nav-bar">
     <div class="nav-item active" id="nav-profile" onclick="switchTab('profile')">
       <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
@@ -373,9 +375,7 @@
       }
     }
 
-    // 🌟 ฟังก์ชันเปิดหน้าต่าง LIFF ซ้อนขึ้นมาแบบ Native LINE (แก้ปัญหาจอขาว)
     function openReward() {
-      // เรียกใช้หน้าต่าง In-App Browser ของ LINE ซึ่งจะแสดงปุ่ม "X" ที่มุมขวาบนให้อัตโนมัติ
       liff.openWindow({
         url: "https://liff.line.me/2000733931-wPdEZX0R/channels/5000640583/crm/member/dashboard",
         external: false
