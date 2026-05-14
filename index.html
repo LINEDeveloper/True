@@ -11,8 +11,37 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
     :root { --primary: #FF0000; --blue: #007AFF; --line-green: #00B900; --bg-color: #F8F9FA; --card-bg: #FFFFFF; --text-main: #333; --text-sub: #666; --success: #28a745; }
-    body { font-family: 'Sarabun', sans-serif; background-color: var(--bg-color); margin: 0; padding: 15px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    .card { background: var(--card-bg); padding: 35px 25px; border-radius: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.08); width: 100%; max-width: 400px; box-sizing: border-box; border: 1px solid #EEE; position: relative; }
+    
+    /* 🌟 ปรับ Body ให้ Lock หน้าจอ ไม่ให้เลื่อนทะลุขอบ */
+    body { 
+      font-family: 'Sarabun', sans-serif; 
+      background-color: var(--bg-color); 
+      margin: 0; 
+      padding: 0; 
+      height: 100vh; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      justify-content: center; 
+      overflow: hidden; 
+    }
+
+    /* 🌟 ปรับ Card ให้รองรับการเลื่อนเฉพาะภายใน (หากฟอร์มยาว) แต่ภายนอกจะ Lock พอดีจอ */
+    .card { 
+      background: var(--card-bg); 
+      padding: 25px; 
+      border-radius: 30px; 
+      box-shadow: 0 20px 40px rgba(0,0,0,0.08); 
+      width: 92%; 
+      max-width: 400px; 
+      max-height: 82vh;
+      overflow-y: auto;
+      box-sizing: border-box; 
+      border: 1px solid #EEE; 
+      position: relative; 
+      z-index: 10;
+    }
+    .card::-webkit-scrollbar { width: 0px; } /* ซ่อน Scrollbar ให้ดูสะอาดตา */
     
     h2 { font-family: 'Kanit', sans-serif; text-align: center; color: var(--text-main); margin: 0 0 8px 0; font-size: 24px; font-weight: 600;}
     .app-desc { font-size: 13px; color: var(--text-sub); text-align: center; margin-bottom: 25px; background: #FFF1F1; padding: 14px; border-radius: 16px; line-height: 1.6; border: 1px solid #FFE0E0; }
@@ -39,16 +68,16 @@
     .profile-loader { width: 100px; height: 100px; border-radius: 50%; border: 4px solid var(--primary); margin-bottom: 20px; object-fit: cover; animation: pulse 2s infinite; }
     @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.05); opacity: 0.8; } 100% { transform: scale(1); opacity: 1; } }
 
-    .footer { text-align: center; font-size: 12px; color: var(--text-sub); margin-top: 25px; line-height: 1.6; padding-bottom: 80px; }
+    /* 🌟 ปรับ Footer ให้อยู่เหนือแถบเมนูด้านล่างนิดนึง */
+    .footer { position: absolute; bottom: 80px; text-align: center; font-size: 12px; color: var(--text-sub); width: 100%; z-index: 5; }
     .footer a { color: #FF0000; text-decoration: none; font-weight: 600; }
     
     .swal2-popup { border-radius: 30px !important; font-family: 'Sarabun', sans-serif !important; }
     .swal2-confirm { background: var(--primary) !important; color: #ffffff !important; border-radius: 15px !important; }
 
-    /* ปรับแต่ง CSS สำหรับกล่อง QR Code */
     .qr-wrapper { text-align: center; margin: 0 auto 15px auto; padding-top: 5px; }
 
-    /* 🌟 เพิ่มสไตล์สำหรับ Bottom Navigation Bar */
+    /* 🌟 Bottom Navigation Bar (Lock ตายตัว) */
     .bottom-nav-bar {
       display: none;
       position: fixed;
@@ -59,7 +88,7 @@
       box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.25);
       border-radius: 30px 30px 0 0;
       z-index: 1000;
-      justify-content: space-around; /* ให้ไอคอนกระจายตัวสวยงาม */
+      justify-content: space-around;
       align-items: center;
       padding: 15px 0 calc(15px + env(safe-area-inset-bottom));
       border-top: 1px solid rgba(255, 255, 255, 0.2);
@@ -68,13 +97,13 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      color: rgba(255, 255, 255, 0.6); /* สีเทาอ่อนตอนไม่ได้เลือก */
+      color: rgba(255, 255, 255, 0.6);
       cursor: pointer;
       transition: all 0.3s ease;
       flex: 1;
     }
     .nav-item.active {
-      color: #FFFFFF; /* สีขาวชัดเจนตอนเลือก */
+      color: #FFFFFF;
       transform: translateY(-2px);
     }
     .nav-item svg {
@@ -120,8 +149,8 @@
       <img id="userPic" class="profile-pic" src="">
       <div id="welcome-text" style="margin-bottom: 10px; font-family: 'Kanit'; font-size: 18px;"></div>
       
+      <!-- เมนูแรกเข้า (Original 100%) -->
       <div id="home-menu" style="display: none; text-align: center;">
-        
         <div style="background: #FFFFFF; padding: 18px; border-radius: 16px; margin-bottom: 25px; border: 1px solid #EAEAEA; box-shadow: 0 4px 12px rgba(0,0,0,0.04); text-align: left; line-height: 1.6;">
           <div style="font-size: 13.5px; color: #444;">
             <b style="color: #FF0000;">วัตถุประสงค์การยืนยันการรับข่าวสารผ่าน LINE </b><br>
@@ -132,16 +161,14 @@
             </div>
           </div>
         </div>
-          
         <button id="btn-menu-identity" class="sync-btn btn-red" onclick="goToRegForm()">ลงทะเบียน</button>
         <div style="font-size: 14px; color: var(--text-sub); line-height: 1.6; margin-top: 10px;">
           สำหรับพนักงาน Back Office ติดต่อ anon.sriwaja@truecorp.co.th เพิ่มสิทธิ์
         </div>
       </div>
 
-      <!-- 🌟 ฟอร์มลงทะเบียนเดิมอยู่ครบ -->
+      <!-- ฟอร์มลงทะเบียน (Original 100% พร้อม PDPA) -->
       <div id="reg-form" style="display: none; text-align: left;">
-        
         <label class="input-label">รหัสพนักงาน</label>
         <input type="text" id="empId" placeholder="ระบุรหัสพนักงาน (ให้ถูกต้อง)">
         
@@ -168,10 +195,10 @@
         <button class="sync-btn btn-red" onclick="submitData()">ยืนยันข้อมูล</button>
       </div>
 
-      <!-- 🌟 ส่วนแสดงผลสำเร็จ แยกแท็บ Profile และ QR Code -->
+      <!-- หน้าแสดงผลสำเร็จ (สลับแท็บ Profile และ QR) -->
       <div id="success-view" style="display: none;">
         
-        <!-- แท็บที่ 1: Profile (ไม่ต้องแสดง QR ตรงนี้แล้ว) -->
+        <!-- แท็บที่ 1: Profile -->
         <div id="tab-profile">
           <div class="success-card-gradient">
             <div style="font-size: 18px; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 8px; margin-bottom: 5px;">ข้อมูลส่วนตัว</div>
@@ -192,10 +219,9 @@
           </div>
         </div>
 
-        <!-- แท็บที่ 2: QR Code (ดึงมาแสดงเดี่ยวๆ) -->
+        <!-- แท็บที่ 2: QR Code -->
         <div id="tab-qrcode" style="display: none; text-align: center; padding-top: 20px;">
           <div class="qr-wrapper">
-            <!-- กรอบสีขาวเพื่อให้อ่านคิวอาร์โค้ดง่ายขึ้น -->
             <div id="qrcode-box" style="display: inline-block; padding: 15px; background: #fff; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08);"></div>
           </div>
           <div id="qrEmpIdLabel" style="font-family: 'Kanit'; font-size: 22px; color: #333; margin-top: 15px; font-weight: 600;"></div>
@@ -211,14 +237,13 @@
     <a href="privacy.html" target="_blank">นโยบายความเป็นส่วนตัว (Privacy Policy)</a>
   </div>
 
-  <!-- 🌟 แถบเมนูด้านล่าง (จะแสดงเฉพาะหน้า Success View) -->
+  <!-- 🌟 แถบเมนูด้านล่าง (ยึดติดล่างเสมอ) -->
   <div id="bottom-nav-bar" class="bottom-nav-bar">
     <div class="nav-item active" id="nav-profile" onclick="switchTab('profile')">
       <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
       <span>โปรไฟล์</span>
     </div>
     <div class="nav-item" id="nav-qrcode" onclick="switchTab('qrcode')">
-      <!-- ไอคอน QR Code -->
       <svg viewBox="0 0 24 24"><path d="M3 3h8v8H3zm10 0h8v8h-8zM3 13h8v8H3zm15 0h3v2h-3zm0 3h3v2h-3zm-2-3h2v3h-2zm0 5h2v2h-2zm3 1h2v2h-2zm-1-7h2v2h-2zm-5 4h2v2h-2z"/></svg>
       <span>QR Code</span>
     </div>
@@ -313,14 +338,13 @@
         document.getElementById('resEmpId').innerText = finalQrData;
       }
       
-      // 🌟 ใส่รหัสพนักงานให้โชว์ในหน้า QR Code ด้วย
       document.getElementById('qrEmpIdLabel').innerText = "รหัส: " + finalQrData;
 
       const qrBox = document.getElementById("qrcode-box");
       qrBox.innerHTML = ""; 
       new QRCode(qrBox, {
         text: String(finalQrData), 
-        width: 160,  // ขยาย QR Code ให้ใหญ่ขึ้น
+        width: 160, 
         height: 160,
         colorDark : "#000000",
         colorLight : "#ffffff",
@@ -330,11 +354,9 @@
       document.getElementById('success-view').style.display = 'block';
       document.getElementById('bottom-nav-bar').style.display = 'flex';
       
-      // ให้เปิดแท็บโปรไฟล์เป็นค่าเริ่มต้น
       switchTab('profile');
     }
 
-    // 🌟 ฟังก์ชันสลับแท็บ
     function switchTab(tab) {
       if (tab === 'profile') {
         document.getElementById('tab-profile').style.display = 'block';
@@ -355,7 +377,7 @@
       document.getElementById('reg-header').style.display = 'block';
       document.getElementById('reg-form').style.display = 'block';
       document.getElementById('pdpa-box').style.display = 'none';
-      document.getElementById('bottom-nav-bar').style.display = 'none'; // ซ่อนเมนูตอนกดแก้ไข
+      document.getElementById('bottom-nav-bar').style.display = 'none'; 
       
       document.getElementById('empId').value = currentUserData.empId;
       document.getElementById('firstName').value = currentUserData.firstName;
@@ -363,6 +385,7 @@
       document.getElementById('phone').value = currentUserData.phone || "";
     }
 
+    /* 🌟 โค้ดตรวจสอบ Regex และแจ้งเตือนของเดิมกลับมา 100% */
     async function submitData() {
       const empId = document.getElementById('empId').value.trim();
       const fName = document.getElementById('firstName').value.trim();
@@ -393,6 +416,7 @@
       }
     }
 
+    /* 🌟 โค้ดแจ้งเตือนตอนยกเลิกของเดิมกลับมา 100% */
     async function cancelMember() {
       const confirm = await Swal.fire({ title: 'ยกเลิกการรับข้อมูล?', text: "คุณได้สิ้นสุดการเป็นพนักงานทรูแล้ว! โปรดยืนยัน คุณจะไม่ได้รับข่าวสารทันที", icon: 'warning', showCancelButton: true, confirmButtonColor: '#FF0000', confirmButtonText: 'ยืนยัน', cancelButtonText: 'ปิด' });
       if (confirm.isConfirmed) {
