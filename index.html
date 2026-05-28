@@ -79,7 +79,6 @@
     .swal2-popup { border-radius: 30px !important; font-family: 'Sarabun', sans-serif !important; }
     .swal2-confirm { background: var(--primary) !important; color: #ffffff !important; border-radius: 15px !important; }
 
-    /* 🌟 1. ปรับแถบเมนูด้านล่างแบบเหลี่ยมตรง (ลบ border-radius ออก) */
     .bottom-nav-bar {
       display: none;
       position: fixed;
@@ -88,7 +87,7 @@
       width: 100%;
       background: linear-gradient(135deg, #FF0000 0%, #007AFF 100%);
       box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.25);
-      border-radius: 0; /* เปลี่ยนเป็นขอบเหลี่ยมตรงเรียบหรูตามบรีฟ */
+      border-radius: 0; 
       z-index: 1000;
       justify-content: space-around;
       align-items: center;
@@ -103,7 +102,7 @@
       cursor: pointer;
       transition: all 0.3s ease;
       flex: 1;
-      position: relative; /* เพิ่มเพื่อให้รองรับการบอกตำแหน่งจุดแจ้งเตือน */
+      position: relative;
     }
     .nav-item.active {
       color: #FFFFFF;
@@ -123,12 +122,11 @@
       letter-spacing: 0.5px;
     }
 
-    /* สไตล์จุดแจ้งเตือนสีเหลืองสำหรับหน้าลงทะเบียนใหม่ */
     .alert-dot {
       display: none;
       position: absolute;
-      top: 2px;
-      right: 32%;
+      top: 0px;
+      right: 25%;
       width: 10px;
       height: 10px;
       background-color: #FFDE00;
@@ -255,7 +253,8 @@
     <div class="nav-item active" id="nav-profile" onclick="switchTab('profile')">
       <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
       <span>โปรไฟล์</span>
-      <div id="profile-alert-dot" class="alert-dot"></div> </div>
+      <div id="profile-alert-dot" class="alert-dot"></div>
+    </div>
     <div class="nav-item" id="nav-qrcode" onclick="switchTab('qrcode')">
       <svg viewBox="0 0 24 24"><path d="M3 3h8v8H3zm10 0h8v8h-8zM3 13h8v8H3zm15 0h3v2h-3zm0 3h3v2h-3zm-2-3h2v3h-2zm0 5h2v2h-2zm3 1h2v2h-2zm-1-7h2v2h-2zm-5 4h2v2h-2z"/></svg>
       <span>QR Code</span>
@@ -335,15 +334,49 @@
       document.getElementById('reg-form').style.display = 'none';
       document.getElementById('home-menu').style.display = 'none';
       
-      // 🌟 2. เงื่อนไขตรวจสอบกรณีพนักงานพึ่งลงทะเบียนสำเร็จใหม่ๆ เท่านั้น
       let registrationNotice = "";
+      let showNotice = false;
+
       if (user.status !== "อัปเดตข้อมูล") {
-        // แสดงข้อความประกาศใต้ บัตรประจำตัวพนักงาน
-        registrationNotice = `<div style="font-size:13px; color:#FF0000; font-weight:500; margin-top:6px; line-height:1.4; background:#FFF1F1; padding:8px 12px; border-radius:12px; border:1px solid #FFE0E0;">ลงทะเบียนสำเร็จ คุณจะได้รับข่าวสารภายในวันที่ 10 ของเดือนถัดไป</div>`;
-        // สั่งเปิดจุดแจ้งเตือนสีเหลืองที่แถบโปรไฟล์ด้านล่าง
+        showNotice = true;
+        
+        if (user.updateDate) {
+          try {
+            let regDate;
+            if (user.updateDate.includes('/')) {
+              let p = user.updateDate.split(/[\s/:]+/);
+              let d = parseInt(p[0], 10);
+              let m = parseInt(p[1], 10) - 1;
+              let y = parseInt(p[2], 10);
+              if (y > 2500) y -= 543;
+              regDate = new Date(y, m, d);
+            } else {
+              regDate = new Date(user.updateDate);
+            }
+            
+            if (!isNaN(regDate.getTime())) {
+              let expiryDate = new Date(regDate.getFullYear(), regDate.getMonth() + 1, 11);
+              let today = new Date();
+              today.setHours(0,0,0,0);
+              
+              if (today >= expiryDate) {
+                showNotice = false;
+              }
+            }
+          } catch(e) {}
+        }
+      }
+
+      // 🌟 ปรับปรุงกล่องข้อความแจ้งเตือนให้คลีน สบายตา ไม่เด่นจนเกินไปตามรีเควสต์
+      if (showNotice) {
+        registrationNotice = `
+          <div style="margin-top:8px; padding:10px 16px; background:#F8FAFC; border-radius:14px; border:1px solid #E2E8F0; display:inline-block; line-height:1.5;">
+            <span style="color:#00B900; font-weight:600; font-size:14px;">ลงทะเบียนสำเร็จ</span><br>
+            <span style="color:#64748B; font-size:12px;">คุณจะได้รับข่าวสารภายในวันที่ 10 ของเดือนถัดไป</span>
+          </div>`;
         document.getElementById('profile-alert-dot').style.display = 'block';
       } else {
-        document.getElementById('profile-alert-dot').style.display = 'none';
+        if(document.getElementById('profile-alert-dot')) document.getElementById('profile-alert-dot').style.display = 'none';
       }
 
       document.getElementById('welcome-text').innerHTML = `
@@ -351,7 +384,7 @@
           <img src="https://img1.pic.in.th/images/True--C.png" alt="True Logo" style="height: 26px; width: auto; object-fit: contain;">
           <span style="background: linear-gradient(135deg, #FF0000, #007AFF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size:26px; font-weight:700; display: inline-block; line-height: 1.2;">Digital ID Card</span>
         </div>
-        <span style="font-weight: 300; font-size:15px; color:var(--text-sub); display: inline-block; margin-top: 2px;">บัตรประจำตัวพนักงาน</span>
+        <span style="font-weight: 300; font-size:15px; color:var(--text-sub); display: inline-block; margin-top: 2px;">บัตรประจำตัวพนักงาน</span><br>
         ${registrationNotice}
       `;
       
@@ -412,7 +445,6 @@
       });
     }
 
-    // 🌟 3. ฟังก์ชันเปิดหน้าต่าง แจ้งปัญหา แบบ Native LINE
     function openReport() {
       liff.openWindow({
         url: "https://liff.line.me/1656846002-j80kkZEY",
