@@ -16,10 +16,7 @@
       background-color: var(--bg-color); 
       margin: 0; 
       padding: 0; 
-      /* 🌟 ปรับให้หน้าจอพอดีเป๊ะด้วย 100dvh แก้ปัญหาแถบ URL มือถือดันจอ */
       height: 100vh; 
-      height: 100dvh; 
-      width: 100vw;
       display: flex; 
       flex-direction: column; 
       align-items: center; 
@@ -370,6 +367,7 @@
         }
       }
 
+      // 🌟 ปรับปรุงกล่องข้อความแจ้งเตือนให้คลีน สบายตา ไม่เด่นจนเกินไปตามรีเควสต์
       if (showNotice) {
         registrationNotice = `
           <div style="margin-top:8px; padding:10px 16px; background:#F8FAFC; border-radius:14px; border:1px solid #E2E8F0; display:inline-block; line-height:1.5;">
