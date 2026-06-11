@@ -45,7 +45,7 @@
     .consent-content::-webkit-scrollbar { width: 3px; }
     .consent-content::-webkit-scrollbar-thumb { background: #DDD; }
 
-    input[type="text"], input[type="tel"] { width: 100%; padding: 14px; margin-bottom: 12px; border: 1px solid #DDD; border-radius: 16px; box-sizing: border-box; font-size: 16px; font-family: 'Sarabun'; }
+    input[type="text"], input[type="tel"] { width: 100%; padding: 14px; margin-bottom: 12px; border: 1px solid #DDD; border-radius: 16px; box-sizing: border-box; font-size: 16px; font-family: 'Sarabun'; transition: all 0.3s ease; }
     .input-label { display: block; font-size: 13px; font-weight: 600; color: var(--text-sub); margin-bottom: 5px; padding-left: 5px; }
     
     .sync-btn { width: 100%; padding: 16px; color: white; border: none; border-radius: 18px; font-size: 16px; font-weight: 600; font-family: 'Kanit'; cursor: pointer; margin-top: 10px; transition: 0.3s; }
@@ -54,7 +54,6 @@
     .btn-rewards { background: linear-gradient(135deg, #00C300, #009900); margin-bottom: 0px; box-shadow: 0 4px 15px rgba(0, 195, 0, 0.2); }
     .btn-cancel { background: #fff; color: #ff4d4d; border: 1px solid #ff4d4d; font-size: 14px; margin-top: 15px; }
 
-    /* 🌟 สไตล์กล่องห่อรูปโปรไฟล์และเครื่องหมายถูก */
     .profile-pic-wrapper { position: relative; display: inline-block; margin: 0 auto 15px auto; }
     .profile-pic { width: 90px; height: 90px; border-radius: 50%; border: 4px solid white; box-shadow: 0 8px 20px rgba(0,0,0,0.1); display: block; object-fit: cover; }
     .verified-badge { position: absolute; bottom: 2px; right: 2px; background-color: var(--line-green); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.15); z-index: 5; }
@@ -64,7 +63,7 @@
     .info-row { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.2); padding: 10px 0; font-size: 14px; }
 
     #loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #FFFFFF; z-index: 9999; flex-direction: column; align-items: center; justify-content: center; }
-    .profile-loader { width: 80px; height: 80px; border-radius: 50%; border: 4px solid var(--primary); margin-bottom: 20px; object-fit: cover; animation: pulse 2s infinite; }
+    .profile-loader { width: 100px; height: 100px; border-radius: 50%; border: 4px solid var(--primary); margin-bottom: 20px; object-fit: cover; animation: pulse 2s infinite; }
     @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.05); opacity: 0.8; } 100% { transform: scale(1); opacity: 1; } }
 
     .footer { 
@@ -144,8 +143,8 @@
 
   <div id="loading-overlay">
     <img id="userProfilePicLoad" class="profile-loader" src="https://img1.pic.in.th/images/True--C.png">
-    <p style="font-family: 'Kanit'; color: #333; font-size: 18px; margin: 0;">กำลังตรวจสอบ</p>
-    <p style="font-size: 12px; color: #999; margin-top: 5px;">โปรดรอสักครู่...</p>
+    <p style="font-family: 'Kanit'; color: #333; font-size: 18px; margin: 0;">กำลังตรวจสอบข้อมูล...</p>
+    <p style="font-size: 12px; color: #999; margin-top: 5px;">โปรดรอสักครู่</p>
   </div>
 
   <div class="card">
@@ -332,6 +331,15 @@
       document.getElementById('success-view').style.display = 'none';
       document.getElementById('home-menu').style.display = 'block';
       document.getElementById('bottom-nav-bar').style.display = 'none';
+      
+      document.querySelector('.verified-badge').style.display = 'none';
+      
+      // ปลดล็อคช่องรหัสพนักงานให้พิมพ์ได้ สำหรับพนักงานใหม่
+      let empInput = document.getElementById('empId');
+      empInput.readOnly = false;
+      empInput.style.backgroundColor = '#FFFFFF';
+      empInput.style.color = '#333';
+      empInput.value = '';
     }
 
     function goToRegForm() {
@@ -344,6 +352,8 @@
       document.getElementById('reg-header').style.display = 'none';
       document.getElementById('reg-form').style.display = 'none';
       document.getElementById('home-menu').style.display = 'none';
+      
+      document.querySelector('.verified-badge').style.display = 'flex';
       
       let registrationNotice = "";
       let showNotice = false;
@@ -378,7 +388,6 @@
         }
       }
 
-      // 🌟 กล่องข้อความแจ้งเตือนที่ตัดคำว่า ลงทะเบียนสำเร็จ ออก และปรับให้ดูมินิมอลสบายตา
       if (showNotice) {
         registrationNotice = `
           <div style="margin-top:8px; padding:8px 16px; background:#F8FAFC; border-radius:14px; border:1px solid #E2E8F0; display:inline-block;">
@@ -392,9 +401,9 @@
       document.getElementById('welcome-text').innerHTML = `
         <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
           <img src="https://img1.pic.in.th/images/True--C.png" alt="True Logo" style="height: 26px; width: auto; object-fit: contain;">
-          <span style="background: linear-gradient(135deg, #FF0000, #007AFF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size:24px; font-weight:700; display: inline-block; line-height: 1.2;">Digital Employees</span>
+          <span style="background: linear-gradient(135deg, #FF0000, #007AFF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size:26px; font-weight:700; display: inline-block; line-height: 1.2;">Digital ID Card</span>
         </div>
-        <span style="font-weight: 300; font-size:15px; color:var(--text-sub); display: inline-block; margin-top: 2px;">LINE Channel Commu</span><br>
+        <span style="font-weight: 300; font-size:15px; color:var(--text-sub); display: inline-block; margin-top: 2px;">บัตรประจำตัวพนักงาน</span><br>
         ${registrationNotice}
       `;
       
@@ -469,13 +478,21 @@
       document.getElementById('reg-form').style.display = 'block';
       document.getElementById('pdpa-box').style.display = 'none';
       document.getElementById('bottom-nav-bar').style.display = 'none'; 
+      document.querySelector('.verified-badge').style.display = 'none'; 
       
       document.getElementById('empId').value = currentUserData.empId;
       document.getElementById('firstName').value = currentUserData.firstName;
       document.getElementById('lastName').value = currentUserData.lastName;
       document.getElementById('phone').value = currentUserData.phone || "";
+      
+      // 🌟 ล็อคช่องรหัสพนักงานให้เป็นสีเทาสำหรับคนที่มีข้อมูลแล้ว
+      let empInput = document.getElementById('empId');
+      empInput.readOnly = true;
+      empInput.style.backgroundColor = '#F0F0F0';
+      empInput.style.color = '#888';
     }
 
+    // 🌟 นำ SweetAlert2 Popup ตรวจสอบข้อมูลก่อนยืนยันมาครอบฟังก์ชันส่งข้อมูล
     async function submitData() {
       const empId = document.getElementById('empId').value.trim();
       const fName = document.getElementById('firstName').value.trim();
@@ -487,6 +504,29 @@
       if (!empId || !fName || !lName || !phone) return Swal.fire({ title: 'ข้อมูลไม่ครบ', text: 'กรุณากรอกข้อมูลให้ครบถ้วน', icon: 'warning', confirmButtonColor: '#FF0000' });
       if (!alphanumericRegex.test(empId)) return Swal.fire({ title: 'รหัสพนักงานไม่ถูกต้อง', text: 'กรุณาใช้เฉพาะตัวเลขและภาษาอังกฤษเท่านั้น', icon: 'error', confirmButtonColor: '#FF0000' });
       if (!digitRegex.test(phone) || phone.length !== 10) return Swal.fire({ title: 'เบอร์โทรศัพท์ไม่ถูกต้อง', text: 'กรุณาระบุหมายเลขให้ครบ 10 หลัก', icon: 'error', confirmButtonColor: '#FF0000' });
+      
+      // Popup ตรวจสอบข้อมูลก่อนยืนยัน
+      const confirmData = await Swal.fire({
+        title: 'โปรดตรวจสอบข้อมูล',
+        html: `
+          <div style="text-align: left; background: #F8F9FA; padding: 15px; border-radius: 12px; border: 1px solid #EAEAEA; font-size: 15px; line-height: 1.6; margin-top: 10px;">
+            <span style="color: #666;">รหัสพนักงาน:</span> <b style="color: #333;">${empId}</b><br>
+            <span style="color: #666;">ชื่อ-นามสกุล:</span> <b style="color: #333;">${fName} ${lName}</b><br>
+            <span style="color: #666;">เบอร์โทรศัพท์:</span> <b style="color: #333;">${phone}</b>
+          </div>
+          <div style="margin-top: 15px; font-size: 14px; color: #FF0000; font-weight: 500;">กรุณาตรวจสอบความถูกต้องก่อนยืนยัน</div>
+        `,
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#FF0000',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'ยืนยันข้อมูล',
+        cancelButtonText: 'กลับไปแก้ไข',
+        reverseButtons: true,
+        customClass: { popup: 'swal2-popup' }
+      });
+
+      if (!confirmData.isConfirmed) return; // ถ้ายกเลิกให้หยุดการทำงานตรงนี้
       
       toggleLoading(true);
       const payload = { action: 'submitRegistration', uid: lineProfile.userId, displayName: lineProfile.displayName, pictureUrl: lineProfile.pictureUrl, email: lineProfile.email, empId: empId, firstName: fName, lastName: lName, phone: phone };
