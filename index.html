@@ -355,47 +355,8 @@
       
       document.querySelector('.verified-badge').style.display = 'flex';
       
-      let registrationNotice = "";
-      let showNotice = false;
-
-      if (user.status !== "อัปเดตข้อมูล") {
-        showNotice = true;
-        
-        if (user.updateDate) {
-          try {
-            let regDate;
-            if (user.updateDate.includes('/')) {
-              let p = user.updateDate.split(/[\s/:]+/);
-              let d = parseInt(p[0], 10);
-              let m = parseInt(p[1], 10) - 1;
-              let y = parseInt(p[2], 10);
-              if (y > 2500) y -= 543;
-              regDate = new Date(y, m, d);
-            } else {
-              regDate = new Date(user.updateDate);
-            }
-            
-            if (!isNaN(regDate.getTime())) {
-              let expiryDate = new Date(regDate.getFullYear(), regDate.getMonth() + 1, 11);
-              let today = new Date();
-              today.setHours(0,0,0,0);
-              
-              if (today >= expiryDate) {
-                showNotice = false;
-              }
-            }
-          } catch(e) {}
-        }
-      }
-
-      if (showNotice) {
-        registrationNotice = `
-          <div style="margin-top:8px; padding:8px 16px; background:#F8FAFC; border-radius:14px; border:1px solid #E2E8F0; display:inline-block;">
-            <span style="color:#64748B; font-size:13px;">คุณจะได้รับข่าวสารภายในวันที่ 10 ของเดือนถัดไป</span>
-          </div>`;
-        document.getElementById('profile-alert-dot').style.display = 'block';
-      } else {
-        if(document.getElementById('profile-alert-dot')) document.getElementById('profile-alert-dot').style.display = 'none';
+      if (document.getElementById('profile-alert-dot')) {
+        document.getElementById('profile-alert-dot').style.display = 'none';
       }
 
       document.getElementById('welcome-text').innerHTML = `
@@ -403,8 +364,7 @@
           <img src="https://img1.pic.in.th/images/True--C.png" alt="True Logo" style="height: 26px; width: auto; object-fit: contain;">
           <span style="background: linear-gradient(135deg, #FF0000, #007AFF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size:26px; font-weight:700; display: inline-block; line-height: 1.2;">Digital ID Card</span>
         </div>
-        <span style="font-weight: 300; font-size:15px; color:var(--text-sub); display: inline-block; margin-top: 2px;">บัตรประจำตัวพนักงาน</span><br>
-        ${registrationNotice}
+        <span style="font-weight: 300; font-size:15px; color:var(--text-sub); display: inline-block; margin-top: 2px;">บัตรประจำตัวพนักงาน</span>
       `;
       
       document.getElementById('resEmpId').innerText = user.empId;
