@@ -260,18 +260,20 @@
   </div>
 
   <div id="bottom-nav-bar" class="bottom-nav-bar">
-    <div class="nav-item active" id="nav-profile" onclick="switchTab('profile')">
+    <div class="nav-item active" id="nav-profile" onclick="switchTab('profile', true)">
       <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
       <span>โปรไฟล์</span>
       <div id="profile-alert-dot" class="alert-dot"></div>
     </div>
-    <div class="nav-item" id="nav-qrcode" onclick="switchTab('qrcode')">
+    <div class="nav-item" id="nav-qrcode" onclick="switchTab('qrcode', true)">
       <svg viewBox="0 0 24 24"><path d="M3 3h8v8H3zm10 0h8v8h-8zM3 13h8v8H3zm15 0h3v2h-3zm0 3h3v2h-3zm-2-3h2v3h-2zm0 5h2v2h-2zm3 1h2v2h-2zm-1-7h2v2h-2zm-5 4h2v2h-2z"/></svg>
       <span>QR Code</span>
     </div>
     <div class="nav-item" id="nav-reward" onclick="openReward()">
       <svg viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z"/></svg>
       <span>LINE Reward</span>
+      <!-- 🌟 เพิ่มจุดสีเหลืองแจ้งเตือนบนปุ่ม LINE Reward -->
+      <div id="reward-alert-dot" class="alert-dot"></div>
     </div>
     <div class="nav-item" id="nav-report" onclick="openReport()">
       <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
@@ -355,8 +357,26 @@
       
       document.querySelector('.verified-badge').style.display = 'flex';
       
-      if (document.getElementById('profile-alert-dot')) {
-        document.getElementById('profile-alert-dot').style.display = 'none';
+      // 🌟 1. เช็คและแสดงจุดสีเหลืองบนปุ่ม "โปรไฟล์" (แสดงเมื่อลงทะเบียนใหม่ และหายไปเมื่อพนักงานกดดู)
+      const profileDot = document.getElementById('profile-alert-dot');
+      const hasClickedProfile = localStorage.getItem('clicked_profile_' + lineProfile.userId);
+      if (profileDot) {
+        if (user.status !== "อัปเดตข้อมูล" && !hasClickedProfile) {
+          profileDot.style.display = 'block';
+        } else {
+          profileDot.style.display = 'none';
+        }
+      }
+
+      // 🌟 2. เช็คและแสดงจุดสีเหลืองบนปุ่ม "LINE Reward" (แสดงค้างไว้จนกว่าพนักงานจะกดปุ่ม LINE Reward)
+      const rewardDot = document.getElementById('reward-alert-dot');
+      const hasClickedReward = localStorage.getItem('clicked_reward_' + lineProfile.userId);
+      if (rewardDot) {
+        if (!hasClickedReward) {
+          rewardDot.style.display = 'block';
+        } else {
+          rewardDot.style.display = 'none';
+        }
       }
 
       document.getElementById('welcome-text').innerHTML = `
@@ -400,10 +420,19 @@
       document.getElementById('success-view').style.display = 'block';
       document.getElementById('bottom-nav-bar').style.display = 'flex';
       
-      switchTab('profile');
+      switchTab('profile', false);
     }
 
-    function switchTab(tab) {
+    function switchTab(tab, isUserClick) {
+      // หากพนักงานเป็นคนกดปุ่มเมนูด้วยตัวเอง ให้ซ่อนจุดสีเหลืองที่โปรไฟล์และจำค่าไว้
+      if (isUserClick) {
+        const profileDot = document.getElementById('profile-alert-dot');
+        if (profileDot) profileDot.style.display = 'none';
+        if (lineProfile.userId) {
+          localStorage.setItem('clicked_profile_' + lineProfile.userId, 'true');
+        }
+      }
+
       if (tab === 'profile') {
         document.getElementById('tab-profile').style.display = 'block';
         document.getElementById('tab-qrcode').style.display = 'none';
@@ -418,6 +447,13 @@
     }
 
     function openReward() {
+      // 🌟 เมื่อพนักงานกดปุ่ม LINE Reward ให้ซ่อนจุดสีเหลืองทันที และบันทึกจำไว้ไม่ให้แสดงซ้ำอีก
+      const rewardDot = document.getElementById('reward-alert-dot');
+      if (rewardDot) rewardDot.style.display = 'none';
+      if (lineProfile.userId) {
+        localStorage.setItem('clicked_reward_' + lineProfile.userId, 'true');
+      }
+
       liff.openWindow({
         url: "https://liff.line.me/2000733931-wPdEZX0R/channels/5000640583/crm/member/dashboard",
         external: false
@@ -495,6 +531,12 @@
       toggleLoading(false);
       
       if (status.status === 'success') {
+        // หากลงทะเบียนใหม่ ให้รีเซ็ตจุดแจ้งเตือนเผื่อกรณีเคยยกเลิกแล้วสมัครใหม่
+        if (!currentUserData && lineProfile.userId) {
+          localStorage.removeItem('clicked_profile_' + lineProfile.userId);
+          localStorage.removeItem('clicked_reward_' + lineProfile.userId);
+        }
+
         const successMessage = currentUserData ? 'อัปเดตข้อมูลเรียบร้อยแล้ว' : `คุณ ${fName} ${lName} ลงทะเบียนสำเร็จ`;
         
         Swal.fire({ 
